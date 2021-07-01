@@ -25,9 +25,20 @@
   },
   "browserslist": {
     "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
+      "edge >= 79",
+      "firefox >= 63",
+      "chrome >= 61",
+      "safari >= 11",
+      "opera >= 48",
+      "ios_saf >= 11.2",
+      "samsung >= 8.2",
+      "unreleased edge versions",
+      "unreleased firefox versions",
+      "unreleased chrome versions",
+      "unreleased safari versions",
+      "unreleased opera versions",
+      "unreleased ios_saf versions",
+      "unreleased samsung versions"
     ],
     "development": [
       "last 1 chrome version",

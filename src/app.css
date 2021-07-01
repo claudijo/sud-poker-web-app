@@ -1,0 +1,12 @@
+#stage {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    display: inline-block;
+    border: 2px dashed orange;
+}
+
+canvas {
+    position: absolute;
+    background-color: cornsilk;
+}
