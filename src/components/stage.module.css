@@ -1,0 +1,5 @@
+.stage {
+    position: relative;
+    display: inline-block;
+    border: 2px dashed orange;
+}

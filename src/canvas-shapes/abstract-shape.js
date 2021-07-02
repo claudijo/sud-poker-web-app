@@ -1,7 +1,12 @@
-export default class AbstractCanvasElement extends HTMLElement {
-
+export default class AbstractShape extends HTMLElement {
     static get observedAttributes() {
-        return ['x', 'y', 'fillStyle'];
+        return [
+            'x',
+            'y',
+            'fillStyle',
+            'strokeStyle',
+            'lineWidth',
+        ];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -36,11 +41,23 @@ export default class AbstractCanvasElement extends HTMLElement {
         this.setAttribute('fillStyle', value)
     }
 
-    draw(ctx, offset) {
-        throw new Error('Draw method not implemented')
+    get strokeStyle() {
+        return this.getAttribute('strokeStyle')
     }
 
-    intersects(x, y) {
-        throw new Error('Intersects method not implemented')
+    set strokeStyle(value) {
+        this.setAttribute('strokeStyle', value)
+    }
+
+    get lineWidth() {
+        return parseInt(this.getAttribute('lineWidth'), 10)
+    }
+
+    set lineWidth(value) {
+        this.setAttribute('lineWidth', value)
+    }
+
+    draw(ctx, offset) {
+        throw new Error('Draw method not implemented')
     }
 }

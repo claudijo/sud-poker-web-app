@@ -1,9 +1,9 @@
-import AbstractCanvasElement from './abstract-canvas-element';
+import AbstractShape from './abstract-shape';
 
-class CanvasElement extends AbstractCanvasElement {
+class Shape extends AbstractShape {
     static get observedAttributes() {
         return [
-            ...AbstractCanvasElement.observedAttributes,
+            ...AbstractShape.observedAttributes,
             'width',
             'height',
         ]
@@ -28,14 +28,12 @@ class CanvasElement extends AbstractCanvasElement {
     draw(ctx, offset = { x: 0, y: 0}) {
         ctx.beginPath();
         ctx.rect(this.x + offset.x, this.y + offset.y, this.width, this.height);
-        ctx.fillStyle = this.fillStyle
-        ctx.fill()
     }
 }
 
-customElements.get('canvas-rectangle') || customElements.define('canvas-rectangle', CanvasElement);
+customElements.get('canvas-rectangle') || customElements.define('canvas-rectangle', Shape);
 
-export default function CanvasRectangle({x, y, width, height, fillStyle, children}) {
+export default function Rectangle({x, y, width, height, fillStyle, children}) {
     return (
         <canvas-rectangle x={x} y={y} width={width} height={height} fillStyle={fillStyle}>
             {children}

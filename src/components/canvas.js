@@ -1,6 +1,7 @@
 import {useEffect, useRef, useCallback} from "react";
 import {localCoordinatesFromMouseEvent, throttleEventHandler} from "../lib/dom";
 import {getRandomColor} from "../lib/color";
+import styles from './canvas.module.css'
 
 export default function Canvas({children, width, height, interactive}) {
     const canvasElement = useRef(null);
@@ -20,19 +21,45 @@ export default function Canvas({children, width, height, interactive}) {
 
     const drawChildren = useCallback((ctx, hitCtx, children, offset = {x: 0, y: 0}) => {
         ctx.save();
+
         Array.from(children).forEach(child => {
             child.draw(ctx, offset)
-            ctx.restore();
+
+            if (child.fillStyle !== null) {
+                ctx.fillStyle = child.fillStyle
+                ctx.fill()
+            }
+
+            if (child.strokeStyle !== null) {
+                console.log(child.lineWidht)
+                ctx.strokeStyle = child.strokeStyle
+                ctx.lineWidth = child.lineWidth ?? 0
+                ctx.stroke()
+            }
+
             if (hitCtx !== null) {
                 let uniqueColor = getRandomColor()
                 while (colorMap.current.has(uniqueColor)) {
                     uniqueColor = getRandomColor()
                 }
+
                 child.draw(hitCtx, offset)
-                hitCtx.fillStyle = uniqueColor;
-                hitCtx.fill();
+
+                if (child.fillStyle !== undefined) {
+                    hitCtx.fillStyle = uniqueColor;
+                    hitCtx.fill();
+                }
+
+                if (child.strokeStyle !== undefined) {
+                    hitCtx.strokeStyle = uniqueColor;
+                    hitCtx.stroke();
+                }
+
                 colorMap.current.set(uniqueColor, { element: child })
             }
+
+            ctx.restore();
+
             if (child.children.length > 0) {
                 drawChildren(ctx, hitCtx, child.children, {
                     x: offset.x + child.x,
@@ -142,6 +169,7 @@ export default function Canvas({children, width, height, interactive}) {
 
     return (
         <canvas
+            className={styles.canvas}
             onMouseDown={interactive ? onMouseEvent : undefined}
             onMouseUp={interactive ? onMouseEvent : undefined}
             onClick={interactive ? onMouseEvent : undefined}
