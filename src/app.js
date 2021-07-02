@@ -3,7 +3,10 @@ import GameOfPoker from "./scenes/game-of-poker";
 
 function App() {
     return (
-        <GameOfPoker tableId="sandbox"/>
+        <GameOfPoker
+            tableId="sandbox"
+            size={{ width: 1280, height: 720 }}
+        />
     );
 }
 
