@@ -31,7 +31,6 @@ export default function Canvas({children, width, height, interactive}) {
             }
 
             if (child.strokeStyle !== null) {
-                console.log(child.lineWidht)
                 ctx.strokeStyle = child.strokeStyle
                 ctx.lineWidth = child.lineWidth ?? 0
                 ctx.stroke()
