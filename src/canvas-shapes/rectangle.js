@@ -33,9 +33,9 @@ class Shape extends AbstractShape {
 
 customElements.get('canvas-rectangle') || customElements.define('canvas-rectangle', Shape);
 
-export default function Rectangle({x, y, width, height, fillStyle, children}) {
+export default function Rectangle({children, ...props}) {
     return (
-        <canvas-rectangle x={x} y={y} width={width} height={height} fillStyle={fillStyle}>
+        <canvas-rectangle {...props}>
             {children}
         </canvas-rectangle>
     )

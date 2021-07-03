@@ -1,13 +1,16 @@
 import './app.css';
 import GameOfPoker from "./scenes/game-of-poker";
+import {
+    RecoilRoot,
+} from 'recoil';
 
-function App() {
+export default function App() {
     return (
-        <GameOfPoker
-            tableId="sandbox"
-            size={{ width: 1280, height: 720 }}
-        />
+        <RecoilRoot>
+            <GameOfPoker
+                tableId="sandbox"
+                size={{width: 1280, height: 720}}
+            />
+        </RecoilRoot>
     );
 }
-
-export default App;
