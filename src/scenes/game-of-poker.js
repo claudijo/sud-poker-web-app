@@ -1,58 +1,76 @@
-import Stage from "../components/stage";
-import Canvas from "../components/canvas";
-import Table from "../components/table";
-import {useEffect, useCallback, useRef} from "react";
-import ClientSocketEmitter from "../lib/client-socket-emitter";
+import Stage from '../components/stage';
+import Canvas from '../components/canvas';
+import Table from '../components/table';
+import { useEffect, useCallback, useRef } from 'react';
+import ClientSocketEmitter from '../lib/client-socket-emitter';
+import { useRecoilState, useRecoilValue } from 'recoil';
+
+
+// import { useRecoilValue, useRecoilState } from 'recoil';
+// import { withReservations } from '../recoil/table'
+// import { reservationsState } from '../recoil/table';
+// import { socketEmitterState } from '../recoil/socket-emitter';
+import { tableState } from '../recoil/table';
 
 // TODO: Put in env aware config
-const realTimeMessagingServiceUrl = 'ws://localhost:3000/ws/poker'
+const realTimeMessagingServiceUrl = 'ws://localhost:3000/ws/poker';
 
 export default function GameOfPoker({ size, tableId }) {
-    const { width, height } = size
+  const { width, height } = size;
 
-    const socket = useRef(null)
+  const table = useRecoilState(tableState('sandbox'));
 
-    const onSocketOpen = useCallback(async () => {
-        await fetch('/api/me', {
-            credentials: 'same-origin'
-        })
-        const { table } = await socket.current?.request('join', {id: tableId})
-        console.log(table)
 
-    },[tableId])
 
-    const onSocketError = useCallback((error) => {
-        console.error('Socket error', error)
-    }, [])
+  console.log(table)
+  // const socket = useRef(null)
+  // const [reservations, setReservation] = useRecoilState(reservationsState)
+  // console.log({ reservations })
 
-    useEffect(() => {
-        socket.current = new ClientSocketEmitter(realTimeMessagingServiceUrl)
-        socket.current.on('open', onSocketOpen)
-        socket.current.on('error', onSocketError)
-        // this.socket.on('reserveSeat', this.onReserveSeat)
-        // this.socket.on('cancelReservation', this.onCancelReservation)
+  // const socket = useRecoilValue(socketEmitterState(realTimeMessagingServiceUrl))
 
-        return () => {
-            socket.current.off('open', onSocketOpen)
-            socket.current.off('error', onSocketError)
-            socket.current.close()
-            socket.current = null
-        }
+  // console.log('socket', socket)
+  // const onSocketOpen = useCallback(async () => {
+  //     await fetch('/api/me', {
+  //         credentials: 'same-origin'
+  //     })
+  //     const { table } = await socket.current?.request('join', {id: tableId})
+  //     console.log(table)
+  //
+  // },[tableId])
+  //
+  // const onSocketError = useCallback((error) => {
+  //     console.error('Socket error', error)
+  // }, [])
 
-    }, [onSocketOpen, onSocketError])
+  // useEffect(() => {
+  //     socket.current = new ClientSocketEmitter(realTimeMessagingServiceUrl)
+  //     socket.current.on('open', onSocketOpen)
+  //     socket.current.on('error', onSocketError)
+  //     // this.socket.on('reserveSeat', this.onReserveSeat)
+  //     // this.socket.on('cancelReservation', this.onCancelReservation)
+  //
+  //     return () => {
+  //         socket.current.off('open', onSocketOpen)
+  //         socket.current.off('error', onSocketError)
+  //         socket.current.close()
+  //         socket.current = null
+  //     }
+  //
+  // }, [onSocketOpen, onSocketError])
 
-    return (
-        <Stage width={width} height={height}>
-            {/*Background layer*/}
-            <Canvas width={width} height={height}>
-                <Table
-                    x={width / 2 - 600 / 2}
-                    y={120}
-                    width={600}
-                    height={300}
-                    borderWidth={16}
-                />
-            </Canvas>
-        </Stage>
-    )
+  return (
+    <Stage width={width} height={height}>
+      {/*Background layer*/}
+      <Canvas width={width} height={height}>
+        <Table
+          x={width / 2 - 600 / 2}
+          y={120}
+          width={600}
+          height={300}
+          borderWidth={16}
+        />
+      </Canvas>
+    </Stage>
+  );
 }
