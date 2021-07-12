@@ -1,5 +1,6 @@
 import {useEffect, useRef, useCallback} from "react";
-import { debounce, localCoordinatesFromMouseEvent, throttle } from '../lib/dom';
+import { localCoordinatesFromMouseEvent } from '../lib/dom';
+import { throttle, debounce } from '../lib/rate-limit';
 import {getRandomColor} from "../lib/color";
 import styles from './canvas.module.css'
 
