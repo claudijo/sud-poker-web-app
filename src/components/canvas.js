@@ -1,5 +1,5 @@
 import {useEffect, useRef, useCallback} from "react";
-import {localCoordinatesFromMouseEvent, throttleEventHandler} from "../lib/dom";
+import { debounce, localCoordinatesFromMouseEvent, throttle } from '../lib/dom';
 import {getRandomColor} from "../lib/color";
 import styles from './canvas.module.css'
 
@@ -7,17 +7,6 @@ export default function Canvas({children, width, height, interactive}) {
     const canvasElement = useRef(null);
     const hitCanvas = useRef(null)
     const colorMap = useRef(new Map())
-
-    useEffect(() => {
-        if (interactive) {
-            const canvas = document.createElement('canvas')
-            canvas.width = width
-            canvas.height = height
-            hitCanvas.current = canvas
-        } else {
-            hitCanvas.current = null
-        }
-    }, [interactive, width, height])
 
     const drawChildren = useCallback((ctx, hitCtx, children, offset = {x: 0, y: 0}) => {
         ctx.save();
@@ -69,22 +58,38 @@ export default function Canvas({children, width, height, interactive}) {
     }, [])
 
     useEffect(() => {
+        if (interactive) {
+            const canvas = document.createElement('canvas')
+            canvas.width = width
+            canvas.height = height
+            hitCanvas.current = canvas
+        } else {
+            hitCanvas.current = null
+        }
+    }, [interactive, width, height])
+
+    useEffect(() => {
         const canvas = canvasElement.current
         const ctx = canvas.getContext('2d')
         const hitCtx = hitCanvas.current !== null
             ? hitCanvas.current.getContext('2d')
             : null
 
-        drawChildren(ctx, hitCtx, canvas.children)
-
-        const onUpdate = (event) => {
+        const onUpdate = debounce(event => {
             ctx.clearRect(0, 0, canvasElement.current.width, canvasElement.current.height);
             drawChildren(ctx, hitCtx, canvasElement.current.children)
-        }
+        })
 
-        canvas.addEventListener('update', onUpdate)
+        // Children might have already been connected at this stage, so
+        // force draw, which in best case will not be called more than once
+        // per canvas when called on requestAnimation frame.
+        requestAnimationFrame(onUpdate)
+
+        canvas.addEventListener('attributeChanged', onUpdate)
+        canvas.addEventListener('connected', onUpdate)
         return () => {
-            canvas.removeEventListener('update', onUpdate)
+            canvas.removeEventListener('attributeChanged', onUpdate)
+            canvas.removeEventListener('connected', onUpdate)
         }
     }, [drawChildren])
 
@@ -172,8 +177,8 @@ export default function Canvas({children, width, height, interactive}) {
             onMouseDown={interactive ? onMouseEvent : undefined}
             onMouseUp={interactive ? onMouseEvent : undefined}
             onClick={interactive ? onMouseEvent : undefined}
-            onMouseMove={interactive ? throttleEventHandler(onMouseEvent) : undefined}
-            onMouseOut={interactive ? throttleEventHandler(onMouseOut) : undefined }
+            onMouseMove={interactive ? throttle(onMouseEvent) : undefined}
+            onMouseOut={interactive ? throttle(onMouseOut) : undefined }
             width={width}
             height={height}
             ref={canvasElement}
