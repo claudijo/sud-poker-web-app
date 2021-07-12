@@ -24,7 +24,7 @@ class Shape extends AbstractShape {
 
 customElements.get('canvas-circle') || customElements.define('canvas-circle', Shape);
 
-export default function Circle({children, ...props}) {
+export default function CanvasCircle({children, ...props}) {
     return (
         <canvas-circle {...props}>
             {children}
