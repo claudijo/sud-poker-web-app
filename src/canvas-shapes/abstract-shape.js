@@ -18,7 +18,6 @@ export default class AbstractShape extends HTMLElement {
     }
 
     connectedCallback() {
-        console.log('Connected', this)
         const customEvent = new CustomEvent('connected', {
             bubbles: true,
         });
