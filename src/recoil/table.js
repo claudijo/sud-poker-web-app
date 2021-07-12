@@ -1,30 +1,46 @@
-import { atom, selector, selectorFamily } from 'recoil';
-import { socketEmitterState } from './socket-emitter';
+import { atom, atomFamily, selector } from 'recoil';
+import ClientSocketEmitter from '../lib/client-socket-emitter';
 
+const clientSocketEmitter = new ClientSocketEmitter('ws://localhost:3000/ws/poker');
 
-export const tableState = selectorFamily({
-  key: 'Table',
-  default: null,
-  get: tableId => async ({ get }) => {
-    const socket = get(socketEmitterState('ws://localhost:3000/ws/poker'));
-    const response = await socket.request('join', {id: tableId})
-
-    console.log(response)
-    return response.table
-  },
-  set: value => ({set}, newValue) => {
-    console.log('Setting value', newValue)
-    set(newValue)
-  }
+export const currentTableIdState = atom({
+  key: 'CurrentTableId',
+  default: '',
 });
 
-// export const reservationsState = selector({
-//   key: 'Reservations',
-//   default: null,
-//   get: async ({ get }) => {
-//     console.log(get(meState()));
-//     get(meState());
-//     return get(tableState);
-//   },
-// });
+const joinTableEffect = tableId => ({ setSelf, trigger }) => {
+  if (!tableId) {
+    return
+  }
+
+  if (trigger === 'get') {
+    const getTable = async () => {
+      await fetch('/api/me', { credentials: 'same-origin' });
+      const response = await clientSocketEmitter.request('join', { id: tableId });
+      return response.table
+    };
+
+    setSelf(getTable(tableId));
+  }
+
+  // TODO: Cleanup with leave table...or?
+};
+
+export const tableForIdState = atomFamily({
+  key: 'TableForId',
+  default: null,
+  effects_UNSTABLE: tableId => [
+    joinTableEffect(tableId),
+  ],
+});
+
+export const tableState = selector({
+  key: 'Table',
+  get: ({ get }) => {
+    return tableForIdState(get(currentTableIdState));
+  },
+  set: ({ get, set }, newValue) => {
+    set(tableForIdState(get(currentTableIdState)), newValue);
+  },
+});
 
