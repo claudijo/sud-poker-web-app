@@ -10,11 +10,19 @@ export default class AbstractShape extends HTMLElement {
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
-        const updateEvent = new CustomEvent('update', {
+        const customEvent = new CustomEvent('attributeChanged', {
             bubbles: true,
             detail: { name, oldValue, newValue }
         });
-        this.dispatchEvent(updateEvent);
+        this.dispatchEvent(customEvent);
+    }
+
+    connectedCallback() {
+        console.log('Connected', this)
+        const customEvent = new CustomEvent('connected', {
+            bubbles: true,
+        });
+        this.dispatchEvent(customEvent);
     }
 
     get x() {
