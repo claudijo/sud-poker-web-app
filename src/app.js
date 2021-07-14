@@ -13,7 +13,8 @@ export default function App() {
         <Suspense fallback={<div>Loading...</div>}>
           <GameOfPoker
             tableId="sandbox"
-            size={{ width: 1280, height: 720 }}
+            size={{ width: 720, height: 480 }}
+            // size={{ width: 1280, height: 720 }}
           />
         </Suspense>
       </ErrorBoundary>

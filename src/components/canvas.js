@@ -1,8 +1,10 @@
 import {useEffect, useRef, useCallback} from "react";
 import { localCoordinatesFromMouseEvent } from '../lib/dom';
 import { throttle, debounce } from '../lib/rate-limit';
-import {getRandomColor} from "../lib/color";
+import { getRandomColor, stringToColor } from '../lib/color';
 import styles from './canvas.module.css'
+
+
 
 export default function Canvas({children, width, height, interactive}) {
     const canvasElement = useRef(null);
@@ -26,11 +28,24 @@ export default function Canvas({children, width, height, interactive}) {
                 ctx.stroke()
             }
 
-            if (hitCtx !== null) {
-                let uniqueColor = getRandomColor()
-                while (colorMap.current.has(uniqueColor)) {
-                    uniqueColor = getRandomColor()
-                }
+            // Skip images
+            if (hitCtx !== null && child.nodeName !== 'CANVAS-IMAGE') {
+                // const attrs = child.attributes;
+                // let output = "";
+                // for(let i = attrs.length - 1; i >= 0; i--) {
+                //     output += attrs[i].name + "=" + attrs[i].value;
+                // }
+                const output = ['x','y'].reduce((acc, attr) => {
+                    acc += child[attr]
+                    return acc
+                }, '')
+                const uniqueColor = stringToColor(output)
+                // console.log(uniqueColor)
+                // console.log(uniqueColor)
+                // let uniqueColor = getRandomColor()
+                // while (colorMap.current.has(uniqueColor)) {
+                //     uniqueColor = getRandomColor()
+                // }
 
                 child.draw(hitCtx, offset)
 
@@ -41,10 +56,12 @@ export default function Canvas({children, width, height, interactive}) {
 
                 if (child.strokeStyle !== undefined) {
                     hitCtx.strokeStyle = uniqueColor;
+                    hitCtx.lineWidth = child.lineWidth ?? 0
                     hitCtx.stroke();
                 }
 
                 colorMap.current.set(uniqueColor, { element: child })
+                // console.log(colorMap.current)
             }
 
             ctx.restore();
@@ -72,12 +89,15 @@ export default function Canvas({children, width, height, interactive}) {
     useEffect(() => {
         const canvas = canvasElement.current
         const ctx = canvas.getContext('2d')
-        const hitCtx = hitCanvas.current !== null
-            ? hitCanvas.current.getContext('2d')
-            : null
+        const hitCtx = hitCanvas.current?.getContext('2d') ?? null
+
+        if (hitCtx) {
+            document.body.appendChild(hitCanvas.current)
+        }
 
         const onUpdate = debounce(event => {
             ctx.clearRect(0, 0, canvasElement.current.width, canvasElement.current.height);
+            hitCtx?.clearRect(0, 0, hitCanvas.current.width, hitCanvas.current.height);
             drawChildren(ctx, hitCtx, canvasElement.current.children)
         })
 
@@ -85,6 +105,8 @@ export default function Canvas({children, width, height, interactive}) {
         // force draw, which in best case will not be called more than once
         // per canvas when called on requestAnimation frame.
         requestAnimationFrame(onUpdate)
+
+        // setTimeout(onUpdate,100)
 
         canvas.addEventListener('attributeChanged', onUpdate)
         canvas.addEventListener('connected', onUpdate)
@@ -103,6 +125,7 @@ export default function Canvas({children, width, height, interactive}) {
         const hitCtx = hitCanvas.current.getContext('2d')
         const pixel = hitCtx.getImageData(x, y, 1, 1).data;
         const color = `rgb(${pixel[0]},${pixel[1]},${pixel[2]})`;
+        console.log(color)
         const data = colorMap.current.get(color) ?? {}
         if (data.element) {
             data.element.dispatchEvent(

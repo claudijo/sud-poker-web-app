@@ -3,9 +3,9 @@ export default class AbstractShape extends HTMLElement {
         return [
             'x',
             'y',
-            'fillStyle',
-            'strokeStyle',
-            'lineWidth',
+            'fillstyle',
+            'strokestyle',
+            'linewidth',
         ];
     }
 
@@ -25,11 +25,11 @@ export default class AbstractShape extends HTMLElement {
     }
 
     get x() {
-        return parseInt(this.getAttribute('x'), 10)
+        return parseInt(this.getAttribute('x'), 10) ?? 0
     }
 
     get y() {
-        return parseInt(this.getAttribute('y'), 10)
+        return parseInt(this.getAttribute('y'), 10) ?? 0
     }
 
     set x(value) {
