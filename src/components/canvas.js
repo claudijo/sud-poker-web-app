@@ -95,9 +95,8 @@ export default function Canvas({ children, width, height, interactive }) {
     const ctx = canvasElement.current.getContext('2d');
 
     const targets = interactiveElements.current.queryPoint({ x, y })
-      .filter(target => {
-        return ctx.isPointInPath(target.path, x, y) || ctx.isPointInStroke(target.path, x, y)
-      })
+      .filter(target => ctx.isPointInPath(target.path, x, y)
+        || ctx.isPointInStroke(target.path, x, y))
 
     targets.forEach(target => {
       target.dispatchEvent(
