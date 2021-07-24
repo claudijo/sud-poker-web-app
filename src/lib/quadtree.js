@@ -23,19 +23,21 @@ export class QuadTree {
     this.boundary = boundary;
 
     // Rectangles in this quad tree node
-    this.rectangles = [];
+    this.items = [];
 
     // Children
     this.nodes = [];
   }
 
-  insert(rectangle) {
-    if (!QuadTree.containsRectangle(this.boundary, rectangle)) {
+  // The `level` arg is currently only used to make sure overflowing items are
+  // not lost
+  insert(item, level = 0) {
+    if (level > 0 && !QuadTree.containsRectangle(this.boundary, item.getBoundingBox())) {
       return false; // object cannot be added
     }
 
-    if (this.rectangles.length < QuadTree.QT_NODE_CAPACITY && this.nodes.length === 0) {
-      this.rectangles.push(rectangle);
+    if (this.items.length < QuadTree.QT_NODE_CAPACITY && this.nodes.length === 0) {
+      this.items.push(item);
       return true;
     }
 
@@ -43,8 +45,9 @@ export class QuadTree {
       this.subdivide();
     }
 
-    if (!this.nodes.some(node => node.insert(rectangle))) {
-      this.rectangles.push(rectangle);
+    level += 1
+    if (!this.nodes.some(node => node.insert(item, level))) {
+      this.items.push(item);
     }
 
     return true;
@@ -55,23 +58,23 @@ export class QuadTree {
       return [];
     }
 
-    const rectanglesAtPoint = this.rectangles.filter(rectangle => {
-      return QuadTree.containsPoint(rectangle, point);
+    const elementsAtPoint = this.items.filter(item => {
+      return QuadTree.containsPoint(item.getBoundingBox(), point);
     });
 
     if (this.nodes.length === 0) {
-      return rectanglesAtPoint;
+      return elementsAtPoint;
     }
 
     return [
-      ...rectanglesAtPoint,
+      ...elementsAtPoint,
       ...this.nodes.flatMap(node => node.queryPoint(point)),
     ];
   }
 
   clear() {
     this.nodes = []
-    this.rectangles = []
+    this.items = []
   }
 
   subdivide() {

@@ -11,11 +11,6 @@ export default class AbstractShape extends HTMLElement {
 
   constructor() {
     super();
-
-    this.top = 0
-    this.left = 0
-    this.right = 0
-    this.bottom = 0
     this.offset = { x: 0, y: 0 }
   }
 
@@ -38,12 +33,12 @@ export default class AbstractShape extends HTMLElement {
     return parseInt(this.getAttribute('x'), 10) ?? 0;
   }
 
-  get y() {
-    return parseInt(this.getAttribute('y'), 10) ?? 0;
-  }
-
   set x(value) {
     this.setAttribute('x', value);
+  }
+
+  get y() {
+    return parseInt(this.getAttribute('y'), 10) ?? 0;
   }
 
   set y(value) {
@@ -76,9 +71,5 @@ export default class AbstractShape extends HTMLElement {
 
   getPath(ctx) {
     throw new Error('`getPath` method not implemented');
-  }
-
-  setBoundingBox(ctx) {
-    throw new Error('`setBoundingBox` method not implemented');
   }
 }

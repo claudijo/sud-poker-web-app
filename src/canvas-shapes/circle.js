@@ -16,22 +16,25 @@ class Shape extends AbstractShape {
     this.setAttribute('radius', value);
   }
 
-  setBoundingBox(offset = { x: 0, y: 0 }) {
-    this.left = this.x - offset.x - this.radius - this.lineWidth / 2;
-    this.right = this.x + offset.x + this.radius + this.lineWidth / 2;
-    this.top = this.y - offset.y - this.radius - this.lineWidth / 2;
-    this.bottom = this.y + offset.y + this.radius + this.lineWidth / 2;
+  getBoundingBox() {
+    return {
+      left: this.x - this.offset.x - this.radius - this.lineWidth / 2,
+      right: this.x + this.offset.x + this.radius + this.lineWidth / 2,
+      top: this.y - this.offset.y - this.radius - this.lineWidth / 2,
+      bottom: this.y + this.offset.y + this.radius + this.lineWidth / 2,
+    }
   }
-
 
   get path() {
+    const pathSignature = `${this.x},${this.y},${this.offset.y},${this.offset.x},${this.radius}`
 
-  }
+    if (this._pathSignature !== pathSignature) {
+      this._pathSignature = pathSignature
+      this._path = new Path2D()
+      this._path.arc(this.x + this.offset.x, this.y + this.offset.y, this.radius, 0, 2 * Math.PI);
+    }
 
-  getPath(offset = { x: 0, y: 0 }) {
-    const path = new Path2D()
-    path.arc(this.x + offset.x, this.y + offset.y, this.radius, 0, 2 * Math.PI);
-    return path
+    return this._path
   }
 }
 

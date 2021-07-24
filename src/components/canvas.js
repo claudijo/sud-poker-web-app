@@ -11,7 +11,13 @@ export default function Canvas({ children, width, height, interactive }) {
 
   const drawChildren = useCallback((ctx, children, offset = { x: 0, y: 0 }) => {
     Array.from(children).forEach(child => {
-      const path = child.getPath(offset);
+
+      child.offset = offset
+      const { path } = child
+
+      if (interactive) {
+        interactiveElements.current.insert(child)
+      }
 
       if (child.fillStyle !== null) {
         ctx.fillStyle = child.fillStyle;
@@ -22,11 +28,6 @@ export default function Canvas({ children, width, height, interactive }) {
         ctx.strokeStyle = child.strokeStyle;
         ctx.lineWidth = child.lineWidth;
         ctx.stroke(path);
-      }
-
-      if (interactive) {
-        child.setBoundingBox(offset)
-        interactiveElements.current.insert(child)
       }
 
       if (child.children.length > 0) {
@@ -63,9 +64,11 @@ export default function Canvas({ children, width, height, interactive }) {
 
     const onUpdate = debounce(event => {
       ctx.clearRect(0, 0, canvasElement.current.width, canvasElement.current.height);
+
       if (interactive) {
         interactiveElements.current.clear()
       }
+
       drawChildren(ctx, canvasElement.current.children);
     });
 
@@ -89,8 +92,12 @@ export default function Canvas({ children, width, height, interactive }) {
     }
 
     const {x, y} = localCoordinatesFromMouseEvent(event)
+    const ctx = canvasElement.current.getContext('2d');
 
     const targets = interactiveElements.current.queryPoint({ x, y })
+      .filter(target => {
+        return ctx.isPointInPath(target.path, x, y) || ctx.isPointInStroke(target.path, x, y)
+      })
 
     targets.forEach(target => {
       target.dispatchEvent(
