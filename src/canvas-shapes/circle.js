@@ -1,33 +1,46 @@
 import AbstractShape from './abstract-shape';
 
 class Shape extends AbstractShape {
-    static get observedAttributes() {
-        return [
-            ...AbstractShape.observedAttributes,
-            'radius',
-        ]
-    }
+  static get observedAttributes() {
+    return [
+      ...AbstractShape.observedAttributes,
+      'radius',
+    ];
+  }
 
-    get radius() {
-        return parseInt(this.getAttribute('radius'))
-    }
+  get radius() {
+    return parseInt(this.getAttribute('radius'));
+  }
 
-    set radius(value) {
-        this.setAttribute('radius', value)
-    }
+  set radius(value) {
+    this.setAttribute('radius', value);
+  }
 
-    draw(ctx, offset = { x: 0, y: 0}) {
-        ctx.beginPath();
-        ctx.arc(this.x + offset.x, this.y + offset.y, this.radius, 0, 2 * Math.PI);
-    }
+  setBoundingBox(offset = { x: 0, y: 0 }) {
+    this.left = this.x - offset.x - this.radius - this.lineWidth / 2;
+    this.right = this.x + offset.x + this.radius + this.lineWidth / 2;
+    this.top = this.y - offset.y - this.radius - this.lineWidth / 2;
+    this.bottom = this.y + offset.y + this.radius + this.lineWidth / 2;
+  }
+
+
+  get path() {
+
+  }
+
+  getPath(offset = { x: 0, y: 0 }) {
+    const path = new Path2D()
+    path.arc(this.x + offset.x, this.y + offset.y, this.radius, 0, 2 * Math.PI);
+    return path
+  }
 }
 
 customElements.get('canvas-circle') || customElements.define('canvas-circle', Shape);
 
-export default function CanvasCircle({children, ...props}) {
-    return (
-        <canvas-circle {...props}>
-            {children}
-        </canvas-circle>
-    )
+export default function CanvasCircle({ children, ...props }) {
+  return (
+    <canvas-circle {...props}>
+      {children}
+    </canvas-circle>
+  );
 }

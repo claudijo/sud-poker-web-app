@@ -23,15 +23,15 @@ export default function GameOfPoker({ size, tableId }) {
   return (
     <Stage width={width} height={height}>
       {/*Background layer*/}
-      <Canvas width={width} height={height}>
-        <Table
-          x={width / 2 - 600 / 2}
-          y={120}
-          width={600}
-          height={300}
-          borderWidth={16}
-        />
-      </Canvas>
+      {/*<Canvas width={width} height={height}>*/}
+      {/*  <Table*/}
+      {/*    x={width / 2 - 600 / 2}*/}
+      {/*    y={120}*/}
+      {/*    width={600}*/}
+      {/*    height={300}*/}
+      {/*    borderWidth={16}*/}
+      {/*  />*/}
+      {/*</Canvas>*/}
       {/*Ui layer*/}
       <Canvas width={width} height={height} interactive={true}>
         {table && table.reservations.map((reservation, index) => (

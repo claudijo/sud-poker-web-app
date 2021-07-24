@@ -1,213 +1,163 @@
-import {useEffect, useRef, useCallback} from "react";
+import { useEffect, useRef, useCallback } from 'react';
 import { localCoordinatesFromMouseEvent } from '../lib/dom';
 import { throttle, debounce } from '../lib/rate-limit';
-import { getRandomColor, stringToColor } from '../lib/color';
-import styles from './canvas.module.css'
+import styles from './canvas.module.css';
+import { QuadTree } from '../lib/quadtree';
 
+export default function Canvas({ children, width, height, interactive }) {
+  const canvasElement = useRef(null);
+  const interactiveElements = useRef(null);
+  const hoveredElements = useRef(null)
 
+  const drawChildren = useCallback((ctx, children, offset = { x: 0, y: 0 }) => {
+    Array.from(children).forEach(child => {
+      const path = child.getPath(offset);
 
-export default function Canvas({children, width, height, interactive}) {
-    const canvasElement = useRef(null);
-    const hitCanvas = useRef(null)
-    const colorMap = useRef(new Map())
+      if (child.fillStyle !== null) {
+        ctx.fillStyle = child.fillStyle;
+        ctx.fill(path);
+      }
 
-    const drawChildren = useCallback((ctx, hitCtx, children, offset = {x: 0, y: 0}) => {
-        ctx.save();
+      if (child.strokeStyle !== null) {
+        ctx.strokeStyle = child.strokeStyle;
+        ctx.lineWidth = child.lineWidth;
+        ctx.stroke(path);
+      }
 
-        Array.from(children).forEach(child => {
-            child.draw(ctx, offset)
+      if (interactive) {
+        child.setBoundingBox(offset)
+        interactiveElements.current.insert(child)
+      }
 
-            if (child.fillStyle !== null) {
-                ctx.fillStyle = child.fillStyle
-                ctx.fill()
-            }
+      if (child.children.length > 0) {
+        drawChildren(ctx, child.children, {
+          x: offset.x + child.x,
+          y: offset.y + child.y,
+        });
+      }
+    });
+  }, [interactive]);
 
-            if (child.strokeStyle !== null) {
-                ctx.strokeStyle = child.strokeStyle
-                ctx.lineWidth = child.lineWidth ?? 0
-                ctx.stroke()
-            }
+  useEffect(() => {
+    if (interactive) {
+      const quadTree = new QuadTree({
+        top: 0,
+        left: 0,
+        bottom: height,
+        right: width,
+      })
 
-            // Skip images
-            if (hitCtx !== null && child.nodeName !== 'CANVAS-IMAGE') {
-                // const attrs = child.attributes;
-                // let output = "";
-                // for(let i = attrs.length - 1; i >= 0; i--) {
-                //     output += attrs[i].name + "=" + attrs[i].value;
-                // }
-                const output = ['x','y'].reduce((acc, attr) => {
-                    acc += child[attr]
-                    return acc
-                }, '')
-                const uniqueColor = stringToColor(output)
-                // console.log(uniqueColor)
-                // console.log(uniqueColor)
-                // let uniqueColor = getRandomColor()
-                // while (colorMap.current.has(uniqueColor)) {
-                //     uniqueColor = getRandomColor()
-                // }
-
-                child.draw(hitCtx, offset)
-
-                if (child.fillStyle !== undefined) {
-                    hitCtx.fillStyle = uniqueColor;
-                    hitCtx.fill();
-                }
-
-                if (child.strokeStyle !== undefined) {
-                    hitCtx.strokeStyle = uniqueColor;
-                    hitCtx.lineWidth = child.lineWidth ?? 0
-                    hitCtx.stroke();
-                }
-
-                colorMap.current.set(uniqueColor, { element: child })
-                // console.log(colorMap.current)
-            }
-
-            ctx.restore();
-
-            if (child.children.length > 0) {
-                drawChildren(ctx, hitCtx, child.children, {
-                    x: offset.x + child.x,
-                    y: offset.y + child.y,
-                })
-            }
-        })
-    }, [])
-
-    useEffect(() => {
-        if (interactive) {
-            const canvas = document.createElement('canvas')
-            canvas.width = width
-            canvas.height = height
-            hitCanvas.current = canvas
-        } else {
-            hitCanvas.current = null
-        }
-    }, [interactive, width, height])
-
-    useEffect(() => {
-        const canvas = canvasElement.current
-        const ctx = canvas.getContext('2d')
-        const hitCtx = hitCanvas.current?.getContext('2d') ?? null
-
-        if (hitCtx) {
-            document.body.appendChild(hitCanvas.current)
-        }
-
-        const onUpdate = debounce(event => {
-            ctx.clearRect(0, 0, canvasElement.current.width, canvasElement.current.height);
-            hitCtx?.clearRect(0, 0, hitCanvas.current.width, hitCanvas.current.height);
-            drawChildren(ctx, hitCtx, canvasElement.current.children)
-        })
-
-        // Children might have already been connected at this stage, so
-        // force draw, which in best case will not be called more than once
-        // per canvas when called on requestAnimation frame.
-        requestAnimationFrame(onUpdate)
-
-        // setTimeout(onUpdate,100)
-
-        canvas.addEventListener('attributeChanged', onUpdate)
-        canvas.addEventListener('connected', onUpdate)
-        return () => {
-            canvas.removeEventListener('attributeChanged', onUpdate)
-            canvas.removeEventListener('connected', onUpdate)
-        }
-    }, [drawChildren])
-
-    const onMouseEvent = event => {
-        if (event.target !== canvasElement.current) {
-            return
-        }
-
-        const {x, y} = localCoordinatesFromMouseEvent(event)
-        const hitCtx = hitCanvas.current.getContext('2d')
-        const pixel = hitCtx.getImageData(x, y, 1, 1).data;
-        const color = `rgb(${pixel[0]},${pixel[1]},${pixel[2]})`;
-        console.log(color)
-        const data = colorMap.current.get(color) ?? {}
-        if (data.element) {
-            data.element.dispatchEvent(
-                new MouseEvent(event.type, {
-                    view: window,
-                    bubbles: true,
-                    cancelable: true,
-                    buttons: 1
-                })
-            )
-        }
-
-        if (event.type === 'mousemove') {
-            if (data.element && !data.isHovered) {
-                colorMap.current.set(color, {
-                    ...data,
-                    isHovered: true
-                })
-
-                data.element.dispatchEvent(
-                    new MouseEvent('mouseover', {
-                        view: window,
-                        bubbles: true,
-                        cancelable: true,
-                        buttons: 1
-                    })
-                )
-            }
-
-            const { element } = data
-            colorMap.current.forEach((data, key) => {
-                if (data.element !== element && data.isHovered) {
-                    colorMap.current.set(key, {
-                        ...data,
-                        isHovered: false
-                    })
-                    data.element.dispatchEvent(
-                        new MouseEvent('mouseout', {
-                            view: window,
-                            bubbles: true,
-                            cancelable: true,
-                            buttons: 1
-                        })
-                    )
-                }
-            })
-        }
+      interactiveElements.current = quadTree
+      hoveredElements.current = new Set()
     }
 
-    const onMouseOut = event => {
-        colorMap.current.forEach((data, key) => {
-            if (data.isHovered) {
-                colorMap.current.set(key, {
-                    ...data,
-                    isHovered: false
-                })
+    return () => {
+      interactiveElements.current = null
+      hoveredElements.current = null
+    }
+  }, [interactive, width, height]);
 
-                data.element.dispatchEvent(
-                    new MouseEvent('mouseout', {
-                        view: window,
-                        bubbles: true,
-                        cancelable: true,
-                        buttons: 1
-                    })
-                )
-            }
-        })
+  useEffect(() => {
+    const canvas = canvasElement.current;
+    const ctx = canvas.getContext('2d');
+
+    const onUpdate = debounce(event => {
+      ctx.clearRect(0, 0, canvasElement.current.width, canvasElement.current.height);
+      if (interactive) {
+        interactiveElements.current.clear()
+      }
+      drawChildren(ctx, canvasElement.current.children);
+    });
+
+    // Children might have already been connected at this stage, so
+    // force draw, which in best case will not be called more than once
+    // per canvas when called on requestAnimation frame.
+    requestAnimationFrame(onUpdate);
+
+    canvas.addEventListener('attributeChanged', onUpdate);
+    canvas.addEventListener('connected', onUpdate);
+
+    return () => {
+      canvas.removeEventListener('attributeChanged', onUpdate);
+      canvas.removeEventListener('connected', onUpdate);
+    };
+  }, [drawChildren, interactive]);
+
+  const onMouseEvent = throttle(event => {
+    if (event.target !== canvasElement.current) {
+      return;
     }
 
-    return (
-        <canvas
-            className={styles.canvas}
-            onMouseDown={interactive ? onMouseEvent : undefined}
-            onMouseUp={interactive ? onMouseEvent : undefined}
-            onClick={interactive ? onMouseEvent : undefined}
-            onMouseMove={interactive ? throttle(onMouseEvent) : undefined}
-            onMouseOut={interactive ? throttle(onMouseOut) : undefined }
-            width={width}
-            height={height}
-            ref={canvasElement}
-        >
-            {children}
-        </canvas>
-    )
+    const {x, y} = localCoordinatesFromMouseEvent(event)
+
+    const targets = interactiveElements.current.queryPoint({ x, y })
+
+    targets.forEach(target => {
+      target.dispatchEvent(
+        new MouseEvent(event.type, {
+          view: window,
+          bubbles: true,
+          cancelable: true,
+          buttons: 1,
+        }),
+      );
+
+      if (event.type === 'mousemove' && !hoveredElements.current.has(target)) {
+        hoveredElements.current.add(target)
+        target.dispatchEvent(
+          new MouseEvent('mouseover', {
+            view: window,
+            bubbles: true,
+            cancelable: true,
+            buttons: 1
+          })
+        )
+      }
+    })
+
+    hoveredElements.current.forEach(hovered => {
+      if (!targets.includes(hovered)) {
+        hoveredElements.current.delete(hovered)
+        hovered.dispatchEvent(
+          new MouseEvent('mouseout', {
+            view: window,
+            bubbles: true,
+            cancelable: true,
+            buttons: 1,
+          }),
+        )
+      }
+    })
+  });
+
+  // Mouse out event for whole canvas
+  const onMouseOut = throttle(event => {
+    hoveredElements.current.forEach(hovered => {
+      hoveredElements.current.delete(hovered)
+      hovered.dispatchEvent(
+        new MouseEvent('mouseout', {
+          view: window,
+          bubbles: true,
+          cancelable: true,
+          buttons: 1,
+        }),
+      )
+    })
+  });
+
+  return (
+    <canvas
+      className={styles.canvas}
+      onMouseDown={interactive ? onMouseEvent : undefined}
+      onMouseUp={interactive ? onMouseEvent : undefined}
+      onClick={interactive ? onMouseEvent : undefined}
+      onMouseMove={interactive ? onMouseEvent : undefined}
+      onMouseOut={interactive ? onMouseOut : undefined}
+      width={width}
+      height={height}
+      ref={canvasElement}
+    >
+      {children}
+    </canvas>
+  );
 }

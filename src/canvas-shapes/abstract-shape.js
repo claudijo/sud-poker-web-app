@@ -1,70 +1,84 @@
 export default class AbstractShape extends HTMLElement {
-    static get observedAttributes() {
-        return [
-            'x',
-            'y',
-            'fillstyle',
-            'strokestyle',
-            'linewidth',
-        ];
-    }
+  static get observedAttributes() {
+    return [
+      'x',
+      'y',
+      'fillstyle',
+      'strokestyle',
+      'linewidth',
+    ];
+  }
 
-    attributeChangedCallback(name, oldValue, newValue) {
-        const customEvent = new CustomEvent('attributeChanged', {
-            bubbles: true,
-            detail: { name, oldValue, newValue }
-        });
-        this.dispatchEvent(customEvent);
-    }
+  constructor() {
+    super();
 
-    connectedCallback() {
-        const customEvent = new CustomEvent('connected', {
-            bubbles: true,
-        });
-        this.dispatchEvent(customEvent);
-    }
+    this.top = 0
+    this.left = 0
+    this.right = 0
+    this.bottom = 0
+    this.offset = { x: 0, y: 0 }
+  }
 
-    get x() {
-        return parseInt(this.getAttribute('x'), 10) ?? 0
-    }
+  attributeChangedCallback(name, oldValue, newValue) {
+    const customEvent = new CustomEvent('attributeChanged', {
+      bubbles: true,
+      detail: { name, oldValue, newValue },
+    });
+    this.dispatchEvent(customEvent);
+  }
 
-    get y() {
-        return parseInt(this.getAttribute('y'), 10) ?? 0
-    }
+  connectedCallback() {
+    const customEvent = new CustomEvent('connected', {
+      bubbles: true,
+    });
+    this.dispatchEvent(customEvent);
+  }
 
-    set x(value) {
-        this.setAttribute('x', value)
-    }
+  get x() {
+    return parseInt(this.getAttribute('x'), 10) ?? 0;
+  }
 
-    set y(value) {
-        this.setAttribute('y', value)
-    }
+  get y() {
+    return parseInt(this.getAttribute('y'), 10) ?? 0;
+  }
 
-    get fillStyle() {
-        return this.getAttribute('fillStyle')
-    }
+  set x(value) {
+    this.setAttribute('x', value);
+  }
 
-    set fillStyle(value) {
-        this.setAttribute('fillStyle', value)
-    }
+  set y(value) {
+    this.setAttribute('y', value);
+  }
 
-    get strokeStyle() {
-        return this.getAttribute('strokeStyle')
-    }
+  get fillStyle() {
+    return this.getAttribute('fillStyle');
+  }
 
-    set strokeStyle(value) {
-        this.setAttribute('strokeStyle', value)
-    }
+  set fillStyle(value) {
+    this.setAttribute('fillStyle', value);
+  }
 
-    get lineWidth() {
-        return parseInt(this.getAttribute('lineWidth'), 10)
-    }
+  get strokeStyle() {
+    return this.getAttribute('strokeStyle');
+  }
 
-    set lineWidth(value) {
-        this.setAttribute('lineWidth', value)
-    }
+  set strokeStyle(value) {
+    this.setAttribute('strokeStyle', value);
+  }
 
-    draw(ctx, offset) {
-        throw new Error('Draw method not implemented')
-    }
+  get lineWidth() {
+    return parseInt(this.getAttribute('lineWidth'), 10) ?? 0;
+  }
+
+  set lineWidth(value) {
+    this.setAttribute('lineWidth', value);
+  }
+
+  getPath(ctx) {
+    throw new Error('`getPath` method not implemented');
+  }
+
+  setBoundingBox(ctx) {
+    throw new Error('`setBoundingBox` method not implemented');
+  }
 }
