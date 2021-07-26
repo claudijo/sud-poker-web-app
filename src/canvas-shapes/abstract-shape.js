@@ -30,7 +30,7 @@ export default class AbstractShape extends HTMLElement {
   }
 
   get x() {
-    return parseInt(this.getAttribute('x'), 10) ?? 0;
+    return parseInt(this.getAttribute('x') ?? 0, 10);
   }
 
   set x(value) {
@@ -38,7 +38,7 @@ export default class AbstractShape extends HTMLElement {
   }
 
   get y() {
-    return parseInt(this.getAttribute('y'), 10) ?? 0;
+    return parseInt(this.getAttribute('y') ?? 0, 10);
   }
 
   set y(value) {
@@ -62,7 +62,7 @@ export default class AbstractShape extends HTMLElement {
   }
 
   get lineWidth() {
-    return parseInt(this.getAttribute('lineWidth'), 10) ?? 0;
+    return parseInt(this.getAttribute('lineWidth') ?? 0, 10);
   }
 
   set lineWidth(value) {

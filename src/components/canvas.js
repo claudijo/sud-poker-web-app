@@ -7,7 +7,7 @@ import { QuadTree } from '../lib/quadtree';
 export default function Canvas({ children, width, height, interactive }) {
   const canvasElement = useRef(null);
   const interactiveElements = useRef(null);
-  const hoveredElements = useRef(null)
+  const hoveredElement = useRef(null)
 
   const drawChildren = useCallback((ctx, children, offset = { x: 0, y: 0 }) => {
     Array.from(children).forEach(child => {
@@ -37,12 +37,10 @@ export default function Canvas({ children, width, height, interactive }) {
       })
 
       interactiveElements.current = quadTree
-      hoveredElements.current = new Set()
     }
 
     return () => {
       interactiveElements.current = null
-      hoveredElements.current = null
     }
   }, [interactive, width, height]);
 
@@ -74,7 +72,7 @@ export default function Canvas({ children, width, height, interactive }) {
     };
   }, [drawChildren, interactive]);
 
-  const onMouseEvent = throttle(event => {
+  const onMouseEvent = event => {
     if (event.target !== canvasElement.current) {
       return;
     }
@@ -95,48 +93,66 @@ export default function Canvas({ children, width, height, interactive }) {
         }),
       );
 
-      if (event.type === 'mousemove' && !hoveredElements.current.has(target)) {
-        hoveredElements.current.add(target)
-        target.dispatchEvent(
-          new MouseEvent('mouseover', {
+      if (event.type === 'mousemove') {
+        if (hoveredElement.current !== null && hoveredElement.current !== target) {
+          hoveredElement.current.dispatchEvent(
+            new MouseEvent('mouseout', {
+              view: window,
+              bubbles: true,
+              cancelable: true,
+              buttons: 1
+            })
+          )
+        }
+
+        if (hoveredElement.current !== target) {
+          hoveredElement.current = target
+          hoveredElement.current.dispatchEvent(
+            new MouseEvent('mouseover', {
+              view: window,
+              bubbles: true,
+              cancelable: true,
+              buttons: 1
+            })
+          )
+        }
+      }
+    } else if (hoveredElement.current !== null) {
+      hoveredElement.current.dispatchEvent(
+        new MouseEvent('mouseout', {
+          view: window,
+          bubbles: true,
+          cancelable: true,
+          buttons: 1
+        })
+      )
+      hoveredElement.current = null
+    }
+  };
+
+  // Mouse out event for whole canvas
+  const onMouseOut = event => {
+    if (event.target !== canvasElement.current) {
+      return;
+    }
+
+    // Need to delay this, since the mouse events controlling hover state
+    // are throttled and might fire after this event when mousing the edge
+    // of the canvas
+    requestAnimationFrame(() => {
+      if (hoveredElement.current !== null) {
+        hoveredElement.current.dispatchEvent(
+          new MouseEvent('mouseout', {
             view: window,
             bubbles: true,
             cancelable: true,
             buttons: 1
           })
         )
-      }
-    }
-
-    hoveredElements.current.forEach(hovered => {
-      if (target !== hovered) {
-        hoveredElements.current.delete(hovered)
-        hovered.dispatchEvent(
-          new MouseEvent('mouseout', {
-            view: window,
-            bubbles: true,
-            cancelable: true,
-            buttons: 1,
-          }),
-        )
+        hoveredElement.current = null
       }
     })
-  });
-
-  // Mouse out event for whole canvas
-  const onMouseOut = throttle(event => {
-    hoveredElements.current.forEach(hovered => {
-      hoveredElements.current.delete(hovered)
-      hovered.dispatchEvent(
-        new MouseEvent('mouseout', {
-          view: window,
-          bubbles: true,
-          cancelable: true,
-          buttons: 1,
-        }),
-      )
-    })
-  });
+  };
 
   return (
     <canvas
@@ -144,7 +160,7 @@ export default function Canvas({ children, width, height, interactive }) {
       onMouseDown={interactive ? onMouseEvent : undefined}
       onMouseUp={interactive ? onMouseEvent : undefined}
       onClick={interactive ? onMouseEvent : undefined}
-      onMouseMove={interactive ? onMouseEvent : undefined}
+      onMouseMove={interactive ? throttle(onMouseEvent) : undefined}
       onMouseOut={interactive ? onMouseOut : undefined}
       width={width}
       height={height}

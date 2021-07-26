@@ -1,5 +1,4 @@
 import AbstractShape from './abstract-shape';
-import { useEffect, useState } from 'react';
 
 class Shape extends AbstractShape {
   constructor(args) {
@@ -18,7 +17,7 @@ class Shape extends AbstractShape {
   }
 
   get width() {
-    return parseInt(this.getAttribute('width'));
+    return parseInt(this.getAttribute('width'), 10);
   }
 
   set width(value) {

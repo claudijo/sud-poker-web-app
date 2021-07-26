@@ -8,13 +8,13 @@ export default function JoinButton({ children, x, y, ...props }) {
   const [fillStyle, setFillStyle] = useState('#89d9d1')
 
   const onMouseEnter = event => {
-    console.log('mouse enter')
+    console.log('mouse enter', event.target)
     document.body.style.cursor = 'pointer'
     setFillStyle('#69bfb6')
   }
 
   const onMouseLeave = event => {
-    console.log('mouse leave')
+    console.log('mouse leave', event.target)
     document.body.style.cursor = 'default'
     setFillStyle('#89d9d1')
   }
