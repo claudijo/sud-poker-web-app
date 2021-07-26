@@ -4,6 +4,7 @@ export class QuadTree {
   // Arbitrary constant to indicate how many elements can be stored in this quad
   // tree node
   static QT_NODE_CAPACITY = 10;
+  static QT_MAX_DEPTH = 10
 
   static containsPoint(source, point) {
     return point.x >= source.left
@@ -43,7 +44,7 @@ export class QuadTree {
       return false // object cannot be inserted
     }
 
-    if (this.items.length < QuadTree.QT_NODE_CAPACITY && this.nodes.length === 0) {
+    if (level === QuadTree.QT_MAX_DEPTH || (this.items.length < QuadTree.QT_NODE_CAPACITY && this.nodes.length === 0)) {
       this.items.push(item);
       return true;
     }
@@ -52,8 +53,9 @@ export class QuadTree {
       this.subdivide();
     }
 
+    level += 1
     const handled = this.nodes.reduce((acc, node) => {
-      return node.insert(item) || acc
+      return node.insert(item, level) || acc
     }, false)
 
     if (!handled) {
