@@ -81,10 +81,9 @@ export default function Canvas({ children, width, height, interactive }) {
 
     const point = localCoordinatesFromMouseEvent(event)
 
-    const targets = [...interactiveElements.current.queryPoint(point)]
+    const [target] = [...interactiveElements.current.queryPoint(point)]
       .filter(target => target.intersects(point))
-
-    const target = targets[targets.length - 1]
+      .slice(-1)
 
     if (target !== undefined) {
       target.dispatchEvent(
