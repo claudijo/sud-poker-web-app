@@ -44,13 +44,13 @@ export default function JoinButton({ children, x, y, ...props }) {
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
     >
-      {/*<CanvasImage*/}
-      {/*  x={-20}*/}
-      {/*  y={-20}*/}
-      {/*  width={40}*/}
-      {/*  height={40}*/}
-      {/*  source={AddUserIcon}*/}
-      {/*/>*/}
+      <CanvasImage
+        x={-20}
+        y={-20}
+        width={40}
+        height={40}
+        source={AddUserIcon}
+      />
     </CanvasCircle>
 
   );

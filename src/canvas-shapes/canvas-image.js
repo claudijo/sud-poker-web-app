@@ -41,6 +41,15 @@ class Shape extends AbstractShape {
     this.setAttribute('source', value);
   }
 
+  getBoundingBox() {
+    return {
+      left: this.x + this.offset.x - this.lineWidth / 2,
+      right: this.x + this.width + this.offset.x + this.lineWidth / 2,
+      top: this.y + this.offset.y - this.lineWidth / 2,
+      bottom: this.y + this.height + this.offset.y + this.lineWidth / 2,
+    };
+  }
+
   getImageElement() {
     return new Promise(resolve => {
       if (this.imageElement) {
@@ -48,34 +57,27 @@ class Shape extends AbstractShape {
         return;
       }
 
-      const imageElement = new Image()
-      imageElement.src = this.getAttribute('source')
+      const imageElement = new Image();
+      imageElement.src = this.getAttribute('source');
       imageElement.onload = () => {
-        this.imageElement = imageElement
-        resolve(this.imageElement)
-      }
+        this.imageElement = imageElement;
+        resolve(this.imageElement);
+      };
     });
   }
 
-  draw(ctx, offset = { x: 0, y: 0 }, isDrawingHitCanvas) {
+  intersects(point) {
+    return point.x >= this.x + this.offset.x
+      && point.x <= this.x + this.offset.x + this.width
+      && point.y >= this.y + this.offset.y
+      && point.y <= this.y + this.offset.y + this.height;
+  }
+
+  draw(ctx) {
     this.getImageElement()
       .then(image => {
-        // const buffer = document.createElement('canvas');
-        // buffer.width = image.width;
-        // buffer.height = image.height;
-        // const bx = buffer.getContext('2d');
-        //
-        // bx.fillStyle = '#FF0000'
-        // bx.fillRect(0,0, buffer.width, buffer.height);
-        //
-        // bx.globalCompositeOperation = "destination-atop";
-        // bx.drawImage(image, 0, 0);
-        //
-        // ctx.drawImage(buffer, this.x + offset.x, this.y + offset.y, this.width, this.height);
-
-        ctx.drawImage(image, this.x + offset.x, this.y + offset.y, this.width, this.height);
-
-      })
+        ctx.drawImage(image, this.x + this.offset.x, this.y + this.offset.y, this.width, this.height);
+      });
   }
 }
 
