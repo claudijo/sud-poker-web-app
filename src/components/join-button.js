@@ -8,24 +8,20 @@ export default function JoinButton({ children, x, y, ...props }) {
   const [fillStyle, setFillStyle] = useState('#89d9d1')
 
   const onMouseEnter = event => {
-    console.log('mouse enter', event.target)
     document.body.style.cursor = 'pointer'
     setFillStyle('#69bfb6')
   }
 
   const onMouseLeave = event => {
-    console.log('mouse leave', event.target)
     document.body.style.cursor = 'default'
     setFillStyle('#89d9d1')
   }
 
   const onMouseDown = event => {
-    console.log('mouse down')
     setFillStyle('#54a89f')
   }
 
   const onMouseUp = event => {
-    console.log('mouse up')
     setFillStyle('#69bfb6')
   }
 
@@ -52,6 +48,5 @@ export default function JoinButton({ children, x, y, ...props }) {
         source={AddUserIcon}
       />
     </CanvasCircle>
-
   );
 }
