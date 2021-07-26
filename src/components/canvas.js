@@ -11,23 +11,11 @@ export default function Canvas({ children, width, height, interactive }) {
 
   const drawChildren = useCallback((ctx, children, offset = { x: 0, y: 0 }) => {
     Array.from(children).forEach(child => {
-
       child.offset = offset
-      const { path } = child
+      child.draw(ctx)
 
       if (interactive) {
         interactiveElements.current.insert(child)
-      }
-
-      if (child.fillStyle !== null) {
-        ctx.fillStyle = child.fillStyle;
-        ctx.fill(path);
-      }
-
-      if (child.strokeStyle !== null) {
-        ctx.strokeStyle = child.strokeStyle;
-        ctx.lineWidth = child.lineWidth;
-        ctx.stroke(path);
       }
 
       if (child.children.length > 0) {
@@ -91,14 +79,14 @@ export default function Canvas({ children, width, height, interactive }) {
       return;
     }
 
-    const {x, y} = localCoordinatesFromMouseEvent(event)
-    const ctx = canvasElement.current.getContext('2d');
+    const point = localCoordinatesFromMouseEvent(event)
 
-    const targets = interactiveElements.current.queryPoint({ x, y })
-      .filter(target => ctx.isPointInPath(target.path, x, y)
-        || ctx.isPointInStroke(target.path, x, y))
+    const targets = [...interactiveElements.current.queryPoint(point)]
+      .filter(target => target.intersects(point))
 
-    targets.forEach(target => {
+    const target = targets[targets.length - 1]
+
+    if (target !== undefined) {
       target.dispatchEvent(
         new MouseEvent(event.type, {
           view: window,
@@ -119,10 +107,10 @@ export default function Canvas({ children, width, height, interactive }) {
           })
         )
       }
-    })
+    }
 
     hoveredElements.current.forEach(hovered => {
-      if (!targets.includes(hovered)) {
+      if (target !== hovered) {
         hoveredElements.current.delete(hovered)
         hovered.dispatchEvent(
           new MouseEvent('mouseout', {

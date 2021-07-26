@@ -69,7 +69,16 @@ export default class AbstractShape extends HTMLElement {
     this.setAttribute('lineWidth', value);
   }
 
-  getPath(ctx) {
-    throw new Error('`getPath` method not implemented');
+  fillAndStroke(ctx) {
+    if (this.fillStyle !== null) {
+      ctx.fillStyle = this.fillStyle;
+      ctx.fill()
+    }
+
+    if (this.strokeStyle !== null) {
+      ctx.strokeStyle = this.strokeStyle;
+      ctx.lineWidth = this.lineWidth;
+      ctx.stroke()
+    }
   }
 }

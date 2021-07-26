@@ -18,23 +18,25 @@ class Shape extends AbstractShape {
 
   getBoundingBox() {
     return {
-      left: this.x - this.offset.x - this.radius - this.lineWidth / 2,
+      left: this.x + this.offset.x - this.radius - this.lineWidth / 2,
       right: this.x + this.offset.x + this.radius + this.lineWidth / 2,
-      top: this.y - this.offset.y - this.radius - this.lineWidth / 2,
+      top: this.y + this.offset.y - this.radius - this.lineWidth / 2,
       bottom: this.y + this.offset.y + this.radius + this.lineWidth / 2,
     }
   }
 
-  get path() {
-    const pathSignature = `${this.x},${this.y},${this.offset.y},${this.offset.x},${this.radius}`
+  intersects(point) {
+    const x = point.x - this.x + this.offset.x
+    const y = point.y - this.y + this.offset.y
+    const radius = this.radius + this.lineWidth / 2
+    return x * x + y * y <= radius * radius
+  }
 
-    if (this._pathSignature !== pathSignature) {
-      this._pathSignature = pathSignature
-      this._path = new Path2D()
-      this._path.arc(this.x + this.offset.x, this.y + this.offset.y, this.radius, 0, 2 * Math.PI);
-    }
+  draw(ctx) {
+    ctx.beginPath();
+    ctx.arc(this.x + this.offset.x, this.y + this.offset.y, this.radius, 0, 2 * Math.PI);
 
-    return this._path
+    this.fillAndStroke(ctx)
   }
 }
 
