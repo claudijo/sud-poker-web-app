@@ -1,4 +1,5 @@
 import AbstractShape from './abstract-shape';
+import { boxPoint } from '../lib/intersects';
 
 class Shape extends AbstractShape {
   constructor(args) {
@@ -49,6 +50,17 @@ class Shape extends AbstractShape {
     };
   }
 
+  intersects(point) {
+    return boxPoint(
+      this.x + this.offset.x,
+      this.y + this.offset.y,
+      this.width,
+      this.height,
+      point.x,
+      point.y
+    )
+  }
+
   getImageElement() {
     return new Promise(resolve => {
       if (this.imageElement) {
@@ -63,13 +75,6 @@ class Shape extends AbstractShape {
         resolve(this.imageElement);
       };
     });
-  }
-
-  intersects(point) {
-    return point.x >= this.x + this.offset.x
-      && point.x <= this.x + this.offset.x + this.width
-      && point.y >= this.y + this.offset.y
-      && point.y <= this.y + this.offset.y + this.height;
   }
 
   draw(ctx) {

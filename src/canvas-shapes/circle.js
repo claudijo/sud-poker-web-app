@@ -1,4 +1,5 @@
 import AbstractShape from './abstract-shape';
+import { circlePoint } from '../lib/intersects';
 
 class Shape extends AbstractShape {
   static get observedAttributes() {
@@ -26,10 +27,13 @@ class Shape extends AbstractShape {
   }
 
   intersects(point) {
-    const x = point.x - this.x + this.offset.x
-    const y = point.y - this.y + this.offset.y
-    const radius = this.radius + this.lineWidth / 2
-    return x * x + y * y <= radius * radius
+    return circlePoint(
+      this.x + this.offset.x,
+      this.y + this.offset.y,
+      this.radius + this.lineWidth / 2,
+      point.x,
+      point.y
+    )
   }
 
   draw(ctx) {

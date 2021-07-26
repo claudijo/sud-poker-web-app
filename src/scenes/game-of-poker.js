@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { currentTableIdState, tableState } from '../recoil/table';
 import JoinButton from '../components/join-button';
+import RoundedRectangle from '../canvas-shapes/rounded-rectangle';
 
 export default function GameOfPoker({ size, tableId }) {
   const { width, height } = size;
@@ -23,15 +24,15 @@ export default function GameOfPoker({ size, tableId }) {
   return (
     <Stage width={width} height={height}>
       {/*Background layer*/}
-      {/*<Canvas width={width} height={height}>*/}
-      {/*  <Table*/}
-      {/*    x={width / 2 - 600 / 2}*/}
-      {/*    y={120}*/}
-      {/*    width={600}*/}
-      {/*    height={300}*/}
-      {/*    borderWidth={16}*/}
-      {/*  />*/}
-      {/*</Canvas>*/}
+      <Canvas width={width} height={height}>
+        <Table
+          x={width / 2 - 600 / 2}
+          y={120}
+          width={600}
+          height={300}
+          borderWidth={16}
+        />
+      </Canvas>
       {/*Ui layer*/}
       <Canvas width={width} height={height} interactive={true}>
         {table && table.reservations.map((reservation, index) => (
