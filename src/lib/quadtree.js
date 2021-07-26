@@ -37,8 +37,6 @@ export class QuadTree {
     this.nodes = [];
   }
 
-  // The `level` arg is currently only used to make sure overflowing items are
-  // not lost
   insert(item, level = 0) {
     if (!QuadTree.intersectsRectangle(this.boundary, item.getBoundingBox())) {
       return false // object cannot be inserted
