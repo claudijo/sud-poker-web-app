@@ -1,30 +1,29 @@
-import Stage from '../components/stage';
+import Stage, { ScaleMode } from '../components/stage';
 import Canvas from '../components/canvas';
 import Table from '../components/table';
 import { useEffect } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { currentTableIdState, tableState } from '../recoil/table';
 import JoinButton from '../components/join-button';
-import RoundedRectangle from '../canvas-shapes/rounded-rectangle';
 
 export default function GameOfPoker({ size, tableId }) {
   const { width, height } = size;
 
-  const setTableId = useSetRecoilState(currentTableIdState)
-  const table = useRecoilValue(tableState)
+  const setTableId = useSetRecoilState(currentTableIdState);
+  const table = useRecoilValue(tableState);
 
   useEffect(() => {
-    setTableId(tableId)
-  }, [setTableId, tableId])
+    setTableId(tableId);
+  }, [setTableId, tableId]);
 
   const onJoinButtonClick = index => event => {
-    console.log('click', index)
-  }
+    console.log('click', index);
+  };
 
   return (
-    <Stage width={width} height={height}>
+    <Stage width={width} height={height} scaleMode={ScaleMode.SCALE_TO_FIT}>
       {/*Background layer*/}
-      <Canvas width={width} height={height}>
+      <Canvas>
         <Table
           x={width / 2 - 600 / 2}
           y={120}
@@ -34,7 +33,7 @@ export default function GameOfPoker({ size, tableId }) {
         />
       </Canvas>
       {/*Ui layer*/}
-      <Canvas width={width} height={height} interactive={true}>
+      <Canvas interactive={true}>
         {table && table.reservations.map((reservation, index) => (
           <JoinButton
             key={index}

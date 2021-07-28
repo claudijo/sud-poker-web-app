@@ -1,13 +1,15 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useContext } from 'react';
 import { localCoordinatesFromMouseEvent } from '../lib/dom';
 import { throttle, debounce } from '../lib/rate-limit';
 import styles from './canvas.module.css';
 import { QuadTree } from '../lib/quadtree';
+import { StageContext } from '../context/stage';
 
-export default function Canvas({ children, width, height, interactive }) {
+export default function Canvas({ children, interactive }) {
   const canvasElement = useRef(null);
   const interactiveElements = useRef(null);
   const hoveredElement = useRef(null)
+  const { scale, width, height } = useContext(StageContext)
 
   const drawChildren = useCallback((ctx, children, offset = { x: 0, y: 0 }) => {
     Array.from(children).forEach(child => {
@@ -77,7 +79,7 @@ export default function Canvas({ children, width, height, interactive }) {
       return;
     }
 
-    const point = localCoordinatesFromMouseEvent(event)
+    const point = localCoordinatesFromMouseEvent(event, scale)
 
     const [target] = [...interactiveElements.current.queryPoint(point)]
       .filter(target => target.intersects(point))

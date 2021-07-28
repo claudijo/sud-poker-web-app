@@ -1,9 +1,60 @@
-import styles from './stage.module.css';
+import { useEffect, useRef, useState } from 'react';
+import { throttle } from '../lib/rate-limit';
+import { StageContext } from '../context/stage';
 
-export default function Stage({ width, height, children }) {
+export const ScaleMode = {
+  SCALE_TO_FIT: Math.min,
+  SCALE_TO_COVER: Math.max,
+};
+
+export default function Stage({ scaleMode, width, height, children }) {
+  const stageElement = useRef(null);
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    if (typeof scaleMode !== 'function') {
+      return;
+    }
+
+    const onWindowResize = throttle(() => {
+      const scaleX = window.innerWidth / width;
+      const scaleY = window.innerHeight / height;
+
+      setScale(scaleMode(scaleX, scaleY));
+    });
+
+    window.addEventListener('resize', onWindowResize);
+    onWindowResize();
+
+    return () => {
+      window.removeEventListener('resize', onWindowResize);
+    };
+  }, [scaleMode, width, height]);
+
   return (
-    <div className={styles.stage} style={{ width, height }}>
-      {children}
-    </div>
+    <StageContext.Provider value={{ width, height, scale }}>
+      <div
+        style={{
+          width: `${width * scale}px`,
+          height: `${height * scale}px`,
+          overflow: 'hidden',
+          border: '2px dashed orange'
+        }}
+      >
+        <div
+          ref={stageElement}
+          style={{
+            width: `${width}px`,
+            height: `${height}px`,
+            transformOrigin: '0 0',
+            transform: `scale(${scale})`,
+            position: 'relative'
+          }}
+        >
+          {children}
+        </div>
+
+      </div>
+    </StageContext.Provider>
   );
 }
