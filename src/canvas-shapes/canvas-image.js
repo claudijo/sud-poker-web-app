@@ -43,10 +43,10 @@ class Shape extends AbstractShape {
 
   getBoundingBox() {
     return {
-      left: this.x + this.offset.x - this.lineWidth / 2,
-      right: this.x + this.width + this.offset.x + this.lineWidth / 2,
-      top: this.y + this.offset.y - this.lineWidth / 2,
-      bottom: this.y + this.height + this.offset.y + this.lineWidth / 2,
+      left: this.x + this.offset.x,
+      right: this.x + this.width + this.offset.x,
+      top: this.y + this.offset.y,
+      bottom: this.y + this.height + this.offset.y,
     };
   }
 

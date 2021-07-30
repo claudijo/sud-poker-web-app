@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { currentTableIdState, tableState } from '../recoil/table';
 import JoinButton from '../components/join-button';
+import CanvasText from '../canvas-shapes/canvas-text';
 
 export default function GameOfPoker({ size, tableId }) {
   const { width, height } = size;
@@ -31,6 +32,17 @@ export default function GameOfPoker({ size, tableId }) {
           height={300}
           borderWidth={16}
         />
+      </Canvas>
+      {/*Animation layer*/}
+      <Canvas>
+        <CanvasText
+          x={500}
+          y={280}
+          font="200px sans-serif"
+          strokeStyle="blue"
+          lineWidth={4}
+          fillStyle="red"
+        >OK</CanvasText>
       </Canvas>
       {/*Ui layer*/}
       <Canvas interactive={true}>
