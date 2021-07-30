@@ -35,14 +35,7 @@ export default function GameOfPoker({ size, tableId }) {
       </Canvas>
       {/*Animation layer*/}
       <Canvas>
-        <CanvasText
-          x={500}
-          y={280}
-          font="200px sans-serif"
-          strokeStyle="blue"
-          lineWidth={4}
-          fillStyle="red"
-        >OK</CanvasText>
+
       </Canvas>
       {/*Ui layer*/}
       <Canvas interactive={true}>
