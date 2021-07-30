@@ -1,23 +1,22 @@
 import { useEffect, useRef, useCallback, useContext } from 'react';
 import { localCoordinatesFromMouseEvent } from '../lib/dom';
 import { throttle, debounce } from '../lib/rate-limit';
-import styles from './canvas.module.css';
 import { QuadTree } from '../lib/quadtree';
 import { StageContext } from '../context/stage';
 
 export default function Canvas({ children, interactive }) {
   const canvasElement = useRef(null);
   const interactiveElements = useRef(null);
-  const hoveredElement = useRef(null)
-  const { scale, width, height } = useContext(StageContext)
+  const hoveredElement = useRef(null);
+  const { scale, width, height } = useContext(StageContext);
 
   const drawChildren = useCallback((ctx, children, offset = { x: 0, y: 0 }) => {
     Array.from(children).forEach(child => {
-      child.offset = offset
-      child.draw(ctx)
+      child.offset = offset;
+      child.draw(ctx);
 
       if (interactive) {
-        interactiveElements.current.insert(child)
+        interactiveElements.current.insert(child);
       }
 
       if (child.children.length > 0) {
@@ -36,14 +35,14 @@ export default function Canvas({ children, interactive }) {
         left: 0,
         bottom: height,
         right: width,
-      })
+      });
 
-      interactiveElements.current = quadTree
+      interactiveElements.current = quadTree;
     }
 
     return () => {
-      interactiveElements.current = null
-    }
+      interactiveElements.current = null;
+    };
   }, [interactive, width, height]);
 
   useEffect(() => {
@@ -54,7 +53,7 @@ export default function Canvas({ children, interactive }) {
       ctx.clearRect(0, 0, canvasElement.current.width, canvasElement.current.height);
 
       if (interactive) {
-        interactiveElements.current.clear()
+        interactiveElements.current.clear();
       }
 
       drawChildren(ctx, canvasElement.current.children);
@@ -79,11 +78,11 @@ export default function Canvas({ children, interactive }) {
       return;
     }
 
-    const point = localCoordinatesFromMouseEvent(event, scale)
+    const point = localCoordinatesFromMouseEvent(event, scale);
 
     const [target] = [...interactiveElements.current.queryPoint(point)]
       .filter(target => target.intersects(point))
-      .slice(-1)
+      .slice(-1);
 
     if (target !== undefined) {
       target.dispatchEvent(
@@ -102,21 +101,21 @@ export default function Canvas({ children, interactive }) {
               view: window,
               bubbles: true,
               cancelable: true,
-              buttons: 1
-            })
-          )
+              buttons: 1,
+            }),
+          );
         }
 
         if (hoveredElement.current !== target) {
-          hoveredElement.current = target
+          hoveredElement.current = target;
           hoveredElement.current.dispatchEvent(
             new MouseEvent('mouseover', {
               view: window,
               bubbles: true,
               cancelable: true,
-              buttons: 1
-            })
-          )
+              buttons: 1,
+            }),
+          );
         }
       }
     } else if (hoveredElement.current !== null) {
@@ -125,10 +124,10 @@ export default function Canvas({ children, interactive }) {
           view: window,
           bubbles: true,
           cancelable: true,
-          buttons: 1
-        })
-      )
-      hoveredElement.current = null
+          buttons: 1,
+        }),
+      );
+      hoveredElement.current = null;
     }
   };
 
@@ -148,17 +147,17 @@ export default function Canvas({ children, interactive }) {
             view: window,
             bubbles: true,
             cancelable: true,
-            buttons: 1
-          })
-        )
-        hoveredElement.current = null
+            buttons: 1,
+          }),
+        );
+        hoveredElement.current = null;
       }
-    })
+    });
   };
 
   return (
     <canvas
-      className={styles.canvas}
+      style={{ position: 'absolute' }}
       onMouseDown={interactive ? onMouseEvent : undefined}
       onMouseUp={interactive ? onMouseEvent : undefined}
       onClick={interactive ? onMouseEvent : undefined}

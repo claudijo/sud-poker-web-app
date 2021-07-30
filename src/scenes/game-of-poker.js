@@ -1,14 +1,23 @@
 import Stage, { ScaleMode } from '../components/stage';
 import Canvas from '../components/canvas';
 import Table from '../components/table';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { currentTableIdState, tableState } from '../recoil/table';
 import JoinButton from '../components/join-button';
-import CanvasText from '../canvas-shapes/canvas-text';
+import JoinForm from '../components/join-form';
+import useEventState, { numberOrEmptyStringFromEvent } from '../hooks/use-event-state';
 
-export default function GameOfPoker({ size, tableId }) {
-  const { width, height } = size;
+const width = 1280;
+const height = 720;
+
+export default function GameOfPoker({ tableId }) {
+  const [isJoinFormVisible, setIsJoinFormVisible] = useState(false);
+
+  const [avatar, onAvatarChange] = useEventState('MALE');
+  const [nickname, onNicknameChange] = useEventState('');
+  const [buyIn, onBuyInChange] = useEventState('', numberOrEmptyStringFromEvent);
+  const [seatIndex, setSeatIndex] = useState(-1);
 
   const setTableId = useSetRecoilState(currentTableIdState);
   const table = useRecoilValue(tableState);
@@ -18,7 +27,13 @@ export default function GameOfPoker({ size, tableId }) {
   }, [setTableId, tableId]);
 
   const onJoinButtonClick = index => event => {
-    console.log('click', index);
+    setSeatIndex(index);
+    setIsJoinFormVisible(true)
+  };
+
+  const onJoinFromSubmit = event => {
+    console.log(seatIndex, nickname, buyIn, avatar);
+    event.preventDefault();
   };
 
   return (
@@ -48,6 +63,17 @@ export default function GameOfPoker({ size, tableId }) {
           />
         ))}
       </Canvas>
+      {isJoinFormVisible && (
+        <JoinForm
+          onSubmit={onJoinFromSubmit}
+          avatar={avatar}
+          onAvatarChange={onAvatarChange}
+          nickname={nickname}
+          onNicknameChange={onNicknameChange}
+          buyIn={buyIn}
+          onBuyInChange={onBuyInChange}
+        />
+      )}
     </Stage>
   );
 }
