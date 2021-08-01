@@ -7,6 +7,7 @@ import { currentTableIdState, tableState } from '../recoil/table';
 import JoinButton from '../components/join-button';
 import JoinForm from '../components/join-form';
 import useEventState, { numberOrEmptyStringFromEvent } from '../hooks/use-event-state';
+import { useSpring, animated, config } from '@react-spring/web';
 
 const width = 1280;
 const height = 720;
@@ -22,13 +23,29 @@ export default function GameOfPoker({ tableId }) {
   const setTableId = useSetRecoilState(currentTableIdState);
   const table = useRecoilValue(tableState);
 
+  const [style, api] = useSpring({
+    top: '720px',
+    onRest: () => {
+      console.log(
+        'done',
+      );
+    },
+    config: {
+      ...config.wobbly,
+      // mass: 1,
+      // friction: 15,
+      // tension: 300,
+    },
+  }, []);
+
   useEffect(() => {
     setTableId(tableId);
   }, [setTableId, tableId]);
 
   const onJoinButtonClick = index => event => {
     setSeatIndex(index);
-    setIsJoinFormVisible(true)
+    setIsJoinFormVisible(true);
+    api.start({ top: '200px' });
   };
 
   const onJoinFromSubmit = event => {
@@ -64,15 +81,26 @@ export default function GameOfPoker({ tableId }) {
         ))}
       </Canvas>
       {isJoinFormVisible && (
-        <JoinForm
-          onSubmit={onJoinFromSubmit}
-          avatar={avatar}
-          onAvatarChange={onAvatarChange}
-          nickname={nickname}
-          onNicknameChange={onNicknameChange}
-          buyIn={buyIn}
-          onBuyInChange={onBuyInChange}
-        />
+        <animated.div
+          style={{
+            position: 'absolute',
+            left: '25%',
+            width: '50%',
+            backgroundColor: 'cornsilk',
+            top: '720px',
+            ...style,
+          }}
+        >
+          <JoinForm
+            onSubmit={onJoinFromSubmit}
+            avatar={avatar}
+            onAvatarChange={onAvatarChange}
+            nickname={nickname}
+            onNicknameChange={onNicknameChange}
+            buyIn={buyIn}
+            onBuyInChange={onBuyInChange}
+          />
+        </animated.div>
       )}
     </Stage>
   );
