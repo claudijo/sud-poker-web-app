@@ -6,6 +6,14 @@ body {
   overscroll-behavior: contain;
 }
 
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 body {
   font-family: Krungthep;
   font-size: 30px;
