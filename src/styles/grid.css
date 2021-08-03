@@ -1,0 +1,70 @@
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.gridMargin {
+  margin: -16px 0 16px -16px;
+}
+
+.gridMarginWide {
+  margin: -16px 0 16px -24px;
+}
+
+.colGutter {
+  padding: 16px 0 0 16px;
+}
+
+.colGutterWide {
+  padding: 16px 0 0 24px;
+}
+
+.colGrow {
+  flex: 1 0 auto;
+  max-width: 100%;
+}
+
+.colShrink {
+  flex: 0 1 auto;
+  max-width: 100%;
+}
+
+.colFull {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+
+.col2of12 {
+  flex: 0 0 16.6667%;
+  max-width: 16.6667%;
+}
+
+.col3of12 {
+  flex: 0 0 25%;
+  max-width: 25%;
+}
+
+.col4of12 {
+  flex: 0 0 33.3333%;
+  max-width: 33.3333%;
+}
+
+.col5of12 {
+  flex: 0 0 41.6667%;
+  max-width: 41.6667%;
+}
+
+.col6of12 {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+.col7of12 {
+  flex: 0 0 58.3333%;
+  max-width: 58.3333%;
+}
+
+.col8of12 {
+  flex: 0 0 66.6667%;
+  max-width: 66.6667%;
+}
