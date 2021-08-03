@@ -1,11 +1,15 @@
 @import-normalize;
 
+html,
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Prevent navigation by scrolling */
+  overscroll-behavior: contain;
+}
+
+body {
+  font-family: Krungthep;
+  font-size: 30px;
+  color: #3689b3;
+  line-height: 1.5;
 }
 
