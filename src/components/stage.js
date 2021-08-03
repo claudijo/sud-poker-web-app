@@ -39,6 +39,7 @@ export default function Stage({ scaleMode, width, height, children }) {
           height: `${height * scale}px`,
           backgroundColor: '#eee',
           position: 'relative',
+          overflow: 'hidden',
         }}
       >
         <div
