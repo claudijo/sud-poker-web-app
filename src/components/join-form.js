@@ -53,7 +53,6 @@ export default function JoinForm(
               title="Nickname"
               minLength="2"
               maxLength="20"
-              autoFocus="autofocus"
             />
           </label>
           <label className="colGutter col7of12">
