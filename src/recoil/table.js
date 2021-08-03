@@ -1,7 +1,7 @@
 import { atom, atomFamily, selector } from 'recoil';
 import ClientSocketEmitter from '../lib/client-socket-emitter';
 
-const clientSocketEmitter = new ClientSocketEmitter('ws://192.168.10.106:3000/ws/poker');
+const clientSocketEmitter = new ClientSocketEmitter(`ws://${process.env.REACT_APP_HOST}:3000/ws/poker`);
 
 export const currentTableIdState = atom({
   key: 'CurrentTableId',
