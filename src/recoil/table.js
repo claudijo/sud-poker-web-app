@@ -1,10 +1,8 @@
 import { atom, atomFamily, selector } from 'recoil';
-import ClientSocketEmitter from '../lib/client-socket-emitter';
+import { clientSocketEmitter } from '../socket/client-socket-emitter';
 
-const clientSocketEmitter = new ClientSocketEmitter(`ws://${process.env.REACT_APP_HOST}:3000/ws/poker`);
-
-export const currentTableIdState = atom({
-  key: 'CurrentTableId',
+export const tableIdState = atom({
+  key: 'TableIdState',
   default: '',
 });
 
@@ -37,10 +35,10 @@ export const tableForIdState = atomFamily({
 export const tableState = selector({
   key: 'Table',
   get: ({ get }) => {
-    return tableForIdState(get(currentTableIdState));
+    return tableForIdState(get(tableIdState));
   },
   set: ({ get, set }, newValue) => {
-    set(tableForIdState(get(currentTableIdState)), newValue);
+    set(tableForIdState(get(tableIdState)), newValue);
   },
 });
 
