@@ -74,7 +74,7 @@ export default function Canvas({ children, interactive }) {
   }, [drawChildren, interactive]);
 
   const onMouseEvent = event => {
-    if (event.target !== canvasElement.current) {
+    if (event.target !== canvasElement.current || interactiveElements.current === null) {
       return;
     }
 

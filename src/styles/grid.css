@@ -4,11 +4,11 @@
 }
 
 .gridMargin {
-  margin: -24px 0 24px -24px;
+  margin: -8px 0 8px -24px;
 }
 
 .colGutter {
-  padding: 24px 0 0 24px;
+  padding: 8px 0 0 24px;
 }
 
 .colGrow {

@@ -7,12 +7,10 @@ import { currentTableIdState, tableState } from '../recoil/table';
 import JoinButton from '../components/join-button';
 import JoinForm from '../components/join-form';
 import useEventState, { numberOrEmptyStringFromEvent } from '../hooks/use-event-state';
-import { useSpring, animated, config } from '@react-spring/web';
 import useFullscreen from '../hooks/use-fullscreen';
 import FullscreenButton from '../components/fullscreen-button';
 import Backdrop from '../components/backdrop';
-// import useAnimation from '../hooks/use-animation';
-// import { easeInOutSine, easeOutBounce } from '../lib/tweens';
+import Popup from '../components/popup';
 
 const width = 1280;
 const height = 720;
@@ -25,25 +23,9 @@ export default function GameOfPoker({ tableId }) {
   const [buyIn, onBuyInChange] = useEventState('', numberOrEmptyStringFromEvent);
   const [seatIndex, setSeatIndex] = useState(-1);
 
-  // const [animatedValue, animate] = useAnimation(720, 100, 400, easeOutBounce)
 
   const setTableId = useSetRecoilState(currentTableIdState);
   const table = useRecoilValue(tableState);
-
-  const [style, api] = useSpring({
-    top: '720px',
-    onRest: () => {
-      console.log(
-        'done',
-      );
-    },
-    config: {
-      // ...config.wobbly,
-      mass: 1,
-      friction: 15,
-      tension: 600,
-    },
-  }, []);
 
   useEffect(() => {
     setTableId(tableId);
@@ -63,14 +45,16 @@ export default function GameOfPoker({ tableId }) {
   const onJoinButtonClick = index => event => {
     setSeatIndex(index);
     setIsJoinFormVisible(true);
-    // animate()
-    api.start({ top: '100px' });
   };
 
   const onJoinFromSubmit = event => {
     console.log(seatIndex, nickname, buyIn, avatar);
     event.preventDefault();
   };
+
+  const onPopupAnimationFinished = () => {
+    console.log('Animate done')
+  }
 
   return (
     <Stage width={width} height={height} scaleMode={ScaleMode.SCALE_TO_FIT}>
@@ -107,18 +91,8 @@ export default function GameOfPoker({ tableId }) {
         )}
       </Canvas>
       {isJoinFormVisible && (
-        <>
-          <Backdrop/>
-          <animated.div
-            style={{
-              position: 'absolute',
-              left: '25%',
-              width: '50%',
-              // top: `${animatedValue}px`,
-              top: '720px',
-              ...style,
-            }}
-          >
+        <Backdrop>
+          <Popup done={onPopupAnimationFinished}>
             <JoinForm
               onSubmit={onJoinFromSubmit}
               avatar={avatar}
@@ -128,8 +102,8 @@ export default function GameOfPoker({ tableId }) {
               buyIn={buyIn}
               onBuyInChange={onBuyInChange}
             />
-          </animated.div>
-        </>
+          </Popup>
+        </Backdrop>
       )}
     </Stage>
   );
