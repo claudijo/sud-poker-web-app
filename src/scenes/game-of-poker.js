@@ -3,7 +3,7 @@ import Canvas from '../components/canvas';
 import Table from '../components/table';
 import { useEffect, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { currentTableIdState, tableState } from '../recoil/table';
+import { tableIdState, tableState } from '../recoil/table';
 import JoinButton from '../components/join-button';
 import JoinForm from '../components/join-form';
 import useEventState, { numberOrEmptyStringFromEvent } from '../hooks/use-event-state';
@@ -31,7 +31,7 @@ export default function GameOfPoker({ tableId }) {
   const [seatIndex, setSeatIndex] = useState(-1);
   const [joinDisabled, setJoinDisabled] = useState(false)
 
-  const setTableId = useSetRecoilState(currentTableIdState);
+  const setTableId = useSetRecoilState(tableIdState);
   const table = useRecoilValue(tableState);
 
   useEffect(() => {
@@ -42,7 +42,6 @@ export default function GameOfPoker({ tableId }) {
     isEnabled: isFullscreenEnabled,
     isFullscreen,
     request: requestFullScreen,
-    exit: exitFullscreen,
   } = useFullscreen();
 
   const onFullscreenButtonClick = event => {
@@ -51,6 +50,7 @@ export default function GameOfPoker({ tableId }) {
 
   const onJoinButtonClick = index => async event => {
     setJoinDisabled(true)
+
     // setSeatIndex(index);
     // setIsJoinFormVisible(true);
   };
