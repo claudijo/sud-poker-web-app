@@ -1,10 +1,14 @@
-import { useSpring, animated } from '@react-spring/web';
+import { useSpring, animated, useTransition } from '@react-spring/web';
+import Backdrop from './backdrop';
+import ConditionalWrapper from './conditional-wrapper';
 
-export default function Popup({ children, style, done }) {
-  const props = useSpring({
-    to: { top: '50%' },
+export default function Popup({ children, styles, show }) {
+
+  const transitions = useTransition(show, {
     from: { top: '200%' },
-    onRest: done ?? (() => {}),
+    enter: { top: '50%' },
+    leave: { top: '200%' },
+    reverse: show,
     config: {
       mass: 1,
       friction: 20,
@@ -12,16 +16,30 @@ export default function Popup({ children, style, done }) {
     },
   });
 
-  return (
-    <animated.div style={{
-      position: 'absolute',
-      left: '25%',
-      width: '50%',
-      transform: 'translateY(-50%)',
-      ...style,
-      ...props,
-    }}>
-      {children}
-    </animated.div>
+  return transitions(
+    (animatedStyle, item) => item && (
+      <ConditionalWrapper
+        condition={show}
+        wrapper={children => (
+          <Backdrop>
+            {children}
+          </Backdrop>
+        )}
+      >
+        <animated.div style={{
+          position: 'absolute',
+          left: '25%',
+          width: '50%',
+          transform: 'translateY(-50%)',
+          ...styles,
+          ...animatedStyle,
+        }}>
+          {children}
+        </animated.div>
+      </ConditionalWrapper>
+
+    ),
   );
+
+
 }

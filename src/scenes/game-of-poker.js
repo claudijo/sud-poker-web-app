@@ -56,10 +56,6 @@ export default function GameOfPoker({ tableId }) {
     setIsJoinFormVisible(false);
   }
 
-  const onPopupAnimationFinished = () => {
-    console.log('Animate done')
-  }
-
   return (
     <Stage width={width} height={height} scaleMode={ScaleMode.SCALE_TO_FIT}>
       {/*Background layer*/}
@@ -94,9 +90,7 @@ export default function GameOfPoker({ tableId }) {
           />
         )}
       </Canvas>
-      {isJoinFormVisible && (
-        <Backdrop>
-          <Popup done={onPopupAnimationFinished}>
+          <Popup show={isJoinFormVisible}>
             <JoinForm
               onSubmit={onJoinFormSubmit}
               onCancel={onJoinFormCancel}
@@ -108,8 +102,6 @@ export default function GameOfPoker({ tableId }) {
               onBuyInChange={onBuyInChange}
             />
           </Popup>
-        </Backdrop>
-      )}
     </Stage>
   );
 }
