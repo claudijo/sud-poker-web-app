@@ -8,6 +8,9 @@ import JoinButton from '../components/join-button';
 import JoinForm from '../components/join-form';
 import useEventState, { numberOrEmptyStringFromEvent } from '../hooks/use-event-state';
 import { useSpring, animated, config } from '@react-spring/web';
+import useFullscreen from '../hooks/use-fullscreen';
+import FullscreenButton from '../components/fullscreen-button';
+import Backdrop from '../components/backdrop';
 
 const width = 1280;
 const height = 720;
@@ -31,10 +34,10 @@ export default function GameOfPoker({ tableId }) {
       );
     },
     config: {
-      ...config.wobbly,
-      // mass: 1,
-      // friction: 15,
-      // tension: 300,
+      // ...config.wobbly,
+      mass: 1,
+      friction: 15,
+      tension: 600,
     },
   }, []);
 
@@ -42,10 +45,21 @@ export default function GameOfPoker({ tableId }) {
     setTableId(tableId);
   }, [setTableId, tableId]);
 
+  const {
+    isEnabled: isFullscreenEnabled,
+    isFullscreen,
+    request: requestFullScreen,
+    exit: exitFullscreen,
+  } = useFullscreen();
+
+  const onFullscreenButtonClick = event => {
+    requestFullScreen();
+  };
+
   const onJoinButtonClick = index => event => {
     setSeatIndex(index);
     setIsJoinFormVisible(true);
-    api.start({ top: '200px' });
+    api.start({ top: '100px' });
   };
 
   const onJoinFromSubmit = event => {
@@ -79,28 +93,37 @@ export default function GameOfPoker({ tableId }) {
             onClick={onJoinButtonClick(index)}
           />
         ))}
+        {isFullscreenEnabled && !isFullscreen && (
+          <FullscreenButton
+            x={width - 64}
+            y={height - 64}
+            onClick={onFullscreenButtonClick}
+          />
+        )}
       </Canvas>
       {isJoinFormVisible && (
-        <animated.div
-          style={{
-            position: 'absolute',
-            left: '25%',
-            width: '50%',
-            backgroundColor: 'cornsilk',
-            top: '720px',
-            ...style,
-          }}
-        >
-          <JoinForm
-            onSubmit={onJoinFromSubmit}
-            avatar={avatar}
-            onAvatarChange={onAvatarChange}
-            nickname={nickname}
-            onNicknameChange={onNicknameChange}
-            buyIn={buyIn}
-            onBuyInChange={onBuyInChange}
-          />
-        </animated.div>
+        <>
+          <Backdrop/>
+          <animated.div
+            style={{
+              position: 'absolute',
+              left: '25%',
+              width: '50%',
+              top: '720px',
+              ...style,
+            }}
+          >
+            <JoinForm
+              onSubmit={onJoinFromSubmit}
+              avatar={avatar}
+              onAvatarChange={onAvatarChange}
+              nickname={nickname}
+              onNicknameChange={onNicknameChange}
+              buyIn={buyIn}
+              onBuyInChange={onBuyInChange}
+            />
+          </animated.div>
+        </>
       )}
     </Stage>
   );

@@ -1,9 +1,11 @@
 import classNames from 'classnames';
 import styles from './join-form.module.css';
+import Avatar, { AvatarStyle } from './avatar';
 import '../styles/grid.css';
 import '../styles/typography.css';
 import '../styles/interaction.css';
-
+import '../styles/layout.css';
+import Button from './button';
 
 export default function JoinForm(
   {
@@ -17,31 +19,34 @@ export default function JoinForm(
   },
 ) {
 
+
   return (
     <form
-      className={classNames(styles.form)}
+      className={styles.form}
       name="joinForm"
       autoComplete="off"
       noValidate
       onSubmit={onSubmit}
     >
+      <header className={styles.header}>
+        <h1>Join the fun™</h1>
+      </header>
+      <main className={styles.main}>
 
-      <h1>Join the fun™</h1>
-      <div className="avatar"/>
+        <div className={classNames(styles.avatarContainer, 'centeredColumnContainer')}>
+          <div className={styles.avatar}>
+            <Avatar
+              style={AvatarStyle[avatar]}
+              width="100%"
+              heigth="100%"
+              radius={8}
+              margin={8}
+              seed={nickname}
+            />
+          </div>
+        </div>
 
         <section className="grid gridMargin">
-          <label className="colGutter col5of12">
-            Avatar style
-            <select
-              name="avatarStyle"
-              value={avatar}
-              onChange={onAvatarChange}
-            >
-              <option value="MALE">Male</option>
-              <option value="FEMALE">Female</option>
-              <option value="GRIDY">Gridy</option>
-            </select>
-          </label>
           <label className="colGutter col7of12">
             Nickname
             <input
@@ -55,7 +60,22 @@ export default function JoinForm(
               maxLength="20"
             />
           </label>
-          <label className="colGutter col7of12">
+          <label className="colGutter col5of12">
+            Avatar
+            <select name="avatar" onChange={onAvatarChange} value={avatar}>
+              {
+                [
+                  { name: 'Initials', value: 'INITIALS' },
+                  { name: 'Male', value: 'MALE' },
+                  { name: 'Female', value: 'FEMALE' },
+                  { name: 'Gridy', value: 'GRIDY' },
+                ].map(item => (
+                  <option value={item.value}>{item.name}</option>
+                ))
+              }
+            </select>
+          </label>
+          <label className="colGutter col5of12">
             Buy-in
             <input
               value={buyIn}
@@ -68,11 +88,18 @@ export default function JoinForm(
             />
           </label>
         </section>
-        <section>
-          <button>Cancel</button>
-          <button>Join</button>
-        </section>
-
-    </form>
-  );
+        <div className={styles.buttonRow}>
+          <section className="grid gridMargin">
+            <div className="colGutter col6of12">
+              <Button theme="secondary" wide={true}>Cancel</Button>
+            </div>
+            <div className="colGutter col6of12">
+              <Button wide={true}>Join</Button>
+            </div>
+      </section>
+        </div>
+    </main>
+</form>
+)
+  ;
 }

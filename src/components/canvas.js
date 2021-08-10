@@ -11,6 +11,7 @@ export default function Canvas({ children, interactive }) {
   const { scale, width, height } = useContext(StageContext);
 
   const drawChildren = useCallback((ctx, children, offset = { x: 0, y: 0 }) => {
+    console.log('Updating draw children callback')
     Array.from(children).forEach(child => {
       child.offset = offset;
       child.draw(ctx);
@@ -26,7 +27,7 @@ export default function Canvas({ children, interactive }) {
         });
       }
     });
-  }, [interactive]);
+  }, [interactive, children]);
 
   useEffect(() => {
     if (interactive) {

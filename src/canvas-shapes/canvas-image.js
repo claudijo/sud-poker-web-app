@@ -81,6 +81,7 @@ class Shape extends AbstractShape {
     this.getImageElement()
       .then(image => {
         ctx.drawImage(image, this.x + this.offset.x, this.y + this.offset.y, this.width, this.height);
+        this.fillAndStroke(ctx)
       });
   }
 }

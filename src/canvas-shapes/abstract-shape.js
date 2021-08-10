@@ -6,6 +6,10 @@ export default class AbstractShape extends HTMLElement {
       'fillstyle',
       'strokestyle',
       'linewidth',
+      'shadowcolor',
+      'shadowblur',
+      'shadowOffsetX',
+      'shadowOffsetY'
     ];
   }
 
@@ -69,7 +73,57 @@ export default class AbstractShape extends HTMLElement {
     this.setAttribute('lineWidth', value);
   }
 
+  get shadowColor() {
+    return this.getAttribute('shadowColor');
+  }
+
+  set shadowColor(value) {
+    this.setAttribute('shadowColor', value);
+  }
+
+  get shadowBlur() {
+    return parseInt(this.getAttribute('shadowBlur') ?? 0, 10);
+  }
+
+  set shadowBlur(value) {
+    this.setAttribute('shadowBlur', value);
+  }
+
+  get shadowOffsetX() {
+    return parseInt(this.getAttribute('shadowOffsetX') ?? 0, 10);
+  }
+
+  set shadowOffsetX(value) {
+    this.setAttribute('shadowOffsetX', value);
+  }
+
+  get shadowOffsetY() {
+    return parseInt(this.getAttribute('shadowOffsetY') ?? 0, 10);
+  }
+
+  set shadowOffsetY(value) {
+    this.setAttribute('shadowOffsetY', value);
+  }
+
   fillAndStroke(ctx) {
+    ctx.save()
+
+    if (this.shadowColor !== null) {
+      ctx.shadowColor = this.shadowColor
+    }
+
+    if (this.shadowBlur !== 0) {
+      ctx.shadowBlur = this.shadowBlur
+    }
+
+    if (this.shadowOffsetX !== 0) {
+      ctx.shadowOffsetX = this.shadowOffsetX
+    }
+
+    if (this.shadowOffsetY !== 0) {
+      ctx.shadowOffsetY = this.shadowOffsetY;
+    }
+
     if (this.fillStyle !== null) {
       ctx.fillStyle = this.fillStyle;
       ctx.fill()
@@ -80,5 +134,7 @@ export default class AbstractShape extends HTMLElement {
       ctx.lineWidth = this.lineWidth;
       ctx.stroke()
     }
+
+    ctx.restore()
   }
 }

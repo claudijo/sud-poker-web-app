@@ -1,8 +1,33 @@
 .form {
-  border: 2px solid blue;
+    border: 16px solid #fff;
+    border-radius: 24px;
+    background-color: #f5e3a3;
+}
 
-  background-color: cornsilk;
-  padding: 16px;
+.header {
+    background-color: #fefdc8;
+    padding: 8px 16px;
+    text-align: center;
+}
 
+.main {
+    padding: 24px;
+}
 
+.form label {
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.buttonRow {
+    margin-top: 36px;
+}
+
+.avatar {
+    background-color: #fefdc8;
+    width: 128px;
+    height: 128px;
+    padding: 8px;
+    border-radius: 16px;
+    margin-bottom: 8px;
 }

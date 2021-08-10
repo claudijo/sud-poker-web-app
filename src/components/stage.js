@@ -37,7 +37,7 @@ export default function Stage({ scaleMode, width, height, children }) {
         style={{
           width: `${width * scale}px`,
           height: `${height * scale}px`,
-          backgroundColor: '#eee',
+          backgroundColor: '#fefdc8',
           position: 'relative',
           overflow: 'hidden',
         }}
@@ -49,7 +49,6 @@ export default function Stage({ scaleMode, width, height, children }) {
             height: `${height}px`,
             transformOrigin: '0 0',
             transform: `scale(${scale})`,
-            backgroundColor: '#eee',
           }}
         >
           {children}

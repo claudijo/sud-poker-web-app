@@ -4,19 +4,11 @@
 }
 
 .gridMargin {
-  margin: -16px 0 16px -16px;
-}
-
-.gridMarginWide {
-  margin: -16px 0 16px -24px;
+  margin: -24px 0 24px -24px;
 }
 
 .colGutter {
-  padding: 16px 0 0 16px;
-}
-
-.colGutterWide {
-  padding: 16px 0 0 24px;
+  padding: 24px 0 0 24px;
 }
 
 .colGrow {
