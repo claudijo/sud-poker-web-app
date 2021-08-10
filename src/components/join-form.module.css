@@ -14,6 +14,10 @@
     padding: 24px;
 }
 
+.input {
+    /*height: 64px;*/
+}
+
 .form label {
     font-weight: 700;
     cursor: pointer;

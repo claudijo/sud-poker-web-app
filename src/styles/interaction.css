@@ -8,6 +8,7 @@ input[type=text], input[type=number] {
     outline: none;
     line-height: 1;
     background-color: #ffffff;
+    height: 2em;
 }
 
 input[type=text]:disabled, input[type=number]:disabled {
@@ -24,6 +25,7 @@ select {
     outline: none;
     line-height: 1;
     background-color: #ffffff;
+    height: 2em;
 }
 
 option {

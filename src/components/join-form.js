@@ -18,8 +18,6 @@ export default function JoinForm(
     onBuyInChange,
   },
 ) {
-
-
   return (
     <form
       className={styles.form}

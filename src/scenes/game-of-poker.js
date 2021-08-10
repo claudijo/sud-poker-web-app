@@ -20,9 +20,8 @@ export default function GameOfPoker({ tableId }) {
 
   const [avatar, onAvatarChange] = useEventState('MALE');
   const [nickname, onNicknameChange] = useEventState('');
-  const [buyIn, onBuyInChange] = useEventState('', numberOrEmptyStringFromEvent);
+  const [buyIn, onBuyInChange] = useEventState(200, numberOrEmptyStringFromEvent);
   const [seatIndex, setSeatIndex] = useState(-1);
-
 
   const setTableId = useSetRecoilState(currentTableIdState);
   const table = useRecoilValue(tableState);
