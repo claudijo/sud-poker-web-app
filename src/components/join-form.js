@@ -10,6 +10,7 @@ import Button from './button';
 export default function JoinForm(
   {
     onSubmit,
+    onCancel,
     nickname,
     onNicknameChange,
     avatar,
@@ -89,7 +90,7 @@ export default function JoinForm(
         <div className={styles.buttonRow}>
           <section className="grid gridMargin">
             <div className="colGutter col6of12">
-              <Button theme="secondary" wide={true}>Cancel</Button>
+              <Button theme="secondary" wide={true} onClick={onCancel}>Cancel</Button>
             </div>
             <div className="colGutter col6of12">
               <Button wide={true}>Join</Button>

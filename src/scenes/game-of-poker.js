@@ -46,10 +46,15 @@ export default function GameOfPoker({ tableId }) {
     setIsJoinFormVisible(true);
   };
 
-  const onJoinFromSubmit = event => {
+  const onJoinFormSubmit = event => {
     console.log(seatIndex, nickname, buyIn, avatar);
     event.preventDefault();
   };
+
+  const onJoinFormCancel = event => {
+    setSeatIndex(-1);
+    setIsJoinFormVisible(false);
+  }
 
   const onPopupAnimationFinished = () => {
     console.log('Animate done')
@@ -93,7 +98,8 @@ export default function GameOfPoker({ tableId }) {
         <Backdrop>
           <Popup done={onPopupAnimationFinished}>
             <JoinForm
-              onSubmit={onJoinFromSubmit}
+              onSubmit={onJoinFormSubmit}
+              onCancel={onJoinFormCancel}
               avatar={avatar}
               onAvatarChange={onAvatarChange}
               nickname={nickname}
