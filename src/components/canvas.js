@@ -10,9 +10,10 @@ export default function Canvas({ children, interactive }) {
   const hoveredElement = useRef(null);
   const { scale, width, height } = useContext(StageContext);
 
-  const drawChildren = useCallback((ctx, children, offset = { x: 0, y: 0 }) => {
+  const drawChildren = useCallback((ctx, children, offset = { x: 0, y: 0 }, parentGlobalAlpha) => {
     Array.from(children).forEach(child => {
       child.offset = offset;
+      child.globalAlpha = parentGlobalAlpha ?? child.globalAlpha
       child.draw(ctx);
 
       if (interactive) {
@@ -23,7 +24,7 @@ export default function Canvas({ children, interactive }) {
         drawChildren(ctx, child.children, {
           x: offset.x + child.x,
           y: offset.y + child.y,
-        });
+        }, child.globalAlpha ?? 1);
       }
     });
   }, [interactive, children]);

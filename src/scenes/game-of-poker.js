@@ -29,6 +29,7 @@ export default function GameOfPoker({ tableId }) {
   const [nickname, onNicknameChange] = useEventState('');
   const [buyIn, onBuyInChange] = useEventState(200, numberOrEmptyStringFromEvent);
   const [seatIndex, setSeatIndex] = useState(-1);
+  const [joinDisabled, setJoinDisabled] = useState(false)
 
   const setTableId = useSetRecoilState(currentTableIdState);
   const table = useRecoilValue(tableState);
@@ -48,9 +49,10 @@ export default function GameOfPoker({ tableId }) {
     requestFullScreen();
   };
 
-  const onJoinButtonClick = index => event => {
-    setSeatIndex(index);
-    setIsJoinFormVisible(true);
+  const onJoinButtonClick = index => async event => {
+    setJoinDisabled(true)
+    // setSeatIndex(index);
+    // setIsJoinFormVisible(true);
   };
 
   const onJoinFormSubmit = event => {
@@ -83,6 +85,7 @@ export default function GameOfPoker({ tableId }) {
       <Canvas interactive={true}>
         {table && table.reservations.map((reservation, index) => (
           <JoinButton
+            disabled={joinDisabled}
             key={index}
             x={positions[index].x}
             y={positions[index].y}

@@ -1,29 +1,44 @@
 import CanvasCircle from '../canvas-shapes/circle';
 import CanvasImage from '../canvas-shapes/canvas-image';
 import AddUserIcon from '../icons/add-user.svg';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-export default function JoinButton({ children, x, y, ...props }) {
+export default function JoinButton({ children, x, y, disabled, ...props }) {
 
-  const [fillStyle, setFillStyle] = useState('#89d9d1')
+  const [fillStyle, setFillStyle] = useState('#89d9d1');
+
+  useEffect(() => {
+    if (disabled) {
+      onMouseLeave()
+    }
+  }, [disabled])
 
   const onMouseEnter = event => {
-    document.body.style.cursor = 'pointer'
-    setFillStyle('#69bfb6')
-  }
+    if (disabled) {
+      return;
+    }
+    document.body.style.cursor = 'pointer';
+    setFillStyle('#69bfb6');
+  };
 
   const onMouseLeave = event => {
-    document.body.style.cursor = 'default'
-    setFillStyle('#89d9d1')
-  }
+    document.body.style.cursor = 'default';
+    setFillStyle('#89d9d1');
+  };
 
   const onMouseDown = event => {
-    setFillStyle('#54a89f')
-  }
+    if (disabled) {
+      return;
+    }
+    setFillStyle('#54a89f');
+  };
 
   const onMouseUp = event => {
-    setFillStyle('#69bfb6')
-  }
+    if (disabled) {
+      return;
+    }
+    setFillStyle('#69bfb6');
+  };
 
   return (
     <CanvasCircle
@@ -34,7 +49,7 @@ export default function JoinButton({ children, x, y, ...props }) {
       fillStyle={fillStyle}
       strokeStyle="#009557"
       lineWidth={6}
-      globalAlpha="1"
+      globalAlpha={disabled ? 0.5 : 1}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       onMouseDown={onMouseDown}

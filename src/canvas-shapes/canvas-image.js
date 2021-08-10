@@ -80,8 +80,17 @@ class Shape extends AbstractShape {
   draw(ctx) {
     this.getImageElement()
       .then(image => {
+        ctx.save()
+
+        // This does not work if calling this.fillAndStroke(ctx), since draw
+        // image must come after ctx.save() and before ctx.restore(),so put it
+        // explicitly here
+        if (this.globalAlpha !== null) {
+          ctx.globalAlpha = this.globalAlpha
+        }
+
         ctx.drawImage(image, this.x + this.offset.x, this.y + this.offset.y, this.width, this.height);
-        this.fillAndStroke(ctx)
+        ctx.restore();
       });
   }
 }
