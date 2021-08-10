@@ -11,6 +11,8 @@ import { useSpring, animated, config } from '@react-spring/web';
 import useFullscreen from '../hooks/use-fullscreen';
 import FullscreenButton from '../components/fullscreen-button';
 import Backdrop from '../components/backdrop';
+// import useAnimation from '../hooks/use-animation';
+// import { easeInOutSine, easeOutBounce } from '../lib/tweens';
 
 const width = 1280;
 const height = 720;
@@ -22,6 +24,8 @@ export default function GameOfPoker({ tableId }) {
   const [nickname, onNicknameChange] = useEventState('');
   const [buyIn, onBuyInChange] = useEventState('', numberOrEmptyStringFromEvent);
   const [seatIndex, setSeatIndex] = useState(-1);
+
+  // const [animatedValue, animate] = useAnimation(720, 100, 400, easeOutBounce)
 
   const setTableId = useSetRecoilState(currentTableIdState);
   const table = useRecoilValue(tableState);
@@ -59,6 +63,7 @@ export default function GameOfPoker({ tableId }) {
   const onJoinButtonClick = index => event => {
     setSeatIndex(index);
     setIsJoinFormVisible(true);
+    // animate()
     api.start({ top: '100px' });
   };
 
@@ -109,6 +114,7 @@ export default function GameOfPoker({ tableId }) {
               position: 'absolute',
               left: '25%',
               width: '50%',
+              // top: `${animatedValue}px`,
               top: '720px',
               ...style,
             }}

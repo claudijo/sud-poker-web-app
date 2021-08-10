@@ -70,7 +70,7 @@ export default function JoinForm(
                   { name: 'Female', value: 'FEMALE' },
                   { name: 'Gridy', value: 'GRIDY' },
                 ].map(item => (
-                  <option value={item.value}>{item.name}</option>
+                  <option key={item.value} value={item.value}>{item.name}</option>
                 ))
               }
             </select>
