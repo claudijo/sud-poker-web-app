@@ -18,7 +18,7 @@ const height = 720;
 export default function GameOfPoker({ tableId }) {
   const [isJoinFormVisible, setIsJoinFormVisible] = useState(false);
 
-  const [avatar, onAvatarChange] = useEventState('MALE');
+  const [avatar, onAvatarChange] = useEventState('INITIALS');
   const [nickname, onNicknameChange] = useEventState('');
   const [buyIn, onBuyInChange] = useEventState(200, numberOrEmptyStringFromEvent);
   const [seatIndex, setSeatIndex] = useState(-1);
