@@ -1,28 +1,10 @@
 import { useSpring, animated } from '@react-spring/web';
 
-export default function Popup({
-                                children, style, done = () => {
-  },
-                              }) {
-  // const animatedStyle = useSpring({
-  //   to: { top: `200%`, },
-  //   from: { top: '50%', },
-  //   onRest: () => {
-  //     console.log(
-  //       'done',
-  //     );
-  //   },
-  //   config: {
-  //     mass: 1,
-  //     friction: 15,
-  //     tension: 600,
-  //   },
-  // }, []);
-
+export default function Popup({ children, style, done }) {
   const props = useSpring({
     to: { top: '50%' },
     from: { top: '200%' },
-    onRest: done,
+    onRest: done ?? (() => {}),
     config: {
       mass: 1,
       friction: 20,
