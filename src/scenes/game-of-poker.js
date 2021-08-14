@@ -24,7 +24,8 @@ const tableX = stageWidth / 2 - tableWidth / 2
 const positions = centerForPositions(tableWidth, tableHeight, tableX, tableY)
 
 export default function GameOfPoker({ tableId }) {
-  const [isJoinFormVisible, setIsJoinFormVisible] = useState(false);
+  const [joinFormHidden, setJoinFormHidden] = useState(true);
+  const [joinFormDisabled, setJoinFormDisabled] = useState(false);
 
   const [avatar, onAvatarChange] = useEventState('INITIALS');
   const [nickname, onNicknameChange] = useEventState('');
@@ -52,8 +53,8 @@ export default function GameOfPoker({ tableId }) {
     const uid = me?.uid;
     const hasReservation = table?.reservations.find(user => user?.uid === uid)
     const hasSeat = table?.seats.find(user => user?.uid === uid)
-    if (!isJoinFormVisible && uid && hasReservation && !hasSeat) {
-      setIsJoinFormVisible(true)
+    if (joinFormHidden && uid && hasReservation && !hasSeat) {
+      setJoinFormHidden(false)
     }
   }, [me?.uid, table?.reservations.length, table?.seats.length])
 
@@ -83,7 +84,7 @@ export default function GameOfPoker({ tableId }) {
 
   const onJoinFormCancel = event => {
     // setSeatIndex(-1);
-    setIsJoinFormVisible(false);
+    // setIsJoinFormVisible(false);
   };
 
   return (
@@ -122,8 +123,9 @@ export default function GameOfPoker({ tableId }) {
         )}
       </Canvas>
       {/*Html overlays*/}
-      <Popup show={isJoinFormVisible}>
+      <Popup show={!joinFormHidden}>
         <JoinForm
+          disabled={joinFormDisabled}
           onSubmit={onJoinFormSubmit}
           onCancel={onJoinFormCancel}
           avatar={avatar}
