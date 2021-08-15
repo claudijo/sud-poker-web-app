@@ -8,9 +8,9 @@ export default class AbstractShape extends HTMLElement {
       'linewidth',
       'shadowcolor',
       'shadowblur',
-      'shadowOffsetX',
-      'shadowOffsetY',
-      'globalAlpha'
+      'shadowoffsetx',
+      'shadowoffsety',
+      'globalalpha'
     ];
   }
 

@@ -27,7 +27,7 @@ export default function Canvas({ children, interactive }) {
         }, child.globalAlpha ?? 1);
       }
     });
-  }, [interactive, children]);
+  }, [interactive]);
 
   useEffect(() => {
     if (interactive) {

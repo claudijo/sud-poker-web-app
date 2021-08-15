@@ -3,15 +3,9 @@ import CanvasImage from '../canvas-shapes/canvas-image';
 import AddUserIcon from '../icons/add-user.svg';
 import { useState, useEffect } from 'react';
 
-export default function JoinButton({ children, x, y, disabled, ...props }) {
+export default function JoinButton({ children, x, y, disabled, onClick, ...props }) {
 
   const [fillStyle, setFillStyle] = useState('#89d9d1');
-
-  useEffect(() => {
-    if (disabled) {
-      onMouseLeave()
-    }
-  }, [disabled])
 
   const onMouseEnter = event => {
     if (disabled) {
@@ -40,6 +34,14 @@ export default function JoinButton({ children, x, y, disabled, ...props }) {
     setFillStyle('#69bfb6');
   };
 
+  const onClickProxy = event => {
+    if (disabled) {
+      return;
+    }
+
+    onClick && onClick(event)
+  }
+
   return (
     <CanvasCircle
       {...props}
@@ -54,6 +56,7 @@ export default function JoinButton({ children, x, y, disabled, ...props }) {
       onMouseLeave={onMouseLeave}
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
+      onClick={onClickProxy}
     >
       <CanvasImage
         x={-20}

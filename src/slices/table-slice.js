@@ -23,6 +23,14 @@ export const reserveSeat = createAsyncThunk('table/reserveSeat', async ({ tableI
   return response.table;
 });
 
+export const cancelReservation = createAsyncThunk('table/cancelReservation', async({ tableId, seatIndex}) => {
+  const response = await clientSocketEmitter.request('cancelReservation', {
+    id: tableId,
+    index: seatIndex,
+  });
+  return response.table;
+})
+
 export const tableSlice = createSlice({
   name: 'table',
   initialState,
@@ -49,6 +57,19 @@ export const tableSlice = createSlice({
       state.value = action.payload;
     },
     [reserveSeat.rejected]: (state, action) => {
+      state.isFetching = false;
+      state.error = action.error;
+    },
+
+    [cancelReservation.pending]: state => {
+      state.isFetching = true;
+      state.error = null;
+    },
+    [cancelReservation.fulfilled]: (state, action) => {
+      state.isFetching = false;
+      state.value = action.payload;
+    },
+    [cancelReservation.rejected]: (state, action) => {
       state.isFetching = false;
       state.error = action.error;
     },

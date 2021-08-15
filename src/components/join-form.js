@@ -9,6 +9,7 @@ import Button from './button';
 
 export default function JoinForm(
   {
+    disabled,
     onSubmit,
     onCancel,
     nickname,
@@ -21,6 +22,7 @@ export default function JoinForm(
 ) {
   return (
     <form
+      disabled={disabled}
       className={styles.form}
       name="joinForm"
       autoComplete="off"
@@ -31,7 +33,6 @@ export default function JoinForm(
         <h1>Join the fun™</h1>
       </header>
       <main className={styles.main}>
-
         <div className={classNames(styles.avatarContainer, 'centeredColumnContainer')}>
           <div className={styles.avatar}>
             <Avatar
@@ -49,6 +50,7 @@ export default function JoinForm(
           <label className="colGutter col7of12">
             Nickname
             <input
+              disabled={disabled}
               value={nickname}
               onChange={onNicknameChange}
               spellCheck="false"
@@ -61,7 +63,12 @@ export default function JoinForm(
           </label>
           <label className="colGutter col5of12">
             Avatar
-            <select name="avatar" onChange={onAvatarChange} value={avatar}>
+            <select
+              disabled={disabled}
+              name="avatar"
+              onChange={onAvatarChange}
+              value={avatar}
+            >
               {
                 [
                   { name: 'Initials', value: 'INITIALS' },
@@ -77,6 +84,7 @@ export default function JoinForm(
           <label className="colGutter col5of12">
             Buy-in
             <input
+              disabled={disabled}
               value={buyIn}
               onChange={onBuyInChange}
               type="number"
@@ -90,10 +98,10 @@ export default function JoinForm(
         <div className={styles.buttonRow}>
           <section className="grid gridMargin">
             <div className="colGutter col6of12">
-              <Button theme="secondary" wide={true} onClick={onCancel}>Cancel</Button>
+              <Button disabled={disabled} theme="secondary" wide={true} onClick={onCancel}>Cancel</Button>
             </div>
             <div className="colGutter col6of12">
-              <Button wide={true}>Join</Button>
+              <Button disabled={disabled} wide={true}>Join</Button>
             </div>
       </section>
         </div>
