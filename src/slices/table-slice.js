@@ -3,7 +3,6 @@ import { clientSocketEmitter } from '../socket/client-socket-emitter';
 
 const initialState = {
   value: null,
-  apa: 'hallå',
   isFetching: false,
   error: null,
 };
@@ -12,7 +11,7 @@ export const fetchTable = createAsyncThunk('table/fetchTable', async (tableId) =
   const response = await clientSocketEmitter.request('join', {
     id: tableId,
   });
-  return response.table;
+  return response;
 });
 
 export const reserveSeat = createAsyncThunk('table/reserveSeat', async ({ tableId, seatIndex }) => {
@@ -20,7 +19,7 @@ export const reserveSeat = createAsyncThunk('table/reserveSeat', async ({ tableI
     id: tableId,
     index: seatIndex,
   });
-  return response.table;
+  return response;
 });
 
 export const cancelReservation = createAsyncThunk('table/cancelReservation', async({ tableId, seatIndex}) => {
@@ -28,7 +27,18 @@ export const cancelReservation = createAsyncThunk('table/cancelReservation', asy
     id: tableId,
     index: seatIndex,
   });
-  return response.table;
+  return response;
+})
+
+export const sitDown = createAsyncThunk('table/sitDown', async ({ tableId, seatIndex, nickname, buyIn, avatarStyle }) => {
+  const response = await clientSocketEmitter.request('sitDown', {
+    id: tableId,
+    index: seatIndex,
+    name: nickname,
+    buyIn,
+    avatarStyle,
+  })
+  return response;
 })
 
 export const tableSlice = createSlice({
@@ -42,19 +52,20 @@ export const tableSlice = createSlice({
     },
     [fetchTable.fulfilled]: (state, action) => {
       state.isFetching = false;
-      state.value = action.payload;
+      state.value = action.payload.table;
     },
     [fetchTable.rejected]: (state, action) => {
       state.isFetching = false;
       state.error = action.error;
     },
+
     [reserveSeat.pending]: state => {
       state.isFetching = true;
       state.error = null;
     },
     [reserveSeat.fulfilled]: (state, action) => {
       state.isFetching = false;
-      state.value = action.payload;
+      state.value = action.payload.table;
     },
     [reserveSeat.rejected]: (state, action) => {
       state.isFetching = false;
@@ -67,9 +78,22 @@ export const tableSlice = createSlice({
     },
     [cancelReservation.fulfilled]: (state, action) => {
       state.isFetching = false;
-      state.value = action.payload;
+      state.value = action.payload.table;
     },
     [cancelReservation.rejected]: (state, action) => {
+      state.isFetching = false;
+      state.error = action.error;
+    },
+
+    [sitDown.pending]: state => {
+      state.isFetching = true;
+      state.error = null;
+    },
+    [sitDown.fulfilled]: (state, action) => {
+      state.isFetching = false;
+      state.value = action.payload.table;
+    },
+    [sitDown.rejected]: (state, action) => {
       state.isFetching = false;
       state.error = action.error;
     },

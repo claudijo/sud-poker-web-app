@@ -26,8 +26,8 @@ export default function JoinForm(
       className={styles.form}
       name="joinForm"
       autoComplete="off"
-      noValidate
       onSubmit={onSubmit}
+
     >
       <header className={styles.header}>
         <h1>Join the fun™</h1>
@@ -45,7 +45,6 @@ export default function JoinForm(
             />
           </div>
         </div>
-
         <section className="grid gridMargin">
           <label className="colGutter col7of12">
             Nickname
@@ -55,7 +54,7 @@ export default function JoinForm(
               onChange={onNicknameChange}
               spellCheck="false"
               type="text"
-              required="required"
+              required
               title="Nickname"
               minLength="2"
               maxLength="20"
@@ -98,15 +97,14 @@ export default function JoinForm(
         <div className={styles.buttonRow}>
           <section className="grid gridMargin">
             <div className="colGutter col6of12">
-              <Button disabled={disabled} theme="secondary" wide={true} onClick={onCancel}>Cancel</Button>
+              <Button type="button" disabled={disabled} theme="secondary" wide={true} onClick={onCancel}>Cancel</Button>
             </div>
             <div className="colGutter col6of12">
-              <Button disabled={disabled} wide={true}>Join</Button>
+              <Button type="submit" disabled={disabled} wide={true}>Join</Button>
             </div>
-      </section>
+          </section>
         </div>
-    </main>
-</form>
-)
-  ;
+      </main>
+    </form>
+  );
 }

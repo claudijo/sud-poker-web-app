@@ -1,7 +1,7 @@
 import Stage, { ScaleMode } from '../components/stage';
 import Canvas from '../components/canvas';
 import Table from '../components/table';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import JoinButton from '../components/join-button';
 import JoinForm from '../components/join-form';
 import useEventState, { numberOrEmptyStringFromEvent } from '../hooks/use-event-state';
@@ -9,8 +9,8 @@ import useFullscreen from '../hooks/use-fullscreen';
 import FullscreenButton from '../components/fullscreen-button';
 import Popup from '../components/popup';
 import { centerForPositions } from '../util/table';
-import { useSelector, useDispatch } from 'react-redux'
-import { cancelReservation, fetchTable, reserveSeat } from '../slices/table-slice';
+import { useSelector, useDispatch } from 'react-redux';
+import { cancelReservation, fetchTable, reserveSeat, sitDown } from '../slices/table-slice';
 import { fetchMe } from '../slices/me-slice';
 
 const stageWidth = 1280;
@@ -19,63 +19,52 @@ const stageHeight = 720;
 const tableWidth = 600;
 const tableHeight = 300;
 const tableY = 150;
-const tableX = stageWidth / 2 - tableWidth / 2
+const tableX = stageWidth / 2 - tableWidth / 2;
 
-const positions = centerForPositions(tableWidth, tableHeight, tableX, tableY)
+const positions = centerForPositions(tableWidth, tableHeight, tableX, tableY);
 
 export default function GameOfPoker({ tableId }) {
-  const seatIndex = useRef(-1)
   const [joinFormHidden, setJoinFormHidden] = useState(true);
   const [joinFormDisabled, setJoinFormDisabled] = useState(false);
 
   const [avatar, onAvatarChange] = useEventState('INITIALS');
   const [nickname, onNicknameChange] = useEventState('');
   const [buyIn, onBuyInChange] = useEventState(200, numberOrEmptyStringFromEvent);
-  const [joinButtonsDisabled, setJoinButtonsDisabled] = useState(false)
+  const [joinButtonsDisabled, setJoinButtonsDisabled] = useState(false);
 
-  const dispatch = useDispatch()
-  const table = useSelector(state => state.table.value)
-  const me = useSelector(state => state.me.value)
+  const dispatch = useDispatch();
+  const table = useSelector(state => state.table.value);
+  const me = useSelector(state => state.me.value);
+  const seatIndex = useSelector(state => state.seatIndex.value);
 
-  // console.log(table)
+  console.log(table);
+  // console.log({ seatIndex });
+  // console.log(seatIndex)
   // console.log(me)
-  // console.log(seatIndex.current)
 
-  console.log('joinButtonsDisabled', joinButtonsDisabled)
 
   // Kick off by fetching user
   useEffect(() => {
-    dispatch(fetchMe())
-  }, [dispatch])
+    dispatch(fetchMe());
+  }, [dispatch]);
 
-  // Fetch table if current user
+  // Fetch table if current user and show initial join form if applicable
   useEffect(() => {
     if (me?.uid) {
-      dispatch(fetchTable(tableId))
+      (async () => {
+        const { payload } = await dispatch(fetchTable(tableId))
+
+        if (payload) {
+          const { table, index: seatIndex } = payload
+          if (!table.seats[seatIndex] && seatIndex > -1) {
+            setJoinButtonsDisabled(true)
+            setJoinFormHidden(false)
+          }
+        }
+      })();
     }
   }, [tableId, me?.uid, dispatch]);
 
-  // Open join form if user has reservation but not seat
-  useEffect(() => {
-    if (!me?.uid) {
-      return
-    }
-
-    const hasReservation = !!table?.reservations.find(user => user?.uid === me?.uid)
-    const hasSeat = !!table?.seats.find(user => user?.uid === me?.uid)
-
-    setJoinButtonsDisabled(hasReservation && !hasSeat)
-    setJoinFormHidden(!hasReservation || hasSeat)
-  }, [me?.uid, table?.reservations, table?.seats])
-
-  // Set current seat index for user based on reservation
-  useEffect(() => {
-    if (!me?.uid) {
-      seatIndex.current = -1
-      return
-    }
-    seatIndex.current = table?.reservations.findIndex(user => user?.uid === me?.uid) ?? -1
-  }, [me?.uid, table?.reservations])
 
   const {
     isEnabled: isFullscreenEnabled,
@@ -88,34 +77,57 @@ export default function GameOfPoker({ tableId }) {
   };
 
   const onJoinButtonClick = index => async event => {
-    setJoinButtonsDisabled(true)
-    const result = await dispatch(reserveSeat({
+    setJoinButtonsDisabled(true);
+
+    const { error } = await dispatch(reserveSeat({
       tableId,
-      seatIndex: index
+      seatIndex: index,
     }));
 
-    if (result.error) {
-      setJoinButtonsDisabled(false)
+    if (error) {
+      setJoinButtonsDisabled(false);
       return;
     }
+
+    setJoinFormHidden(false)
   };
 
-  const onJoinFormSubmit = event => {
-    // console.log(seatIndex, nickname, buyIn, avatar);
+  const onJoinFormSubmit = async event => {
     event.preventDefault();
+
+    setJoinFormDisabled(true);
+
+    const { error } = await dispatch(sitDown({
+      tableId,
+      seatIndex,
+      nickname,
+      buyIn,
+      avatarStyle: avatar,
+    }));
+
+    if (error) {
+      setJoinFormDisabled(false);
+      return
+    }
+
+    setJoinFormHidden(true)
+    setJoinButtonsDisabled(false)
   };
 
   const onJoinFormCancel = async event => {
-    setJoinFormHidden(true)
+    setJoinFormHidden(true);
 
-    const result = await dispatch(cancelReservation({
+    const { error } = await dispatch(cancelReservation({
       tableId,
-      seatIndex: seatIndex.current
-    }))
+      seatIndex,
+    }));
 
-    if (result.error) {
-      setJoinFormHidden(false)
+    if (error) {
+      setJoinFormHidden(false);
+      return
     }
+
+    setJoinButtonsDisabled(false)
   };
 
   return (
