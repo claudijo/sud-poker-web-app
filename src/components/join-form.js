@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import styles from './join-form.module.css';
-import Avatar, { AvatarStyle } from './avatar';
+import Avatar from './avatar';
+import { AvatarStyle } from '../util/avatar';
 import '../styles/grid.css';
 import '../styles/typography.css';
 import '../styles/interaction.css';

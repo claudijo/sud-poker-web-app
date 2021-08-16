@@ -69,11 +69,13 @@ class Shape extends AbstractShape {
       }
 
       const imageElement = new Image();
-      imageElement.src = this.getAttribute('source');
+
       imageElement.onload = () => {
         this.imageElement = imageElement;
         resolve(this.imageElement);
       };
+
+      imageElement.src = this.getAttribute('source');
     });
   }
 

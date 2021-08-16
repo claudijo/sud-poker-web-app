@@ -49,20 +49,20 @@ export default function GameOfPoker({ tableId }) {
   useEffect(() => {
     const onTableChange = payload => {
       if (payload.table.id === tableId) {
-        dispatch(setTable(payload))
+        dispatch(setTable(payload));
       }
-    }
+    };
 
-    clientSocketEmitter.on('reserveSeat', onTableChange)
-    clientSocketEmitter.on('cancelReservation', onTableChange)
-    clientSocketEmitter.on('sitDown', onTableChange)
+    clientSocketEmitter.on('reserveSeat', onTableChange);
+    clientSocketEmitter.on('cancelReservation', onTableChange);
+    clientSocketEmitter.on('sitDown', onTableChange);
 
     return () => {
-      clientSocketEmitter.off('reserveSeat', onTableChange)
-      clientSocketEmitter.off('cancelReservation', onTableChange)
-      clientSocketEmitter.off('sitDown', onTableChange)
-    }
-  }, [dispatch, tableId])
+      clientSocketEmitter.off('reserveSeat', onTableChange);
+      clientSocketEmitter.off('cancelReservation', onTableChange);
+      clientSocketEmitter.off('sitDown', onTableChange);
+    };
+  }, [dispatch, tableId]);
 
   // Kick off by fetching user
   useEffect(() => {
@@ -168,60 +168,51 @@ export default function GameOfPoker({ tableId }) {
       </Canvas>
       {/*Ui layer*/}
       <Canvas interactive={true}>
+
         {
-          table?.seats[seatIndex]
-            ? (
-              <>
-                {
-                  table.seats
-                    .map((seat, index) => (
-                      <React.Fragment key={index}>
-                        {table.seats[index] && (
-                          <PlayerButton
-                            key={index}
-                            x={positions[index].x}
-                            y={positions[index].y}
-                            totalChips={table.seats[index].totalChips}
-                            stack={table.seats[index].stack}
-                            betSize={table.seats[index].betSize}
-                            nickname={table.reservations[index].name}
-                            avatarStyle={table.reservations[index].avatarStyle}
-                          />
-                        )}
-                      </React.Fragment>
-                    ))
-                }
-              </>
-            )
-            : (
-              <>
-                {
-                  table?.reservations
-                    .map((reservation, index) => (
-                      <React.Fragment key={index}>
-                        {!table.seats[index] && (
-                          <JoinButton
-                            disabled={joinButtonsDisabled || !!table.reservations[index]}
-                            key={index}
-                            x={positions[index].x}
-                            y={positions[index].y}
-                            onClick={onJoinButtonClick(index)}
-                          />
-                        )}
-                      </React.Fragment>
-                    ))
-                }
-              </>
-            )
+          table?.seats
+            .map((seat, index) => (
+              <React.Fragment key={index}>
+                {table.seats[index] && (
+                  <PlayerButton
+                    key={index}
+                    x={positions[index].x}
+                    y={positions[index].y}
+                    totalChips={table.seats[index].totalChips}
+                    stack={table.seats[index].stack}
+                    betSize={table.seats[index].betSize}
+                    nickname={table.reservations[index].name}
+                    avatarStyle={table.reservations[index].avatarStyle}
+                  />
+                )}
+              </React.Fragment>
+            ))
         }
 
-        {isFullscreenEnabled && !isFullscreen && (
-          <FullscreenButton
-            x={stageWidth - 64}
-            y={stageHeight - 64}
-            onClick={onFullscreenButtonClick}
-          />
-        )}
+        {
+          !table?.seats[seatIndex] && table?.reservations
+            .map((reservation, index) => (
+              <React.Fragment key={index}>
+                {!table.seats[index] && (
+                  <JoinButton
+                    disabled={joinButtonsDisabled || !!table.reservations[index]}
+                    key={index}
+                    x={positions[index].x}
+                    y={positions[index].y}
+                    onClick={onJoinButtonClick(index)}
+                  />
+                )}
+              </React.Fragment>
+            ))
+        }
+
+        {/*{isFullscreenEnabled && !isFullscreen && (*/}
+        {/*  <FullscreenButton*/}
+        {/*    x={stageWidth - 64}*/}
+        {/*    y={stageHeight - 64}*/}
+        {/*    onClick={onFullscreenButtonClick}*/}
+        {/*  />*/}
+        {/*)}*/}
       </Canvas>
       {/*Html overlays*/}
       <Popup show={!joinFormHidden}>

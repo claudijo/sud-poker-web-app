@@ -63,6 +63,7 @@ export default function JoinButton({ children, x, y, disabled, onClick, ...props
         y={-20}
         width={40}
         height={40}
+        globalAlpha={disabled ? 0.5 : 1}
         source={AddUserIcon}
       />
     </CanvasCircle>
