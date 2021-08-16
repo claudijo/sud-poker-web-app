@@ -40,7 +40,7 @@ export default function GameOfPoker({ tableId }) {
   const me = useSelector(state => state.me.value);
   const seatIndex = useSelector(state => state.seatIndex.value);
 
-  console.log(table);
+  // console.log(table);
   // console.log({ seatIndex });
   // console.log(seatIndex)
   // console.log(me)
@@ -56,11 +56,13 @@ export default function GameOfPoker({ tableId }) {
     clientSocketEmitter.on('reserveSeat', onTableChange);
     clientSocketEmitter.on('cancelReservation', onTableChange);
     clientSocketEmitter.on('sitDown', onTableChange);
+    clientSocketEmitter.on('startHand', onTableChange);
 
     return () => {
       clientSocketEmitter.off('reserveSeat', onTableChange);
       clientSocketEmitter.off('cancelReservation', onTableChange);
       clientSocketEmitter.off('sitDown', onTableChange);
+      clientSocketEmitter.off('startHand', onTableChange);
     };
   }, [dispatch, tableId]);
 
@@ -206,13 +208,13 @@ export default function GameOfPoker({ tableId }) {
             ))
         }
 
-        {/*{isFullscreenEnabled && !isFullscreen && (*/}
-        {/*  <FullscreenButton*/}
-        {/*    x={stageWidth - 64}*/}
-        {/*    y={stageHeight - 64}*/}
-        {/*    onClick={onFullscreenButtonClick}*/}
-        {/*  />*/}
-        {/*)}*/}
+        {isFullscreenEnabled && !isFullscreen && (
+          <FullscreenButton
+            x={stageWidth - 64}
+            y={stageHeight - 64}
+            onClick={onFullscreenButtonClick}
+          />
+        )}
       </Canvas>
       {/*Html overlays*/}
       <Popup show={!joinFormHidden}>

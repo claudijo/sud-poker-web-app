@@ -9,12 +9,16 @@ export default function PlayerButton({ children, x, y, avatarStyle, nickname }) 
   const userIcon = useMemo(() => {
     return 'data:image/svg+xml,' + encodeURIComponent(createAvatar(AvatarStyle[avatarStyle], {
       seed: nickname,
+      radius: 50,
 
       // Firefox needs width and height on root svg element
-      width: 44,
-      height: 44,
+      width: 58,
+      height: 58,
+      margin: avatarStyle === 'INITIALS' ? 8 : 0,
     }))
   }, [nickname, avatarStyle]);
+
+  const avatarSize = avatarStyle === 'INITIALS' ? 70 : 48;
 
   return (
     <CanvasCircle
@@ -26,10 +30,10 @@ export default function PlayerButton({ children, x, y, avatarStyle, nickname }) 
       lineWidth={6}
     >
       <CanvasImage
-        x={-22}
-        y={-22}
-        width={44}
-        height={44}
+        x={-avatarSize/2}
+        y={-avatarSize/2}
+        width={avatarSize}
+        height={avatarSize}
         source={userIcon}
       />
     </CanvasCircle>
