@@ -44,7 +44,11 @@ export const sitDown = createAsyncThunk('table/sitDown', async ({ tableId, seatI
 export const tableSlice = createSlice({
   name: 'table',
   initialState,
-  reducers: {},
+  reducers: {
+    setTable: (state, action) => {
+      state.value = action.payload.table;
+    }
+  },
   extraReducers: {
     [fetchTable.pending]: state => {
       state.isFetching = true;
@@ -99,6 +103,8 @@ export const tableSlice = createSlice({
     },
   },
 });
+
+export const { setTable } = tableSlice.actions
 
 export default tableSlice.reducer;
 
