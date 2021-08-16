@@ -2,16 +2,19 @@ import CanvasCircle from '../canvas-shapes/circle';
 import CanvasImage from '../canvas-shapes/canvas-image';
 import { createAvatar } from '@dicebear/avatars';
 import { AvatarStyle } from '../util/avatar';
+import { useMemo } from 'react';
 
 export default function PlayerButton({ children, x, y, avatarStyle, nickname }) {
 
-  const userIcon = 'data:image/svg+xml,' + encodeURIComponent(createAvatar(AvatarStyle[avatarStyle], {
-    seed: nickname,
+  const userIcon = useMemo(() => {
+    return 'data:image/svg+xml,' + encodeURIComponent(createAvatar(AvatarStyle[avatarStyle], {
+      seed: nickname,
 
-    // Firefox needs width and height on root svg element
-    width: 44,
-    height: 44,
-  }));
+      // Firefox needs width and height on root svg element
+      width: 44,
+      height: 44,
+    }))
+  }, [nickname, avatarStyle]);
 
   return (
     <CanvasCircle
@@ -30,6 +33,5 @@ export default function PlayerButton({ children, x, y, avatarStyle, nickname }) 
         source={userIcon}
       />
     </CanvasCircle>
-
   )
 }
