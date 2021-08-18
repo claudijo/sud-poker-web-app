@@ -3,6 +3,7 @@ import { boxPoint } from '../lib/intersects';
 import { measureText, resizeAndRestore } from '../lib/canvas';
 import { memoize } from '../lib/memoize';
 import { Lru } from '../lib/cache';
+import { useEffect, useRef } from 'react';
 
 class Shape extends AbstractShape {
   static get observedAttributes() {
@@ -129,8 +130,16 @@ class Shape extends AbstractShape {
 customElements.get('canvas-text') || customElements.define('canvas-text', Shape);
 
 export default function CanvasText({ children, ...props }) {
+
+  const elemRef = useRef(null)
+
+  useEffect(() => {
+    console.log(elemRef.current)
+  })
+
+
   return (
-    <canvas-text {...props}>
+    <canvas-text ref={elemRef} {...props} >
       {children}
     </canvas-text>
   );

@@ -14,7 +14,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { cancelReservation, fetchTable, reserveSeat, setTable, sitDown } from '../slices/table-slice';
 import { fetchMe } from '../slices/me-slice';
 import { clientSocketEmitter } from '../socket/client-socket-emitter';
-import PlayerButton from '../components/player-button';
+import PlayerMarker from '../components/player-marker';
 
 const stageWidth = 1280;
 const stageHeight = 720;
@@ -169,14 +169,13 @@ export default function GameOfPoker({ tableId }) {
 
       </Canvas>
       {/*Ui layer*/}
-      <Canvas interactive={true}>
-
+      <Canvas interactive={false}>
         {
           table?.seats
             .map((seat, index) => (
               <React.Fragment key={index}>
                 {table.seats[index] && (
-                  <PlayerButton
+                  <PlayerMarker
                     key={index}
                     x={positions[index].x}
                     y={positions[index].y}
@@ -185,6 +184,7 @@ export default function GameOfPoker({ tableId }) {
                     betSize={table.seats[index].betSize}
                     nickname={table.reservations[index].name}
                     avatarStyle={table.reservations[index].avatarStyle}
+                    showFaceDownCards={table.holeCards[index] && index !== seatIndex}
                   />
                 )}
               </React.Fragment>

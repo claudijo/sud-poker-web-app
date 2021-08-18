@@ -1,21 +1,11 @@
+import { useMemo } from 'react';
+import { generateUserIcon } from '../util/avatar';
 import CanvasCircle from '../canvas-shapes/circle';
 import CanvasImage from '../canvas-shapes/canvas-image';
-import { createAvatar } from '@dicebear/avatars';
-import { AvatarStyle } from '../util/avatar';
-import { useMemo } from 'react';
 
-export default function PlayerButton({ children, x, y, avatarStyle, nickname }) {
-
+export default function PlayerButton({x, y, avatarStyle, nickname}) {
   const userIcon = useMemo(() => {
-    return 'data:image/svg+xml,' + encodeURIComponent(createAvatar(AvatarStyle[avatarStyle], {
-      seed: nickname,
-      radius: 50,
-
-      // Firefox needs width and height on root svg element
-      width: 58,
-      height: 58,
-      margin: avatarStyle === 'INITIALS' ? 8 : 0,
-    }))
+    return generateUserIcon(nickname, avatarStyle);
   }, [nickname, avatarStyle]);
 
   const avatarSize = avatarStyle === 'INITIALS' ? 70 : 48;
@@ -30,12 +20,12 @@ export default function PlayerButton({ children, x, y, avatarStyle, nickname }) 
       lineWidth={6}
     >
       <CanvasImage
-        x={-avatarSize/2}
-        y={-avatarSize/2}
+        x={-avatarSize / 2}
+        y={-avatarSize / 2}
         width={avatarSize}
         height={avatarSize}
         source={userIcon}
       />
     </CanvasCircle>
-  )
+  );
 }

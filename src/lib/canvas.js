@@ -29,6 +29,7 @@ export function measureText(ctx, text) {
     Math.abs(textMetrics.actualBoundingBoxRight)
   const height = textMetrics.actualBoundingBoxAscent +
     textMetrics.actualBoundingBoxDescent
+    + 1 // Seems we need a slight margin here
   const top = textMetrics.actualBoundingBoxAscent
   const left = textMetrics.actualBoundingBoxLeft
   return { width, height, top, left }
