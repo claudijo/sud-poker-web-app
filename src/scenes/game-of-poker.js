@@ -169,7 +169,7 @@ export default function GameOfPoker({ tableId }) {
 
       </Canvas>
       {/*Ui layer*/}
-      <Canvas interactive={false}>
+      <Canvas interactive={true}>
         {
           table?.seats
             .map((seat, index) => (
@@ -184,7 +184,7 @@ export default function GameOfPoker({ tableId }) {
                     betSize={table.seats[index].betSize}
                     nickname={table.reservations[index].name}
                     avatarStyle={table.reservations[index].avatarStyle}
-                    showFaceDownCards={table.holeCards[index] && index !== seatIndex}
+                    showFaceDownCards={table.holeCards?.[index] && index !== seatIndex}
                   />
                 )}
               </React.Fragment>

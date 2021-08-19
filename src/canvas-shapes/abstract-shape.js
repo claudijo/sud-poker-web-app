@@ -10,7 +10,9 @@ export default class AbstractShape extends HTMLElement {
       'shadowblur',
       'shadowoffsetx',
       'shadowoffsety',
-      'globalalpha'
+      'globalalpha',
+      'originx',
+      'originy',
     ];
   }
 
@@ -112,6 +114,22 @@ export default class AbstractShape extends HTMLElement {
 
   set globalAlpha(value) {
     this.setAttribute('globalAlpha', value);
+  }
+
+  get originX() {
+    return parseFloat(this.getAttribute('originX') ?? 0);
+  }
+
+  set originX(value) {
+    this.setAttribute('originX', value);
+  }
+
+  get originY() {
+    return parseFloat(this.getAttribute('originY') ?? 0);
+  }
+
+  set originY(value) {
+    this.setAttribute('originY', value);
   }
 
   fillAndStroke(ctx) {

@@ -18,8 +18,8 @@ function restore(ctx, state){
 
 export function resizeAndRestore(ctx, width, height){
   const state = save(ctx);
-  ctx.canvas.width = width ?? ctx.canvas.width;
-  ctx.canvas.height = height ?? ctx.canvas.height;
+  ctx.canvas.width = Math.ceil(width ?? ctx.canvas.width);
+  ctx.canvas.height = Math.ceil(height ?? ctx.canvas.height);
   restore(ctx, state);
 }
 
@@ -29,8 +29,9 @@ export function measureText(ctx, text) {
     Math.abs(textMetrics.actualBoundingBoxRight)
   const height = textMetrics.actualBoundingBoxAscent +
     textMetrics.actualBoundingBoxDescent
-    + 1 // Seems we need a slight margin here
+  const fontHeight = textMetrics.fontBoundingBoxAscent + textMetrics.fontBoundingBoxDescent;
   const top = textMetrics.actualBoundingBoxAscent
   const left = textMetrics.actualBoundingBoxLeft
-  return { width, height, top, left }
+  const bottom = textMetrics.fontBoundingBoxDescent;
+  return { width, height, top, left, fontHeight, bottom }
 }

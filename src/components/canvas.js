@@ -16,7 +16,7 @@ export default function Canvas({ children, interactive }) {
 
       child.draw(ctx);
 
-      if (interactive) {
+      if (interactive && typeof child.getBoundingBox === 'function') {
         interactiveElements.current.insert(child);
       }
 

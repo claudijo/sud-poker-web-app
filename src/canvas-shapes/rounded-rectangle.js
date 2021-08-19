@@ -12,7 +12,7 @@ class Shape extends AbstractShape {
   }
 
   get width() {
-    return parseInt(this.getAttribute('width'));
+    return parseInt(this.getAttribute('width') ?? 0, 10);
   }
 
   set width(value) {
@@ -36,54 +36,60 @@ class Shape extends AbstractShape {
   }
 
   getBoundingBox() {
+    const x = this.x + this.offset.x + this.originX * this.width;
+    const y = this.y + this.offset.y + this.originY * this.height;
+
     return {
-      left: this.x + this.offset.x - this.lineWidth / 2,
-      right: this.x + this.width + this.offset.x + this.lineWidth / 2,
-      top: this.y + this.offset.y - this.lineWidth / 2,
-      bottom: this.y + this.height + this.offset.y + this.lineWidth / 2,
+      left: x - this.lineWidth / 2,
+      right: x  + this.width + this.lineWidth / 2,
+      top: y - this.lineWidth / 2,
+      bottom: y + this.height  + this.lineWidth / 2,
     };
   }
 
   intersects(point) {
+    const x = this.x + this.offset.x + this.originX * this.width;
+    const y = this.y + this.offset.y + this.originY * this.height;
+
     return circlePoint(
-      this.x + this.offset.x + this.radius,
-      this.y + this.offset.y + this.radius,
+      x +  this.radius,
+      y + this.radius,
       this.radius + this.lineWidth / 2,
       point.x,
       point.y,
       )
       || circlePoint(
-        this.x + this.offset.x + this.width - this.radius,
-        this.y + this.offset.y + this.radius,
+        x + this.width - this.radius,
+        y + this.radius,
         this.radius + this.lineWidth / 2,
         point.x,
         point.y,
       )
       || circlePoint(
-        this.x + this.offset.x + this.radius,
-        this.y + this.offset.y + this.height - this.radius,
+        x + this.radius,
+        y + this.height - this.radius,
         this.radius + this.lineWidth / 2,
         point.x,
         point.y,
       )
       || circlePoint(
-        this.x + this.offset.x + this.width - this.radius,
-        this.y + this.offset.y + this.height - this.radius,
+        x + this.width - this.radius,
+        y + this.height - this.radius,
         this.radius + this.lineWidth / 2,
         point.x,
         point.y,
       )
       || boxPoint(
-        this.x + this.offset.x + this.radius,
-        this.y + this.offset.y - this.lineWidth / 2,
+        x + this.radius,
+        y - this.lineWidth / 2,
         this.width - this.radius * 2,
         this.height + this.lineWidth,
         point.x,
         point.y,
       )
       || boxPoint(
-        this.x + this.offset.x - this.lineWidth / 2,
-        this.y + this.offset.y + this.radius,
+        x - this.lineWidth / 2,
+        y + this.radius,
         this.width + this.lineWidth,
         this.height - this.radius * 2,
         point.x,
@@ -92,8 +98,8 @@ class Shape extends AbstractShape {
   }
 
   draw(ctx, offset = { x: 0, y: 0 }) {
-    const x = this.x + offset.x;
-    const y = this.y + offset.y;
+    const x =  this.x + this.offset.x + this.originX * this.width;
+    const y =  this.y + this.offset.y + this.originY * this.height;
 
     ctx.beginPath();
     ctx.moveTo(x + this.radius, y);

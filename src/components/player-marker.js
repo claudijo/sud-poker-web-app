@@ -1,5 +1,4 @@
 import PlayerButton from './player-button';
-import CanvasText from '../canvas-shapes/canvas-text';
 import TextLabel from './text-label';
 
 export default function PlayerMarker({ children, x, y, avatarStyle, nickname, showFaceDownCards }) {
@@ -14,9 +13,19 @@ export default function PlayerMarker({ children, x, y, avatarStyle, nickname, sh
       />
       <TextLabel
         x={x}
-        y={y + 24}
+        y={y + 40}
         center={true}
         backgroundColor="#009557"
+        color="#fff"
+        fontSize={20}
+        fontFamily="Krungthep"
+        paddingTop={8}
+        paddingBottom={8}
+        paddingLeft={12}
+        paddingRight={12}
+        radius={16}
+        borderColor="#fff"
+        borderWidth={4}
       >
         {nickname}
       </TextLabel>

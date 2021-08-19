@@ -3,7 +3,7 @@ import { boxPoint } from '../lib/intersects';
 import { measureText, resizeAndRestore } from '../lib/canvas';
 import { memoize } from '../lib/memoize';
 import { Lru } from '../lib/cache';
-import { useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 
 class Shape extends AbstractShape {
   static get observedAttributes() {
@@ -11,7 +11,6 @@ class Shape extends AbstractShape {
       ...AbstractShape.observedAttributes,
       'font',
       'textalign',
-      'textbaseline',
       'direction',
     ];
   }
@@ -19,8 +18,6 @@ class Shape extends AbstractShape {
   constructor() {
     super();
 
-    this._width = 0;
-    this._height = 0;
     this.getCanvas = memoize(this.getCanvas.bind(this), new Lru());
   }
 
@@ -49,26 +46,52 @@ class Shape extends AbstractShape {
   }
 
   get width() {
-    return this._width;
+    const canvas = this.getCanvas(
+      this.textContent,
+      this.font,
+      this.textAlign,
+      this.direction,
+      this.fillStyle,
+      this.strokeStyle,
+      this.lineWidth,
+    );
+    return canvas.width;
+
   }
 
   get height() {
-    return this._height
+    const canvas = this.getCanvas(
+      this.textContent,
+      this.font,
+      this.textAlign,
+      this.direction,
+      this.fillStyle,
+      this.strokeStyle,
+      this.lineWidth,
+    );
+
+    return canvas.height;
   }
 
   get getBoundingBox() {
+    const x =  this.x + this.offset.x + this.originX * this.width;
+    const y =  this.y + this.offset.y + this.originY * this.height;
+
     return {
-      left: this.x + this.offset.x,
-      right: this.x + this.width + this.offset.x,
-      top: this.y + this.offset.y,
-      bottom: this.y + this.height + this.offset.y,
+      left: x,
+      right: x + this.width ,
+      top: y,
+      bottom: y + this.height ,
     };
   }
 
   intersects(point) {
+    const x =  this.x + this.offset.x + this.originX * this.width;
+    const y =  this.y + this.offset.y + this.originY * this.height;
+
     return boxPoint(
-      this.x + this.offset.x,
-      this.y + this.offset.y,
+      x,
+      y,
       this.width,
       this.height,
       point.x,
@@ -76,13 +99,15 @@ class Shape extends AbstractShape {
     );
   }
 
-  // Will be memoized
+  // Memoized in constructor
   getCanvas(text, font, textAlign, direction, fillStyle, strokeStyle, lineWidth) {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     ctx.font = font;
     ctx.textAlign = textAlign;
     ctx.direction = direction;
+
+    ctx.textBaseline = 'middle'
 
     if (fillStyle !== null) {
       ctx.fillStyle = fillStyle;
@@ -93,20 +118,17 @@ class Shape extends AbstractShape {
       ctx.lineWidth = lineWidth;
     }
 
-    const { width, height, top, left } = measureText(ctx, text);
+    const { width, fontHeight } = measureText(ctx, text);
 
-    this._width = width;
-    this._height = height;
-
-    resizeAndRestore(ctx, width + lineWidth, height + lineWidth);
+    resizeAndRestore(ctx, width + lineWidth, fontHeight + lineWidth);
 
     if (fillStyle !== null) {
-      ctx.fillText(text, left + lineWidth / 2, top + lineWidth / 2);
+      ctx.fillText(text, 0, fontHeight / 2);
     }
 
     if (strokeStyle !== null) {
       ctx.lineWidth = lineWidth;
-      ctx.strokeText(text, left + lineWidth / 2, top + lineWidth / 2);
+      ctx.strokeText(text, 0, fontHeight / 2);
     }
 
     return canvas;
@@ -123,24 +145,25 @@ class Shape extends AbstractShape {
       this.lineWidth,
     );
 
-    ctx.drawImage(canvas, this.x + this.offset.x, this.y + this.offset.y);
+    const x =  this.x + this.offset.x + this.originX * this.width;
+    const y =  this.y + this.offset.y + this.originY * this.height;
+
+    ctx.drawImage(canvas, x, y);
   }
 }
 
 customElements.get('canvas-text') || customElements.define('canvas-text', Shape);
 
-export default function CanvasText({ children, ...props }) {
-
-  const elemRef = useRef(null)
-
-  useEffect(() => {
-    console.log(elemRef.current)
-  })
-
-
+const CanvasText = React.forwardRef(({ children, ...props }, ref) => {
   return (
-    <canvas-text ref={elemRef} {...props} >
+    <canvas-text
+      {...props}
+      ref={ref}
+    >
       {children}
     </canvas-text>
   );
-}
+})
+
+export default CanvasText
+
