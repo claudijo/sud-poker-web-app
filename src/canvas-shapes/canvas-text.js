@@ -4,6 +4,7 @@ import { measureText, resizeAndRestore } from '../lib/canvas';
 import { memoize } from '../lib/memoize';
 import { Lru } from '../lib/cache';
 import React, { useState } from 'react';
+import { cropEnd } from '../lib/text';
 
 class Shape extends AbstractShape {
   static get observedAttributes() {
@@ -12,6 +13,7 @@ class Shape extends AbstractShape {
       'font',
       'textalign',
       'direction',
+      'maxwidth',
     ];
   }
 
@@ -45,6 +47,14 @@ class Shape extends AbstractShape {
     this.setAttribute('direction', value);
   }
 
+  get maxWidth() {
+    return parseFloat(this.getAttribute('maxWidth')) ?? Number.POSITIVE_INFINITY
+  }
+
+  set maxWidth(value) {
+    this.setAttribute('maxWidth', value);
+  }
+
   get width() {
     const canvas = this.getCanvas(
       this.textContent,
@@ -54,9 +64,9 @@ class Shape extends AbstractShape {
       this.fillStyle,
       this.strokeStyle,
       this.lineWidth,
+      this.maxWidth,
     );
     return canvas.width;
-
   }
 
   get height() {
@@ -100,7 +110,7 @@ class Shape extends AbstractShape {
   }
 
   // Memoized in constructor
-  getCanvas(text, font, textAlign, direction, fillStyle, strokeStyle, lineWidth) {
+  getCanvas(text, font, textAlign, direction, fillStyle, strokeStyle, lineWidth, maxWidth) {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     ctx.font = font;
@@ -118,7 +128,12 @@ class Shape extends AbstractShape {
       ctx.lineWidth = lineWidth;
     }
 
-    const { width, fontHeight } = measureText(ctx, text);
+    let { width, fontHeight } = measureText(ctx, text);
+    while (text !== '' && width > this.maxWidth) {
+      text = cropEnd(text)
+      const { width: newWidth } = measureText(ctx, text);
+      width = newWidth;
+    }
 
     resizeAndRestore(ctx, width + lineWidth, fontHeight + lineWidth);
 
@@ -143,6 +158,7 @@ class Shape extends AbstractShape {
       this.fillStyle,
       this.strokeStyle,
       this.lineWidth,
+      this.maxWidth,
     );
 
     const x =  this.x + this.offset.x + this.originX * this.width;

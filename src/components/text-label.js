@@ -18,6 +18,8 @@ export default function TextLabel(
     radius = 0,
     borderWidth,
     borderColor,
+    minWidth = 0,
+    maxWidth = Number.POSITIVE_INFINITY,
   },
 ) {
   const [measuredChildWidth, setMeasuredChildWidth] = useState(0)
@@ -27,11 +29,13 @@ export default function TextLabel(
     setMeasuredChildWidth(childRef.current.width)
   }, [])
 
+  const width = Math.min(maxWidth, Math.max(minWidth, measuredChildWidth))
+
   return (
     <RoundedRectangle
       x={x}
       y={y}
-      width={measuredChildWidth + paddingLeft + paddingRight}
+      width={width + paddingLeft + paddingRight}
       height={fontSize + paddingTop + paddingBottom}
       originX={-0.5}
       fillStyle={backgroundColor}
@@ -46,6 +50,7 @@ export default function TextLabel(
         fillStyle={color}
         font={`${fontSize}px ${fontFamily}`}
         originX={-0.5}
+        maxWidth={maxWidth}
       >{children}</CanvasText>
     </RoundedRectangle>
   );

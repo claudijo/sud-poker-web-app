@@ -26,6 +26,8 @@ export default function PlayerMarker({ children, x, y, avatarStyle, nickname, sh
         radius={16}
         borderColor="#fff"
         borderWidth={4}
+        minWidth={60}
+        maxWidth={100}
       >
         {nickname}
       </TextLabel>
