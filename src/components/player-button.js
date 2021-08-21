@@ -8,7 +8,7 @@ export default function PlayerButton({x, y, avatarStyle, nickname}) {
     return generateUserIcon(nickname, avatarStyle);
   }, [nickname, avatarStyle]);
 
-  const avatarSize = avatarStyle === 'INITIALS' ? 56 : 48;
+  const avatarSize = 48;
 
   return (
     <CanvasCircle

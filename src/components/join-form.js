@@ -71,7 +71,7 @@ export default function JoinForm(
             >
               {
                 [
-                  { name: 'Initials', value: 'INITIALS' },
+                  { name: 'Identicon', value: 'IDENTICON' },
                   { name: 'Male', value: 'MALE' },
                   { name: 'Female', value: 'FEMALE' },
                   { name: 'Gridy', value: 'GRIDY' },

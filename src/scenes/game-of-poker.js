@@ -30,7 +30,7 @@ export default function GameOfPoker({ tableId }) {
   const [joinFormHidden, setJoinFormHidden] = useState(true);
   const [joinFormDisabled, setJoinFormDisabled] = useState(false);
 
-  const [avatar, onAvatarChange] = useEventState('INITIALS');
+  const [avatar, onAvatarChange] = useEventState('IDENTICON');
   const [nickname, onNicknameChange] = useEventState('');
   const [buyIn, onBuyInChange] = useEventState(200, numberOrEmptyStringFromEvent);
   const [joinButtonsDisabled, setJoinButtonsDisabled] = useState(false);
@@ -39,11 +39,6 @@ export default function GameOfPoker({ tableId }) {
   const table = useSelector(state => state.table.value);
   const me = useSelector(state => state.me.value);
   const seatIndex = useSelector(state => state.seatIndex.value);
-
-  // console.log(table);
-  // console.log({ seatIndex });
-  // console.log(seatIndex)
-  // console.log(me)
 
   // Set up table change listeners
   useEffect(() => {
