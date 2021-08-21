@@ -24,14 +24,23 @@ export function resizeAndRestore(ctx, width, height){
 }
 
 export function measureText(ctx, text) {
-  const textMetrics = ctx.measureText(text)
-  const width = Math.abs(textMetrics.actualBoundingBoxLeft) +
-    Math.abs(textMetrics.actualBoundingBoxRight)
-  const height = textMetrics.actualBoundingBoxAscent +
-    textMetrics.actualBoundingBoxDescent
-  const fontHeight = textMetrics.fontBoundingBoxAscent + textMetrics.fontBoundingBoxDescent;
-  const top = textMetrics.actualBoundingBoxAscent
-  const left = textMetrics.actualBoundingBoxLeft
-  const bottom = textMetrics.fontBoundingBoxDescent;
-  return { width, height, top, left, fontHeight, bottom }
+  const { width } = ctx.measureText(text)
+  const fontHeightMatch = ctx.font.match(/(\d+\.?\d*)\s*px/)
+  const fontHeight = parseFloat(fontHeightMatch?.[1] ?? '10')
+
+  return {
+    width,
+    fontHeight,
+  }
+
+  // const width = Math.abs(textMetrics.actualBoundingBoxLeft) +
+  //   Math.abs(textMetrics.actualBoundingBoxRight)
+  // const height = textMetrics.actualBoundingBoxAscent +
+  //   textMetrics.actualBoundingBoxDescent
+  // const fontHeight = textMetrics.fontBoundingBoxAscent +
+  //   textMetrics.fontBoundingBoxDescent;
+  // const top = textMetrics.actualBoundingBoxAscent
+  // const left = textMetrics.actualBoundingBoxLeft
+  // const bottom = textMetrics.fontBoundingBoxDescent;
+  // return { width, height, top, left, bottom }
 }

@@ -129,7 +129,7 @@ class Shape extends AbstractShape {
     }
 
     let { width, fontHeight } = measureText(ctx, text);
-    while (text !== '' && width > this.maxWidth) {
+    while (text !== '' && width > maxWidth) {
       text = cropEnd(text)
       const { width: newWidth } = measureText(ctx, text);
       width = newWidth;
