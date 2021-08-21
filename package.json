@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@dicebear/avatars": "^4.7.2",
+    "@dicebear/avatars-bottts-sprites": "^4.7.2",
     "@dicebear/avatars-female-sprites": "^4.7.2",
     "@dicebear/avatars-gridy-sprites": "^4.7.2",
     "@dicebear/avatars-identicon-sprites": "^4.7.2",

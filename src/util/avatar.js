@@ -2,6 +2,7 @@ import * as femaleStyle from '@dicebear/avatars-female-sprites';
 import * as gridyStyle from '@dicebear/avatars-gridy-sprites';
 import * as maleStyle from '@dicebear/avatars-male-sprites';
 import * as identiconStyle from '@dicebear/avatars-identicon-sprites'
+import * as botttsStyle from '@dicebear/avatars-bottts-sprites'
 import { createAvatar } from '@dicebear/avatars';
 
 export const AvatarStyle = {
@@ -9,6 +10,7 @@ export const AvatarStyle = {
   MALE: maleStyle,
   GRIDY: gridyStyle,
   IDENTICON: identiconStyle,
+  BOTTTS: botttsStyle,
 }
 
 export const generateUserIcon = (nickname, avatarStyle) => {
