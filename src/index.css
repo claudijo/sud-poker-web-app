@@ -27,7 +27,8 @@ body {
 
 @font-face {
   font-family: "Krungthep";
-  src: url("./fonts/krungthep.woff2") format("woff2"),
+  src: local("Krungthep"),
+  url("./fonts/krungthep.woff2") format("woff2"),
   url("./fonts/krungthep.woff") format("woff"),
   url("./fonts/krungthep.ttf") format("truetype");
   font-weight: normal;
@@ -43,7 +44,8 @@ body {
  */
 @font-face {
   font-family: "CardCharacters";
-  src: url("./fonts/card-characters.woff2") format("woff2"),
+  src: local("CardCharacters"),
+  url("./fonts/card-characters.woff2") format("woff2"),
   url("./fonts/card-characters.woff") format("woff"),
   url("./fonts/card-characters.ttf") format("truetype");
   font-weight: normal;
