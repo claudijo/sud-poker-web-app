@@ -1,5 +1,7 @@
 import PlayerButton from './player-button';
 import TextLabel from './text-label';
+import StackLabel from './stack-label';
+import NameLabel from './name-label';
 
 export default function PlayerMarker(
   {
@@ -21,44 +23,12 @@ export default function PlayerMarker(
         avatarStyle={avatarStyle}
         nickname={nickname}
       />
-      <TextLabel
-        x={x}
-        y={y - 80}
-        backgroundColor="#e16057"
-        color="#fff"
-        fontSize={24}
-        fontFamily="Krungthep"
-        paddingTop={8}
-        paddingBottom={8}
-        paddingLeft={12}
-        paddingRight={12}
-        radius={16}
-        borderColor="#fff"
-        borderWidth={4}
-        originX={-0.5}
-      >
+      <StackLabel x={x} y={y - 80}>
         ${stack}
-      </TextLabel>
-      <TextLabel
-        x={x}
-        y={y + 40}
-        backgroundColor="#009557"
-        color="#fff"
-        fontSize={20}
-        fontFamily="Krungthep"
-        paddingTop={8}
-        paddingBottom={8}
-        paddingLeft={12}
-        paddingRight={12}
-        radius={16}
-        borderColor="#fff"
-        borderWidth={4}
-        minWidth={60}
-        maxWidth={100}
-        originX={-0.5}
-      >
+      </StackLabel>
+      <NameLabel x={x} y={y + 40}>
         {nickname}
-      </TextLabel>
+      </NameLabel>
     </>
   );
 }
