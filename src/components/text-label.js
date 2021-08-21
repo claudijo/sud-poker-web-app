@@ -20,6 +20,7 @@ export default function TextLabel(
     borderColor,
     minWidth = 0,
     maxWidth = Number.POSITIVE_INFINITY,
+    originX = 0,
   },
 ) {
   const [measuredChildWidth, setMeasuredChildWidth] = useState(0)
@@ -37,7 +38,7 @@ export default function TextLabel(
       y={y}
       width={width + paddingLeft + paddingRight}
       height={fontSize + paddingTop + paddingBottom}
-      originX={-0.5}
+      originX={originX}
       fillStyle={backgroundColor}
       radius={radius}
       strokeStyle={borderColor}
@@ -45,11 +46,11 @@ export default function TextLabel(
     >
       <CanvasText
         ref={childRef}
-        x={paddingLeft / 2 - paddingRight / 2}
+        x={paddingLeft + paddingLeft * originX + paddingRight * originX}
         y={paddingTop}
         fillStyle={color}
         font={`${fontSize}px ${fontFamily}`}
-        originX={-0.5}
+        originX={originX}
         maxWidth={maxWidth}
       >{children}</CanvasText>
     </RoundedRectangle>

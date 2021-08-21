@@ -12,13 +12,16 @@ export const AvatarStyle = {
 }
 
 export const generateUserIcon = (nickname, avatarStyle) => {
-  return 'data:image/svg+xml,' + encodeURIComponent(createAvatar(AvatarStyle[avatarStyle], {
+  return createAvatar(AvatarStyle[avatarStyle], {
     seed: nickname,
     radius: 50,
+    background: '#89d9d1',
+    backgroundColors: [],
+    dataUri: true,
 
     // Firefox needs width and height on root svg element
     width: 58,
     height: 58,
-    margin: avatarStyle === 'INITIALS' ? 8 : 0,
-  }))
+    // margin: avatarStyle === 'INITIALS' ? 8 : 0,
+  })
 }
