@@ -13,6 +13,7 @@ export default class AbstractShape extends HTMLElement {
       'globalalpha',
       'originx',
       'originy',
+      'rotation',
     ];
   }
 
@@ -109,7 +110,7 @@ export default class AbstractShape extends HTMLElement {
   }
 
   get globalAlpha() {
-    return parseFloat(this.getAttribute('globalAlpha'));
+    return parseFloat(this.getAttribute('globalAlpha') ?? '1');
   }
 
   set globalAlpha(value) {
@@ -130,6 +131,14 @@ export default class AbstractShape extends HTMLElement {
 
   set originY(value) {
     this.setAttribute('originY', value);
+  }
+
+  get rotation() {
+    return parseFloat(this.getAttribute('rotation') ?? 0);
+  }
+
+  set rotation(value) {
+    this.setAttribute('rotation', value);
   }
 
   fillAndStroke(ctx) {

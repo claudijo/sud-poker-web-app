@@ -1,20 +1,18 @@
 import PlayerButton from './player-button';
-import TextLabel from './text-label';
 import StackLabel from './stack-label';
 import NameLabel from './name-label';
+import FaceDownCard from './face-down-card';
 
 export default function PlayerMarker(
   {
-    children,
     x,
     y,
     avatarStyle,
     nickname,
     showFaceDownCards,
     stack,
-  }
+  },
 ) {
-
   return (
     <>
       <PlayerButton
@@ -29,6 +27,19 @@ export default function PlayerMarker(
       <NameLabel x={x} y={y + 40}>
         {nickname}
       </NameLabel>
+      {showFaceDownCards && (
+        <>
+          <FaceDownCard
+            x={x + 65}
+            y={y - 38}
+            rotation={20 * Math.PI / 180}
+          />
+          <FaceDownCard
+            x={x + 35}
+            y={y - 32}
+          />
+        </>
+      )}
     </>
   );
 }

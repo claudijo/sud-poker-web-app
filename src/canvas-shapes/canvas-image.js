@@ -42,23 +42,29 @@ class Shape extends AbstractShape {
   }
 
   getBoundingBox() {
+    const x = this.x + this.offset.x + this.originX * this.width;
+    const y = this.y + this.offset.y + this.originY * this.height;
+
     return {
-      left: this.x + this.offset.x,
-      right: this.x + this.width + this.offset.x,
-      top: this.y + this.offset.y,
-      bottom: this.y + this.height + this.offset.y,
+      left: x,
+      right: x + this.width,
+      top: y,
+      bottom: y + this.height,
     };
   }
 
   intersects(point) {
+    const x = this.x + this.offset.x + this.originX * this.width;
+    const y = this.y + this.offset.y + this.originY * this.height;
+
     return boxPoint(
-      this.x + this.offset.x,
-      this.y + this.offset.y,
+      x,
+      y,
       this.width,
       this.height,
       point.x,
-      point.y
-    )
+      point.y,
+    );
   }
 
   getImageElement() {
@@ -84,14 +90,42 @@ class Shape extends AbstractShape {
       .then(image => {
         ctx.save()
 
+        const x = this.x + this.offset.x + this.originX * this.width;
+        const y = this.y + this.offset.y + this.originY * this.height;
+
+        if (this.rotation !== 0) {
+          // Maybe make add something like centerXOffset and centerYOffset
+          const { top, left } = this.getBoundingBox()
+
+          ctx.translate(left, top)
+          ctx.rotate(this.rotation)
+          ctx.translate(-left, -top)
+        }
+
         // This does not work if calling this.fillAndStroke(ctx), since draw
         // image must come after ctx.save() and before ctx.restore(),so put it
         // explicitly here
-        if (this.globalAlpha !== null) {
+        if (this.globalAlpha !== 1) {
           ctx.globalAlpha = this.globalAlpha
         }
 
-        ctx.drawImage(image, this.x + this.offset.x, this.y + this.offset.y, this.width, this.height);
+        if (this.shadowColor !== null) {
+          ctx.shadowColor = this.shadowColor
+        }
+
+        if (this.shadowBlur !== 0) {
+          ctx.shadowBlur = this.shadowBlur
+        }
+
+        if (this.shadowOffsetX !== 0) {
+          ctx.shadowOffsetX = this.shadowOffsetX
+        }
+
+        if (this.shadowOffsetY !== 0) {
+          ctx.shadowOffsetY = this.shadowOffsetY;
+        }
+
+        ctx.drawImage(image, x, y, this.width, this.height);
         ctx.restore();
       });
   }
