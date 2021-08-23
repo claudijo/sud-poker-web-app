@@ -1,9 +1,13 @@
 import FaceUpCard from './face-up-card';
 import { useSpring, useChain, animated, useSpringRef } from '@react-spring/web';
+import dealCardAudio from '../audio/deal-card.mp3';
+import { Sound } from '../lib/sound';
 
 const AnimatedFaceUpCard = animated(FaceUpCard);
 
-export default function PlayerHand({ x, y, holeCards = [] }) {
+const dealCardSound = new Sound(dealCardAudio)
+
+export default function PlayerHand({ x, y, holeCards }) {
   const slideDownRef = useSpringRef()
   const slideSideRef = useSpringRef()
 
@@ -11,7 +15,7 @@ export default function PlayerHand({ x, y, holeCards = [] }) {
     to: { x: x + 40 },
     from: { x: x + 88 },
     onStart: () => {
-      console.log('Start slide side')
+      dealCardSound.play()
     },
     ref: slideSideRef
   })
@@ -20,7 +24,7 @@ export default function PlayerHand({ x, y, holeCards = [] }) {
     to: { y: y - 32, globalAlpha: 1 },
     from: { y: y - 82, globalAlpha: 0 },
     onStart: () => {
-      console.log('Start slide down')
+      dealCardSound.play()
     },
     ref: slideDownRef
   })

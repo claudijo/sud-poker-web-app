@@ -164,7 +164,7 @@ export default function GameOfPoker({ tableId }) {
       </Canvas>
 
       <Canvas>
-        { positions[seatIndex] && (
+        { positions[seatIndex] && holeCards.length === 2 && (
           <PlayerHand
             x={positions[seatIndex].x}
             y={positions[seatIndex].y}

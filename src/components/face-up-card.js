@@ -1,7 +1,7 @@
 import CanvasRectangle from '../canvas-shapes/rectangle';
 import CanvasText from '../canvas-shapes/canvas-text';
 import { parseRank, parseSuit, suitColor } from '../util/card';
-import { useTransition } from '@react-spring/web';
+import { useEffect } from 'react';
 
 export default function FaceUpCard({ x, y, globalAlpha, rank, suit}) {
   const color = suitColor(suit);
@@ -24,7 +24,7 @@ export default function FaceUpCard({ x, y, globalAlpha, rank, suit}) {
         x={4}
         globalAlpha={globalAlpha}
         fillStyle={color}
-        font="28px CardCharacters"
+        font="30px CardCharacters"
       >
         {parseRank(rank)}
       </CanvasText>
