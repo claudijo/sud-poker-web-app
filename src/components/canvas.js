@@ -50,7 +50,7 @@ export default function Canvas({ children, interactive }) {
     const canvas = canvasElement.current;
     const ctx = canvas.getContext('2d');
 
-    const onUpdate = debounce(event => {
+    const onUpdate = throttle(event => {
       ctx.clearRect(0, 0, canvasElement.current.width, canvasElement.current.height);
 
       if (interactive) {

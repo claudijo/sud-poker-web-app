@@ -38,7 +38,7 @@ export default class AbstractShape extends HTMLElement {
   }
 
   get x() {
-    return parseInt(this.getAttribute('x') ?? 0, 10);
+    return parseFloat(this.getAttribute('x') ?? 0);
   }
 
   set x(value) {
@@ -46,7 +46,7 @@ export default class AbstractShape extends HTMLElement {
   }
 
   get y() {
-    return parseInt(this.getAttribute('y') ?? 0, 10);
+    return parseFloat(this.getAttribute('y') ?? 0);
   }
 
   set y(value) {

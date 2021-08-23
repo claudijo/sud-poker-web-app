@@ -164,7 +164,11 @@ class Shape extends AbstractShape {
     const x =  this.x + this.offset.x + this.originX * this.width;
     const y =  this.y + this.offset.y + this.originY * this.height;
 
+    ctx.save()
+    ctx.globalAlpha = this.globalAlpha
+
     ctx.drawImage(canvas, x, y);
+    ctx.restore()
   }
 }
 
