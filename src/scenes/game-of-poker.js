@@ -15,6 +15,8 @@ import { cancelReservation, fetchTable, reserveSeat, setTable, sitDown } from '.
 import { fetchMe } from '../slices/me-slice';
 import { clientSocketEmitter } from '../socket/client-socket-emitter';
 import PlayerMarker from '../components/player-marker';
+import { seatSlice } from '../slices/seat';
+import PlayerHand from '../components/player-hand';
 
 const stageWidth = 1280;
 const stageHeight = 720;
@@ -39,6 +41,7 @@ export default function GameOfPoker({ tableId }) {
   const table = useSelector(state => state.table.value);
   const me = useSelector(state => state.me.value);
   const seatIndex = useSelector(state => state.seatIndex.value);
+  const holeCards = useSelector(state => state.holeCards.value);
 
   // Set up table change listeners
   useEffect(() => {
@@ -159,9 +162,15 @@ export default function GameOfPoker({ tableId }) {
           borderWidth={16}
         />
       </Canvas>
-      {/*Animation layer*/}
-      <Canvas>
 
+      <Canvas>
+        { positions[seatIndex] && (
+          <PlayerHand
+            x={positions[seatIndex].x}
+            y={positions[seatIndex].y}
+            holeCards={holeCards}
+          />
+        )}
       </Canvas>
       {/*Ui layer*/}
       <Canvas interactive={true}>
