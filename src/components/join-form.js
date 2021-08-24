@@ -93,6 +93,9 @@ export default function JoinForm(
               title="Buy-in"
               min="1"
               max="99999"
+              step="1"
+              pattern="[0-9]*"
+              inputMode="numeric"
             />
           </label>
         </section>

@@ -17,6 +17,7 @@ import { clientSocketEmitter } from '../socket/client-socket-emitter';
 import PlayerMarker from '../components/player-marker';
 import { seatSlice } from '../slices/seat';
 import PlayerHand from '../components/player-hand';
+import BetForm from '../components/bet-form';
 
 const stageWidth = 1280;
 const stageHeight = 720;
@@ -232,6 +233,10 @@ export default function GameOfPoker({ tableId }) {
           onNicknameChange={onNicknameChange}
           buyIn={buyIn}
           onBuyInChange={onBuyInChange}
+        />
+      </Popup>
+      <Popup show={true}>
+        <BetForm
         />
       </Popup>
     </Stage>

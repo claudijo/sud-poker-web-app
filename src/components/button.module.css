@@ -21,7 +21,7 @@
     cursor: pointer;
 }
 
-.button:active {
+.button:active:enabled {
     transform: translate(4px, 4px);
     box-shadow: 4px 4px rgba(0, 0, 0, 0.4);
 }
@@ -39,7 +39,7 @@
     background-color: #327a99;
 }
 
-.button.primary:active {
+.button.primary:active:enabled {
     background-color: #266280;
 }
 
@@ -51,8 +51,46 @@
     background-color: #fffea3;
 }
 
-.button.secondary:active {
-    background-color: #fffe99;
+.button.secondary:active:enabled {
+    background-color: #fffe7f;
+}
+
+.button.tertiary {
+    font-size: 0.8em;
+    padding: 8px 8px;
+    box-shadow: 6px 6px rgba(0, 0, 0, 0.4);
+}
+
+.button.tertiary:active {
+    transform: translate(3px, 3px);
+    box-shadow: 3px 3px rgba(0, 0, 0, 0.4);
+}
+
+.button.iconic {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    box-shadow: none;
+    background-color: #fefdc8;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.button.iconic :global(svg) {
+    fill: #3689b3;
+}
+
+.button.iconic:hover:enabled {
+    background-color: #fffea3;
+}
+
+.button.iconic:active:enabled {
+    background-color: #fffe7f;
+    transform: none;
+    box-shadow: none;
 }
 
 .button.danger {
@@ -65,7 +103,7 @@
     color: #ffffff;
 }
 
-.button.danger:active {
+.button.danger:active:enabled {
     background-color: #ad5145;
     color: #ffffff;
 }
@@ -80,7 +118,7 @@
     color: #ffffff;
 }
 
-.button.success:active {
+.button.success:active:enabled {
     background-color: #009557;
     color: #ffffff;
 }

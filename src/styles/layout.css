@@ -4,6 +4,13 @@
     align-items: center;
 }
 
+.rightAlignedCenteredRowContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+
 .centeredColumnContainer {
     display: flex;
     flex-direction: column;
