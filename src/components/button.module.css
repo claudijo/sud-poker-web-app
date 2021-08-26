@@ -52,7 +52,7 @@
 }
 
 .button.secondary:active:enabled {
-    background-color: #fffe7f;
+    background-color: #fffe89;
 }
 
 .button.tertiary {
@@ -88,7 +88,7 @@
 }
 
 .button.iconic:active:enabled {
-    background-color: #fffe7f;
+    background-color: #fffe89;
     transform: none;
     box-shadow: none;
 }

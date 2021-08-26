@@ -77,7 +77,12 @@ export default function JoinForm(
                   { name: 'Gridy', value: 'GRIDY' },
                   { name: 'Bottts', value: 'BOTTTS' },
                 ].map(item => (
-                  <option key={item.value} value={item.value}>{item.name}</option>
+                  <option
+                    key={item.value}
+                    value={item.value}
+                  >
+                    {item.name}
+                  </option>
                 ))
               }
             </select>
@@ -102,10 +107,23 @@ export default function JoinForm(
         <div className={styles.buttonRow}>
           <section className="grid gridMargin">
             <div className="colGutter col6of12">
-              <Button type="button" disabled={disabled} theme="secondary" wide={true} onClick={onCancel}>Cancel</Button>
+              <Button
+                type="button"
+                disabled={disabled}
+                theme="wide secondary"
+                onClick={onCancel}
+              >
+                Cancel
+              </Button>
             </div>
             <div className="colGutter col6of12">
-              <Button type="submit" disabled={disabled} wide={true}>Join</Button>
+              <Button
+                type="submit"
+                disabled={disabled}
+                theme="wide primary"
+              >
+                Join
+              </Button>
             </div>
           </section>
         </div>

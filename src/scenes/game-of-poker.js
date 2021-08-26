@@ -18,6 +18,8 @@ import PlayerMarker from '../components/player-marker';
 import { seatSlice } from '../slices/seat';
 import PlayerHand from '../components/player-hand';
 import BetForm from '../components/bet-form';
+import ActionBar from '../components/action-bar';
+import ActionForm from '../components/action-form';
 
 const stageWidth = 1280;
 const stageHeight = 720;
@@ -32,6 +34,8 @@ const positions = centerForPositions(tableWidth, tableHeight, tableX, tableY);
 export default function GameOfPoker({ tableId }) {
   const [joinFormHidden, setJoinFormHidden] = useState(true);
   const [joinFormDisabled, setJoinFormDisabled] = useState(false);
+  const [betFormHidden, setBetFormHidden] = useState(true);
+  const [betFormDisabled, setBetFormDisabled] = useState(false);
 
   const [avatar, onAvatarChange] = useEventState('IDENTICON');
   const [nickname, onNicknameChange] = useEventState('');
@@ -43,6 +47,8 @@ export default function GameOfPoker({ tableId }) {
   const me = useSelector(state => state.me.value);
   const seatIndex = useSelector(state => state.seatIndex.value);
   const holeCards = useSelector(state => state.holeCards.value);
+
+  console.log('Table', table);
 
   // Set up table change listeners
   useEffect(() => {
@@ -151,6 +157,11 @@ export default function GameOfPoker({ tableId }) {
     setJoinButtonsDisabled(false);
   };
 
+  const onBetClick = event => {
+    console.log('Show bet from');
+    setBetFormHidden(false);
+  };
+
   return (
     <Stage width={stageWidth} height={stageHeight} scaleMode={ScaleMode.SCALE_TO_FIT}>
       {/*Background layer*/}
@@ -165,7 +176,7 @@ export default function GameOfPoker({ tableId }) {
       </Canvas>
 
       <Canvas>
-        { positions[seatIndex] && holeCards.length === 2 && (
+        {positions[seatIndex] && holeCards.length === 2 && (
           <PlayerHand
             x={positions[seatIndex].x}
             y={positions[seatIndex].y}
@@ -222,6 +233,15 @@ export default function GameOfPoker({ tableId }) {
         )}
       </Canvas>
       {/*Html overlays*/}
+      {table?.legalActions?.actions.length && table.playerToAct === seatIndex && (
+        <ActionBar>
+          <ActionForm
+            actions={table.legalActions.actions}
+            onBetClick={onBetClick}
+          />
+        </ActionBar>
+      )}
+
       <Popup show={!joinFormHidden}>
         <JoinForm
           disabled={joinFormDisabled}
@@ -235,8 +255,9 @@ export default function GameOfPoker({ tableId }) {
           onBuyInChange={onBuyInChange}
         />
       </Popup>
-      <Popup show={true}>
+      <Popup show={!betFormHidden}>
         <BetForm
+
         />
       </Popup>
     </Stage>

@@ -70,28 +70,28 @@ export default function BetForm(
         </section>
         <section className="grid gridMargin">
           <div className="colGutter col2of12">
-            <Button type="button" disabled={disabled} theme="tertiary" wide={true} onClick={onCancel}>Min</Button>
+            <Button type="button" disabled={disabled} theme="wide tertiary" onClick={onCancel}>Min</Button>
           </div>
           <div className="colGutter col2of12">
-            <Button type="button" disabled={disabled} theme="tertiary" wide={true} onClick={onCancel}>1/2</Button>
+            <Button type="button" disabled={disabled} theme="wide tertiary" onClick={onCancel}>1/2</Button>
           </div>
           <div className="colGutter col2of12">
-            <Button type="button" disabled={disabled} theme="tertiary" wide={true} onClick={onCancel}>3/4</Button>
+            <Button type="button" disabled={disabled} theme="wide tertiary" onClick={onCancel}>3/4</Button>
           </div>
           <div className="colGutter col2of12">
-            <Button type="button" disabled={disabled} theme="tertiary" wide={true} onClick={onCancel}>Pot</Button>
+            <Button type="button" disabled={disabled} theme="wide tertiary" onClick={onCancel}>Pot</Button>
           </div>
           <div className="colGutter col4of12">
-            <Button type="button" disabled={disabled} theme="tertiary" wide={true} onClick={onCancel}>All-in</Button>
+            <Button type="button" disabled={disabled} theme="wide tertiary" onClick={onCancel}>All-in</Button>
           </div>
         </section>
         <div className={styles.buttonRow}>
           <section className="grid gridMargin">
             <div className="colGutter col6of12">
-              <Button type="button" disabled={disabled} theme="secondary" wide={true} onClick={onCancel}>Cancel</Button>
+              <Button type="button" disabled={disabled} theme="wide secondary" onClick={onCancel}>Cancel</Button>
             </div>
             <div className="colGutter col6of12">
-              <Button type="submit" disabled={disabled} wide={true}>Go!</Button>
+              <Button type="submit" disabled={disabled} theme="wide primary">Go!</Button>
             </div>
           </section>
         </div>
