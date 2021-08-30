@@ -30,6 +30,10 @@
     width: 100%;
 }
 
+.button.small {
+    font-size: 0.7em;
+}
+
 .button.primary {
     background-color: #3689b3;
     color: #ffffff;
@@ -67,11 +71,10 @@
 }
 
 .button.iconic {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
+    width: 28px;
+    height: 28px;
     box-shadow: none;
-    background-color: #fefdc8;
+    background-color: transparent;
     padding: 0;
     display: flex;
     flex-direction: row;
@@ -84,13 +87,21 @@
 }
 
 .button.iconic:hover:enabled {
-    background-color: #fffea3;
+    background-color: transparent;
+}
+
+.button.iconic:hover:enabled :global(svg) {
+    fill: #327a99;
 }
 
 .button.iconic:active:enabled {
-    background-color: #fffe89;
+    background-color: transparent;
     transform: none;
     box-shadow: none;
+}
+
+.button.iconic:active:enabled :global(svg) {
+    fill: #266280;
 }
 
 .button.danger {
@@ -120,5 +131,20 @@
 
 .button.success:active:enabled {
     background-color: #009557;
+    color: #ffffff;
+}
+
+.button.extra {
+    background-color: #ff4be3;
+    color: #ffffff;
+}
+
+.button.extra:hover:enabled {
+    background-color: #ff3cdf;
+    color: #ffffff;
+}
+
+.button.extra:active:enabled {
+    background-color: #ff2adb;
     color: #ffffff;
 }

@@ -11,7 +11,7 @@ import FullscreenButton from '../components/fullscreen-button';
 import Popup from '../components/popup';
 import { centerForPositions } from '../util/table';
 import { useSelector, useDispatch } from 'react-redux';
-import { cancelReservation, fetchTable, reserveSeat, setTable, sitDown } from '../slices/table-slice';
+import { actionTaken, cancelReservation, fetchTable, reserveSeat, setTable, sitDown } from '../slices/table-slice';
 import { fetchMe } from '../slices/me-slice';
 import { clientSocketEmitter } from '../socket/client-socket-emitter';
 import PlayerMarker from '../components/player-marker';
@@ -34,6 +34,8 @@ const positions = centerForPositions(tableWidth, tableHeight, tableX, tableY);
 export default function GameOfPoker({ tableId }) {
   const [joinFormHidden, setJoinFormHidden] = useState(true);
   const [joinFormDisabled, setJoinFormDisabled] = useState(false);
+  const [actionFormDisabled, setActionFormDisabled] = useState(false)
+
   const [betFormHidden, setBetFormHidden] = useState(true);
   const [betFormDisabled, setBetFormDisabled] = useState(false);
 
@@ -42,13 +44,17 @@ export default function GameOfPoker({ tableId }) {
   const [buyIn, onBuyInChange] = useEventState(200, numberOrEmptyStringFromEvent);
   const [joinButtonsDisabled, setJoinButtonsDisabled] = useState(false);
 
+  const [betSize, onBetSizeChange, setBetSize] = useEventState(0, numberOrEmptyStringFromEvent)
+
   const dispatch = useDispatch();
   const table = useSelector(state => state.table.value);
   const me = useSelector(state => state.me.value);
   const seatIndex = useSelector(state => state.seatIndex.value);
   const holeCards = useSelector(state => state.holeCards.value);
 
-  console.log('Table', table);
+  useEffect(() => {
+    setBetSize(table?.legalActions?.chipRange.min ?? 0)
+  }, [setBetSize, table?.legalActions?.chipRange.min])
 
   // Set up table change listeners
   useEffect(() => {
@@ -62,12 +68,14 @@ export default function GameOfPoker({ tableId }) {
     clientSocketEmitter.on('cancelReservation', onTableChange);
     clientSocketEmitter.on('sitDown', onTableChange);
     clientSocketEmitter.on('startHand', onTableChange);
+    clientSocketEmitter.on('actionTaken', onTableChange)
 
     return () => {
       clientSocketEmitter.off('reserveSeat', onTableChange);
       clientSocketEmitter.off('cancelReservation', onTableChange);
       clientSocketEmitter.off('sitDown', onTableChange);
       clientSocketEmitter.off('startHand', onTableChange);
+      clientSocketEmitter.off('actionTaken', onTableChange)
     };
   }, [dispatch, tableId]);
 
@@ -98,6 +106,8 @@ export default function GameOfPoker({ tableId }) {
     isFullscreen,
     request: requestFullScreen,
   } = useFullscreen();
+
+  console.log(table)
 
   const onFullscreenButtonClick = event => {
     requestFullScreen();
@@ -157,10 +167,35 @@ export default function GameOfPoker({ tableId }) {
     setJoinButtonsDisabled(false);
   };
 
-  const onBetClick = event => {
-    console.log('Show bet from');
-    setBetFormHidden(false);
+  const onBetFormSubmit = async event => {
+    event.preventDefault();
+    const action = table.legalActions.actions.includes('bet') ? 'bet' : 'raise'
+
+    setActionFormDisabled(true)
+
+    const { error } = await dispatch(actionTaken({
+      tableId,
+      action,
+      betSize,
+    }));
+
+    if (error) {
+      setActionFormDisabled(false)
+    }
   };
+
+  const onActionButtonClick = action => async event => {
+    setActionFormDisabled(true)
+
+    const { error } = await dispatch(actionTaken({
+      tableId,
+      action,
+    }));
+
+    if (error) {
+      setActionFormDisabled(false)
+    }
+  }
 
   return (
     <Stage width={stageWidth} height={stageHeight} scaleMode={ScaleMode.SCALE_TO_FIT}>
@@ -236,8 +271,14 @@ export default function GameOfPoker({ tableId }) {
       {table?.legalActions?.actions.length && table.playerToAct === seatIndex && (
         <ActionBar>
           <ActionForm
+            disabled={actionFormDisabled}
+            onSubmit={onBetFormSubmit}
             actions={table.legalActions.actions}
-            onBetClick={onBetClick}
+            onBetSizeChange={onBetSizeChange}
+            betSize={betSize}
+            min={table?.legalActions?.chipRange.min}
+            max={table?.legalActions?.chipRange.max}
+            onActionButtonClick={onActionButtonClick}
           />
         </ActionBar>
       )}
@@ -256,9 +297,7 @@ export default function GameOfPoker({ tableId }) {
         />
       </Popup>
       <Popup show={!betFormHidden}>
-        <BetForm
-
-        />
+        <BetForm/>
       </Popup>
     </Stage>
   );

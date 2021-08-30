@@ -22,24 +22,39 @@ export const reserveSeat = createAsyncThunk('table/reserveSeat', async ({ tableI
   return response;
 });
 
-export const cancelReservation = createAsyncThunk('table/cancelReservation', async({ tableId, seatIndex}) => {
+export const cancelReservation = createAsyncThunk('table/cancelReservation', async ({ tableId, seatIndex }) => {
   const response = await clientSocketEmitter.request('cancelReservation', {
     id: tableId,
     index: seatIndex,
   });
   return response;
-})
+});
 
-export const sitDown = createAsyncThunk('table/sitDown', async ({ tableId, seatIndex, nickname, buyIn, avatarStyle }) => {
-  const response = await clientSocketEmitter.request('sitDown', {
+export const sitDown = createAsyncThunk('table/sitDown', async (
+  {
+    tableId,
+    seatIndex,
+    nickname,
+    buyIn,
+    avatarStyle,
+  },
+) => {
+  return await clientSocketEmitter.request('sitDown', {
     id: tableId,
     index: seatIndex,
     name: nickname,
     buyIn,
     avatarStyle,
-  })
-  return response;
-})
+  });
+});
+
+export const actionTaken = createAsyncThunk('table/actionTaken', async ({ tableId, action, betSize }) => {
+  return await clientSocketEmitter.request('actionTaken', {
+    id: tableId,
+    action,
+    betSize,
+  });
+});
 
 export const tableSlice = createSlice({
   name: 'table',
@@ -47,7 +62,7 @@ export const tableSlice = createSlice({
   reducers: {
     setTable: (state, action) => {
       state.value = action.payload.table;
-    }
+    },
   },
   extraReducers: {
     [fetchTable.pending]: state => {
@@ -101,10 +116,23 @@ export const tableSlice = createSlice({
       state.isFetching = false;
       state.error = action.error;
     },
+
+    [actionTaken.pending]: state => {
+      state.isFetching = true;
+      state.error = null;
+    },
+    [actionTaken.fulfilled]: (state, action) => {
+      state.isFetching = false;
+      state.value = action.payload.table;
+    },
+    [actionTaken.rejected]: (state, action) => {
+      state.isFetching = false;
+      state.error = action.error;
+    },
   },
 });
 
-export const { setTable } = tableSlice.actions
+export const { setTable } = tableSlice.actions;
 
 export default tableSlice.reducer;
 

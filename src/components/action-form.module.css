@@ -1,0 +1,13 @@
+input[type="number"].amountInput {
+    padding-right: 32px;
+}
+
+.amountInputContainer {
+    position: relative;
+}
+
+.amountInputButtonContainer {
+    position: absolute;
+    right: 6px;
+    top: 4px;
+}

@@ -26,9 +26,18 @@
   max-width: 100%;
 }
 
+.col1of12 {
+  flex: 0 0 8.3333%;
+  max-width: 8.3333%;
+}
+
 .col2of12 {
   flex: 0 0 16.6667%;
   max-width: 16.6667%;
+}
+
+.colOffset2of12 {
+  margin-left: 16.6667%;
 }
 
 .col3of12 {

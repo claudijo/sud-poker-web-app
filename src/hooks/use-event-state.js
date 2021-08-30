@@ -7,7 +7,7 @@ export default function useEventState(initialState, valueFromEvent = event => ev
     return setState(valueFromEvent(event));
   }
 
-  return [state, onChange];
+  return [state, onChange, setState];
 }
 
 export const numberOrEmptyStringFromEvent = event => {
