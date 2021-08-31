@@ -1,6 +1,6 @@
 import AbstractShape from './abstract-shape';
 import { boxPoint } from '../lib/intersects';
-import { measureText, resizeAndRestore } from '../lib/canvas';
+import { measureText, parseFont, resizeAndRestore, textOffset } from '../lib/canvas';
 import { memoize } from '../lib/memoize';
 import { Lru } from '../lib/cache';
 import React, { useState } from 'react';
@@ -128,22 +128,25 @@ class Shape extends AbstractShape {
       ctx.lineWidth = lineWidth;
     }
 
-    let { width, fontHeight } = measureText(ctx, text);
+    let { width, height, fontPixelSize, actualBoundingBoxAscent } = measureText(ctx, text);
     while (text !== '' && width > maxWidth) {
       text = cropEnd(text)
       const { width: newWidth } = measureText(ctx, text);
       width = newWidth;
     }
 
-    resizeAndRestore(ctx, width + lineWidth, fontHeight + lineWidth);
+    resizeAndRestore(ctx, width + lineWidth, fontPixelSize + lineWidth);
+
+    // Tricky as hell to get right cross browser, but this is good enough
+    const centerY = actualBoundingBoxAscent / height * ctx.canvas.height
 
     if (fillStyle !== null) {
-      ctx.fillText(text, 0, fontHeight / 2);
+      ctx.fillText(text, 0,  centerY);
     }
 
     if (strokeStyle !== null) {
       ctx.lineWidth = lineWidth;
-      ctx.strokeText(text, 0, fontHeight / 2);
+      ctx.strokeText(text, 0, centerY);
     }
 
     return canvas;
