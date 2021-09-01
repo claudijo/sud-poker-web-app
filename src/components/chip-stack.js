@@ -1,10 +1,4 @@
-import CanvasText from '../canvas-shapes/canvas-text';
-import StackLabel from './stack-label';
 import TextLabel from './text-label';
-import CanvasCircle from '../canvas-shapes/circle';
-import CanvasImage from '../canvas-shapes/canvas-image';
-import { range } from '../lib/array';
-import CanvasArc from '../canvas-shapes/canvas-arc';
 import Chip from './chip';
 
 export default function ChipStack({ x, y, betSize, bigBlind }) {
