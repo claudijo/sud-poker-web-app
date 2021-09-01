@@ -14,3 +14,57 @@ export const centerForPositions = (width, height, offsetX = 0, offsetY = 0) => {
     y: item.y + offsetY
   }))
 }
+
+export const chipPositionOffset = (seatIndex, position) => {
+  const { x, y } = position
+
+  const yTop = 100
+  const yTopMiddle = 60
+  const yBottomMiddle = -50
+  const yBottom = -136
+
+  const xMiddleLeft = 20
+  const xMiddle = 40
+  const xMiddleRight = 144
+  const xRight = 120
+
+  switch (seatIndex) {
+    case 0:
+      return {x: x - xMiddleLeft, y: y + yTop}
+    case 1:
+      return {x: x - xMiddleRight, y: y + yTopMiddle}
+    case 2:
+      return {x: x - xRight, y: y + yBottomMiddle}
+    case 3:
+      return {x: x - xMiddle, y: y + yBottom}
+    case 4:
+      return {x, y: y + yBottom}
+    case 5:
+      return {x: x + xMiddle, y: y + yBottom}
+    case 6: {
+      return {x: x + xRight, y: y + yBottomMiddle}
+    }
+    case 7:
+      return {x: x + xMiddleRight, y: y + yTopMiddle}
+    case 8:
+      return {x: x + xMiddleLeft, y: y + yTop}
+    default:
+      return {x, y}
+  }
+}
+
+export const buttonPositionOffset = (seatIndex, position) => {
+  const yOffset = 0 //10
+  const xOffset = 48
+
+  const { x, y } = chipPositionOffset(seatIndex, position)
+
+  switch (seatIndex) {
+    case 6:
+    case 7:
+    case 8:
+      return { x: x - xOffset, y: y - yOffset}
+    default:
+      return { x: x + xOffset, y: y - yOffset}
+  }
+}

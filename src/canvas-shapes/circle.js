@@ -10,7 +10,7 @@ class Shape extends AbstractShape {
   }
 
   get radius() {
-    return parseInt(this.getAttribute('radius'));
+    return parseFloat(this.getAttribute('radius')) ?? 0;
   }
 
   set radius(value) {
@@ -23,7 +23,7 @@ class Shape extends AbstractShape {
       right: this.x + this.offset.x + this.radius + this.lineWidth / 2,
       top: this.y + this.offset.y - this.radius - this.lineWidth / 2,
       bottom: this.y + this.offset.y + this.radius + this.lineWidth / 2,
-    }
+    };
   }
 
   intersects(point) {
@@ -32,15 +32,15 @@ class Shape extends AbstractShape {
       this.y + this.offset.y,
       this.radius + this.lineWidth / 2,
       point.x,
-      point.y
-    )
+      point.y,
+    );
   }
 
   draw(ctx) {
     ctx.beginPath();
     ctx.arc(this.x + this.offset.x, this.y + this.offset.y, this.radius, 0, 2 * Math.PI);
 
-    this.fillAndStroke(ctx)
+    this.fillAndStroke(ctx);
   }
 }
 

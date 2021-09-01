@@ -14,6 +14,7 @@ export default class AbstractShape extends HTMLElement {
       'originx',
       'originy',
       'rotation',
+      'linedash',
     ];
   }
 
@@ -141,6 +142,14 @@ export default class AbstractShape extends HTMLElement {
     this.setAttribute('rotation', value);
   }
 
+  get lineDash() {
+    return this.getAttribute('lineDash')?.split(',').map(item => Number(item)) ?? []
+  }
+
+  set lineDash(value) {
+    this.setAttribute('lineDash', value);
+  }
+
   fillAndStroke(ctx) {
     ctx.save()
 
@@ -167,6 +176,10 @@ export default class AbstractShape extends HTMLElement {
     if (this.fillStyle !== null) {
       ctx.fillStyle = this.fillStyle;
       ctx.fill()
+    }
+
+    if (this.lineDash.length) {
+      ctx.setLineDash(this.lineDash)
     }
 
     if (this.strokeStyle !== null) {

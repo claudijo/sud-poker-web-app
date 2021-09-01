@@ -20,6 +20,7 @@ import PlayerHand from '../components/player-hand';
 import BetForm from '../components/bet-form';
 import ActionBar from '../components/action-bar';
 import ActionForm from '../components/action-form';
+import TableBets from '../components/table-bets';
 
 const stageWidth = 1280;
 const stageHeight = 720;
@@ -34,7 +35,7 @@ const positions = centerForPositions(tableWidth, tableHeight, tableX, tableY);
 export default function GameOfPoker({ tableId }) {
   const [joinFormHidden, setJoinFormHidden] = useState(true);
   const [joinFormDisabled, setJoinFormDisabled] = useState(false);
-  const [actionFormDisabled, setActionFormDisabled] = useState(false)
+  const [actionFormDisabled, setActionFormDisabled] = useState(false);
 
   const [betFormHidden, setBetFormHidden] = useState(true);
   const [betFormDisabled, setBetFormDisabled] = useState(false);
@@ -44,7 +45,7 @@ export default function GameOfPoker({ tableId }) {
   const [buyIn, onBuyInChange] = useEventState(200, numberOrEmptyStringFromEvent);
   const [joinButtonsDisabled, setJoinButtonsDisabled] = useState(false);
 
-  const [betSize, onBetSizeChange, setBetSize] = useEventState(0, numberOrEmptyStringFromEvent)
+  const [betSize, onBetSizeChange, setBetSize] = useEventState(0, numberOrEmptyStringFromEvent);
 
   const dispatch = useDispatch();
   const table = useSelector(state => state.table.value);
@@ -52,9 +53,10 @@ export default function GameOfPoker({ tableId }) {
   const seatIndex = useSelector(state => state.seatIndex.value);
   const holeCards = useSelector(state => state.holeCards.value);
 
+  console.log({ seatIndex, holeCards });
   useEffect(() => {
-    setBetSize(table?.legalActions?.chipRange.min ?? 0)
-  }, [setBetSize, table?.legalActions?.chipRange.min])
+    setBetSize(table?.legalActions?.chipRange.min ?? 0);
+  }, [setBetSize, table?.legalActions?.chipRange.min]);
 
   // Set up table change listeners
   useEffect(() => {
@@ -68,14 +70,14 @@ export default function GameOfPoker({ tableId }) {
     clientSocketEmitter.on('cancelReservation', onTableChange);
     clientSocketEmitter.on('sitDown', onTableChange);
     clientSocketEmitter.on('startHand', onTableChange);
-    clientSocketEmitter.on('actionTaken', onTableChange)
+    clientSocketEmitter.on('actionTaken', onTableChange);
 
     return () => {
       clientSocketEmitter.off('reserveSeat', onTableChange);
       clientSocketEmitter.off('cancelReservation', onTableChange);
       clientSocketEmitter.off('sitDown', onTableChange);
       clientSocketEmitter.off('startHand', onTableChange);
-      clientSocketEmitter.off('actionTaken', onTableChange)
+      clientSocketEmitter.off('actionTaken', onTableChange);
     };
   }, [dispatch, tableId]);
 
@@ -107,7 +109,7 @@ export default function GameOfPoker({ tableId }) {
     request: requestFullScreen,
   } = useFullscreen();
 
-  console.log(table)
+  console.log(table);
 
   const onFullscreenButtonClick = event => {
     requestFullScreen();
@@ -169,9 +171,9 @@ export default function GameOfPoker({ tableId }) {
 
   const onBetFormSubmit = async event => {
     event.preventDefault();
-    const action = table.legalActions.actions.includes('bet') ? 'bet' : 'raise'
+    const action = table.legalActions.actions.includes('bet') ? 'bet' : 'raise';
 
-    setActionFormDisabled(true)
+    setActionFormDisabled(true);
 
     const { error } = await dispatch(actionTaken({
       tableId,
@@ -180,12 +182,12 @@ export default function GameOfPoker({ tableId }) {
     }));
 
     if (error) {
-      setActionFormDisabled(false)
+      setActionFormDisabled(false);
     }
   };
 
   const onActionButtonClick = action => async event => {
-    setActionFormDisabled(true)
+    setActionFormDisabled(true);
 
     const { error } = await dispatch(actionTaken({
       tableId,
@@ -193,9 +195,9 @@ export default function GameOfPoker({ tableId }) {
     }));
 
     if (error) {
-      setActionFormDisabled(false)
+      setActionFormDisabled(false);
     }
-  }
+  };
 
   return (
     <Stage width={stageWidth} height={stageHeight} scaleMode={ScaleMode.SCALE_TO_FIT}>
@@ -210,14 +212,27 @@ export default function GameOfPoker({ tableId }) {
         />
       </Canvas>
 
+      {/*Animation layer*/}
       <Canvas>
-        {positions[seatIndex] && holeCards.length === 2 && (
-          <PlayerHand
-            x={positions[seatIndex].x}
-            y={positions[seatIndex].y}
-            holeCards={holeCards}
-          />
-        )}
+        <>
+          {seatIndex > -1 && holeCards.length === 2 && (
+            <PlayerHand
+              seatIndex={seatIndex}
+              positions={positions}
+              holeCards={holeCards}
+            />
+          )}
+          { table && (
+            <TableBets
+              positions={positions}
+              potSizes={table?.pots?.map(pot => pot.size)}
+              betSizes={table?.seats?.map(seat => seat?.betSize ?? null)}
+              bigBlind={table?.forcedBets.bigBlind}
+            />
+          )}
+
+        </>
+
       </Canvas>
       {/*Ui layer*/}
       <Canvas interactive={true}>
