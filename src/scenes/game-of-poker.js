@@ -72,6 +72,7 @@ export default function GameOfPoker({ tableId }) {
     clientSocketEmitter.on('sitDown', onTableChange);
     clientSocketEmitter.on('startHand', onTableChange);
     clientSocketEmitter.on('actionTaken', onTableChange);
+    clientSocketEmitter.on('bettingRoundEnd', onTableChange);
 
     return () => {
       clientSocketEmitter.off('reserveSeat', onTableChange);
@@ -79,6 +80,7 @@ export default function GameOfPoker({ tableId }) {
       clientSocketEmitter.off('sitDown', onTableChange);
       clientSocketEmitter.off('startHand', onTableChange);
       clientSocketEmitter.off('actionTaken', onTableChange);
+      clientSocketEmitter.off('bettingRoundEnd', onTableChange);
     };
   }, [dispatch, tableId]);
 
@@ -188,14 +190,12 @@ export default function GameOfPoker({ tableId }) {
   const onActionButtonClick = action => async event => {
     setActionFormDisabled(true);
 
-    const { error } = await dispatch(actionTaken({
+    await dispatch(actionTaken({
       tableId,
       action,
     }));
 
-    if (error) {
-      setActionFormDisabled(false);
-    }
+    setActionFormDisabled(false);
   };
 
   return (

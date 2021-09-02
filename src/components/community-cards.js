@@ -14,6 +14,7 @@ export default function CommunityCards({ x, y, cards }) {
     enter: { y, globalAlpha: 1 },
     from: { y: y - 82, globalAlpha: 0 },
     trail: 800,
+    keys: card => card.rank + card.suit,
     onStart: () => {
       dealCardSound.play();
     },
