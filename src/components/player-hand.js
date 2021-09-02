@@ -33,23 +33,18 @@ export default function PlayerHand({ x, y, holeCards }) {
 
   return (
     <>
-      {holeCards.length === 2 && (
-        <>
-          <AnimatedFaceUpCard
-            {...slideSideProps}
-            {...slideDownProps}
-            rank={holeCards[1].rank}
-            suit={holeCards[1].suit}
-          />
-          <AnimatedFaceUpCard
-            {...slideDownProps}
-            x={x + 98}
-            rank={holeCards[0].rank}
-            suit={holeCards[0].suit}
-          />
-        </>
-      )}
-
+      <AnimatedFaceUpCard
+        {...slideSideProps}
+        {...slideDownProps}
+        rank={holeCards[1].rank}
+        suit={holeCards[1].suit}
+      />
+      <AnimatedFaceUpCard
+        {...slideDownProps}
+        x={x + 98}
+        rank={holeCards[0].rank}
+        suit={holeCards[0].suit}
+      />
     </>
   );
 }

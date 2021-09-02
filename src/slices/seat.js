@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchTable, setTable } from './table-slice';
+import { fetchTable } from './table-slice';
 
 const initialState = {
   value: null,
@@ -13,9 +13,6 @@ export const seatSlice = createSlice({
   reducers: {},
   extraReducers: {
     [fetchTable.fulfilled]: (state, action) => {
-      state.value = action.payload.seat;
-    },
-    [setTable]: (state, action) => {
       state.value = action.payload.seat;
     }
   }

@@ -54,7 +54,7 @@ export default function GameOfPoker({ tableId }) {
   const seatIndex = useSelector(state => state.seatIndex.value);
   const holeCards = useSelector(state => state.holeCards.value);
 
-  console.log({ seatIndex, holeCards });
+  // console.log({ seatIndex, holeCards });
   useEffect(() => {
     setBetSize(table?.legalActions?.chipRange.min ?? 0);
   }, [setBetSize, table?.legalActions?.chipRange.min]);
@@ -111,8 +111,6 @@ export default function GameOfPoker({ tableId }) {
     isFullscreen,
     request: requestFullScreen,
   } = useFullscreen();
-
-  console.log(table);
 
   const onFullscreenButtonClick = event => {
     requestFullScreen();
