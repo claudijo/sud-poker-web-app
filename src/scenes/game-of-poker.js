@@ -22,6 +22,7 @@ import ActionBar from '../components/action-bar';
 import ActionForm from '../components/action-form';
 import TableBets from '../components/table-bets';
 import CommunityCards from '../components/community-cards';
+import { setHoleCards } from '../slices/hole-cards';
 
 const stageWidth = 1280;
 const stageHeight = 720;
@@ -67,10 +68,19 @@ export default function GameOfPoker({ tableId }) {
       }
     };
 
+    const onHoleCardsChange = payload => {
+      if (payload.table.id === tableId) {
+        dispatch(setHoleCards(payload))
+      }
+    }
+
     clientSocketEmitter.on('reserveSeat', onTableChange);
     clientSocketEmitter.on('cancelReservation', onTableChange);
     clientSocketEmitter.on('sitDown', onTableChange);
+
     clientSocketEmitter.on('startHand', onTableChange);
+    clientSocketEmitter.on('startHand', onHoleCardsChange);
+
     clientSocketEmitter.on('actionTaken', onTableChange);
     clientSocketEmitter.on('bettingRoundEnd', onTableChange);
 
@@ -78,7 +88,10 @@ export default function GameOfPoker({ tableId }) {
       clientSocketEmitter.off('reserveSeat', onTableChange);
       clientSocketEmitter.off('cancelReservation', onTableChange);
       clientSocketEmitter.off('sitDown', onTableChange);
+
       clientSocketEmitter.off('startHand', onTableChange);
+      clientSocketEmitter.off('startHand', onHoleCardsChange);
+
       clientSocketEmitter.off('actionTaken', onTableChange);
       clientSocketEmitter.off('bettingRoundEnd', onTableChange);
     };
