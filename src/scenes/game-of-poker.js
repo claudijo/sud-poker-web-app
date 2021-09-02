@@ -230,7 +230,7 @@ export default function GameOfPoker({ tableId }) {
             />
           )}
           {
-            table?.communityCards.length && (
+            table?.communityCards?.length && (
               <CommunityCards
                 x={tableX + tableWidth / 2 - 33 - 2 * 60}
                 y={tableY + tableHeight / 2 - 20 }

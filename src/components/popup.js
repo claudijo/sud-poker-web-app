@@ -1,4 +1,4 @@
-import { useSpring, animated, useTransition } from '@react-spring/web';
+import { animated, useTransition } from '@react-spring/web';
 import Backdrop from './backdrop';
 import ConditionalWrapper from './conditional-wrapper';
 
@@ -37,7 +37,6 @@ export default function Popup({ children, styles, show }) {
           {children}
         </animated.div>
       </ConditionalWrapper>
-
     ),
   );
 

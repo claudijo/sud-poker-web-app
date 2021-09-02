@@ -5,7 +5,6 @@ import { Sound } from '../lib/sound';
 import React from 'react';
 
 const AnimatedFaceUpCard = animated(FaceUpCard);
-
 const dealCardSound = new Sound(dealCardAudio)
 
 export default function PlayerHand({ x, y, holeCards }) {
