@@ -8,16 +8,13 @@ const AnimatedFaceUpCard = animated(FaceUpCard);
 
 const dealCardSound = new Sound(dealCardAudio)
 
-export default function PlayerHand({ seatIndex, holeCards, positions }) {
-  const x = positions[seatIndex].x
-  const y = positions[seatIndex].y
-
+export default function PlayerHand({ x, y, holeCards }) {
   const slideDownRef = useSpringRef()
   const slideSideRef = useSpringRef()
 
   const slideSideProps = useSpring({
     to: { x: x + 40 },
-    from: { x: x + 88 },
+    from: { x: x + 98 },
     onStart: () => {
       dealCardSound.play()
     },
@@ -25,7 +22,7 @@ export default function PlayerHand({ seatIndex, holeCards, positions }) {
   })
 
   const slideDownProps = useSpring({
-    to: { y: y - 32, globalAlpha: 1 },
+    to: { y: y - 36, globalAlpha: 1 },
     from: { y: y - 82, globalAlpha: 0 },
     onStart: () => {
       dealCardSound.play()
@@ -47,7 +44,7 @@ export default function PlayerHand({ seatIndex, holeCards, positions }) {
           />
           <AnimatedFaceUpCard
             {...slideDownProps}
-            x={x + 88}
+            x={x + 98}
             rank={holeCards[0].rank}
             suit={holeCards[0].suit}
           />

@@ -14,7 +14,7 @@ export default function TableBets(
     <>
       {
         positions.map((position, index) => {
-          if (betSizes[index] === null) {
+          if (!betSizes[index]) {
             return null;
           }
 

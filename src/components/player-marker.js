@@ -31,12 +31,12 @@ export default function PlayerMarker(
         <>
           <FaceDownCard
             x={x + 65}
-            y={y - 38}
+            y={y - 44}
             rotation={20 * Math.PI / 180}
           />
           <FaceDownCard
             x={x + 35}
-            y={y - 32}
+            y={y - 36}
           />
         </>
       )}

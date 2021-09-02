@@ -21,6 +21,7 @@ import BetForm from '../components/bet-form';
 import ActionBar from '../components/action-bar';
 import ActionForm from '../components/action-form';
 import TableBets from '../components/table-bets';
+import CommunityCards from '../components/community-cards';
 
 const stageWidth = 1280;
 const stageHeight = 720;
@@ -175,15 +176,13 @@ export default function GameOfPoker({ tableId }) {
 
     setActionFormDisabled(true);
 
-    const { error } = await dispatch(actionTaken({
+    await dispatch(actionTaken({
       tableId,
       action,
       betSize,
     }));
 
-    if (error) {
-      setActionFormDisabled(false);
-    }
+    setActionFormDisabled(false);
   };
 
   const onActionButtonClick = action => async event => {
@@ -215,10 +214,10 @@ export default function GameOfPoker({ tableId }) {
       {/*Animation layer*/}
       <Canvas>
         <>
-          {seatIndex > -1 && holeCards.length === 2 && (
+          {positions[seatIndex] && holeCards.length && (
             <PlayerHand
-              seatIndex={seatIndex}
-              positions={positions}
+              x={positions[seatIndex].x}
+              y={positions[seatIndex].y}
               holeCards={holeCards}
             />
           )}
@@ -230,7 +229,15 @@ export default function GameOfPoker({ tableId }) {
               bigBlind={table?.forcedBets.bigBlind}
             />
           )}
-
+          {
+            table?.communityCards.length && (
+              <CommunityCards
+                x={tableX + tableWidth / 2 - 33 - 2 * 60}
+                y={tableY + tableHeight / 2 - 20 }
+                cards={table.communityCards}
+              />
+            )
+          }
         </>
 
       </Canvas>
@@ -250,7 +257,7 @@ export default function GameOfPoker({ tableId }) {
                     betSize={table.seats[index].betSize}
                     nickname={table.reservations[index].name}
                     avatarStyle={table.reservations[index].avatarStyle}
-                    showFaceDownCards={table.holeCards?.[index] && index !== seatIndex}
+                    showFaceDownCards={table.hasHoleCards?.[index] && index !== seatIndex}
                   />
                 )}
               </React.Fragment>

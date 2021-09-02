@@ -1,7 +1,6 @@
 import CanvasRectangle from '../canvas-shapes/rectangle';
 import CanvasText from '../canvas-shapes/canvas-text';
 import { parseRank, parseSuit, suitColor } from '../util/card';
-import { useEffect } from 'react';
 
 export default function FaceUpCard({ x, y, globalAlpha, rank, suit}) {
   const color = suitColor(suit);
@@ -10,8 +9,8 @@ export default function FaceUpCard({ x, y, globalAlpha, rank, suit}) {
     <CanvasRectangle
       x={x}
       y={y}
-      width={40}
-      height={60}
+      width={50}
+      height={70}
       fillStyle="#faffec"
       shadowColor="#00000055"
       shadowOffsetX={4}
@@ -20,20 +19,20 @@ export default function FaceUpCard({ x, y, globalAlpha, rank, suit}) {
       globalAlpha={globalAlpha}
     >
       <CanvasText
-        y={6}
+        y={4}
         x={4}
         globalAlpha={globalAlpha}
         fillStyle={color}
-        font="30px CardCharacters"
+        font="34px CardCharacters"
       >
         {parseRank(rank)}
       </CanvasText>
       <CanvasText
-        x={16}
-        y={32}
+        x={20}
+        y={38}
         globalAlpha={globalAlpha}
         fillStyle={color}
-        font="24px CardCharacters"
+        font="28px CardCharacters"
       >
         {parseSuit(suit)}
       </CanvasText>

@@ -6,8 +6,8 @@ export default function FaceDownCard({ x, y, rotation }) {
     <CanvasImage
       x={x}
       y={y}
-      width="40"
-      height="56"
+      width={50}
+      height={70}
       shadowColor="#00000055"
       shadowOffsetX={4}
       shadowOffsetY={4}
