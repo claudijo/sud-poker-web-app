@@ -27,7 +27,7 @@ const stageHeight = 720;
 
 const tableWidth = 600;
 const tableHeight = 300;
-const tableY = 150;
+const tableY = 160;
 const tableX = stageWidth / 2 - tableWidth / 2;
 
 const positions = centerForPositions(tableWidth, tableHeight, tableX, tableY);
