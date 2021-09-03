@@ -1,7 +1,7 @@
 import TextLabel from './text-label';
 import Chip from './chip';
 
-export default function ChipStack({ x, y, betSize, bigBlind }) {
+export default function ChipStack({ x, y, size, bigBlind }) {
 
   return (
     <>
@@ -18,14 +18,14 @@ export default function ChipStack({ x, y, betSize, bigBlind }) {
         paddingRight={8}
         radius={8}
       >
-        {betSize}
+        {size}
       </TextLabel>
       <Chip x={x - 26} y={y + 18} color="#e16057"/>
-      { betSize === bigBlind && (
+      { size === bigBlind && (
         <Chip x={x - 26} y={y + 10} color="#e16057"/>
       )}
       {
-        betSize > bigBlind && (
+        size > bigBlind && (
           <>
             <Chip x={x - 52} y={y + 18} color="#e16057"/>
             <Chip x={x - 40} y={y + 10} color="#555555"/>

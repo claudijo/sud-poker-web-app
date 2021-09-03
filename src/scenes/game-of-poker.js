@@ -230,6 +230,8 @@ export default function GameOfPoker({ tableId }) {
           )}
           { table && (
             <TableBets
+              centerX={tableX + tableWidth / 2}
+              centerY={tableY + tableHeight / 2}
               positions={positions}
               potSizes={table?.pots?.map(pot => pot.size)}
               betSizes={table?.seats?.map(seat => seat?.betSize ?? null)}
@@ -240,7 +242,7 @@ export default function GameOfPoker({ tableId }) {
             table?.communityCards?.length && (
               <CommunityCards
                 x={tableX + tableWidth / 2 - 33 - 2 * 60}
-                y={tableY + tableHeight / 2 - 20 }
+                y={tableY + tableHeight / 2 - 11 }
                 cards={table.communityCards}
               />
             )

@@ -3,27 +3,38 @@ import ChipStack from './chip-stack';
 
 export default function TableBets(
   {
+    centerX,
+    centerY,
     potSizes,
     betSizes,
     bigBlind,
     positions,
   },
 ) {
+
+  const potSize = potSizes.reduce((acc, size) => acc + size, 0)
+
   return (
     <>
       {
+        potSize > 0 && (
+          <ChipStack
+            x={centerX}
+            y={centerY - 60}
+            size={potSize}
+            bigBlind={bigBlind}
+          />
+        )
+      }
+      {
         positions.map((position, index) => {
-          if (!betSizes[index]) {
-            return null;
-          }
-
           const { x, y } = chipPositionOffset(index, position);
-          return (
+          return betSizes[index] && (
             <ChipStack
               key={index}
               x={x}
               y={y}
-              betSize={betSizes[index]}
+              size={betSizes[index]}
               bigBlind={bigBlind}
             />
           );

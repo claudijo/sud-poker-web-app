@@ -18,10 +18,10 @@ export const centerForPositions = (width, height, offsetX = 0, offsetY = 0) => {
 export const chipPositionOffset = (seatIndex, position) => {
   const { x, y } = position
 
-  const yTop = 100
+  const yTop = 90
   const yTopMiddle = 60
   const yBottomMiddle = -50
-  const yBottom = -136
+  const yBottom = -128
 
   const xMiddleLeft = 20
   const xMiddle = 40

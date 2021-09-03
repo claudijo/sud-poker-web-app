@@ -34,7 +34,7 @@ export default function Table({ x, y, width, height, borderWidth }) {
       />
       <CanvasText
         x={x + width / 2}
-        y={y + height / 2 - 64}
+        y={y + height / 2 - 54}
         fillStyle="#4dc3ff"
         font="30px Krungthep"
         originX={-0.5}
@@ -46,7 +46,7 @@ export default function Table({ x, y, width, height, borderWidth }) {
           <CanvasRectangle
             key={index}
             x={x + width / 2 - 28 - (index - 2) * 64 }
-            y={y + height / 2 - 23}
+            y={y + height / 2 - 14}
             width={56}
             height={76}
             strokeStyle="#4dc3ff"
