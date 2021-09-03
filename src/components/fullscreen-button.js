@@ -1,7 +1,6 @@
 import CanvasCircle from '../canvas-shapes/circle';
 import CanvasImage from '../canvas-shapes/canvas-image';
 import FullScreenIcon from '../icons/fullscreen.svg';
-import AddUserIcon from '../icons/add-user.svg';
 
 export default function FullscreenButton({ children, x, y, ...props }) {
 

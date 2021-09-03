@@ -15,9 +15,7 @@ import { actionTaken, cancelReservation, fetchTable, reserveSeat, setTable, sitD
 import { fetchMe } from '../slices/me-slice';
 import { clientSocketEmitter } from '../socket/client-socket-emitter';
 import PlayerMarker from '../components/player-marker';
-import { seatSlice } from '../slices/seat';
 import PlayerHand from '../components/player-hand';
-import BetForm from '../components/bet-form';
 import ActionBar from '../components/action-bar';
 import ActionForm from '../components/action-form';
 import TableBets from '../components/table-bets';
@@ -38,9 +36,6 @@ export default function GameOfPoker({ tableId }) {
   const [joinFormHidden, setJoinFormHidden] = useState(true);
   const [joinFormDisabled, setJoinFormDisabled] = useState(false);
   const [actionFormDisabled, setActionFormDisabled] = useState(false);
-
-  const [betFormHidden, setBetFormHidden] = useState(true);
-  const [betFormDisabled, setBetFormDisabled] = useState(false);
 
   const [avatar, onAvatarChange] = useEventState('IDENTICON');
   const [nickname, onNicknameChange] = useEventState('');
@@ -120,10 +115,11 @@ export default function GameOfPoker({ tableId }) {
   }, [dispatch, tableId, me?.uid]);
 
   const {
-    isEnabled: isFullscreenEnabled,
-    isFullscreen,
-    request: requestFullScreen,
+    fullScreen: isFullscreen,
+    open: requestFullScreen,
   } = useFullscreen();
+
+  console.log({isFullscreen})
 
   const onFullscreenButtonClick = event => {
     requestFullScreen();
@@ -292,7 +288,7 @@ export default function GameOfPoker({ tableId }) {
             ))
         }
 
-        {isFullscreenEnabled && !isFullscreen && (
+        {!isFullscreen && (
           <FullscreenButton
             x={stageWidth - 64}
             y={stageHeight - 64}
@@ -328,9 +324,6 @@ export default function GameOfPoker({ tableId }) {
           buyIn={buyIn}
           onBuyInChange={onBuyInChange}
         />
-      </Popup>
-      <Popup show={!betFormHidden}>
-        <BetForm/>
       </Popup>
     </Stage>
   );

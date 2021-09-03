@@ -1,6 +1,6 @@
 import { useEffect, useRef, useCallback, useContext } from 'react';
 import { localCoordinatesFromMouseEvent } from '../lib/dom';
-import { throttle, debounce } from '../lib/rate-limit';
+import { throttle } from '../lib/rate-limit';
 import { QuadTree } from '../lib/quadtree';
 import { StageContext } from '../context/stage';
 

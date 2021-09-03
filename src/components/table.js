@@ -1,6 +1,5 @@
 import RoundedRectangle from '../canvas-shapes/rounded-rectangle';
 import CanvasRectangle from '../canvas-shapes/rectangle';
-import CommunityCards from './community-cards';
 import React from 'react';
 import { range } from '../lib/array';
 import CanvasText from '../canvas-shapes/canvas-text';

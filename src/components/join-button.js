@@ -1,7 +1,7 @@
 import CanvasCircle from '../canvas-shapes/circle';
 import CanvasImage from '../canvas-shapes/canvas-image';
 import AddUserIcon from '../icons/add-user.svg';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 export default function JoinButton({ children, x, y, disabled, onClick, ...props }) {
 

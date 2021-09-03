@@ -1,9 +1,9 @@
 import AbstractShape from './abstract-shape';
 import { boxPoint } from '../lib/intersects';
-import { measureText, parseFont, resizeAndRestore, textOffset } from '../lib/canvas';
+import { measureText, resizeAndRestore } from '../lib/canvas';
 import { memoize } from '../lib/memoize';
 import { Lru } from '../lib/cache';
-import React, { useState } from 'react';
+import React from 'react';
 import { cropEnd } from '../lib/text';
 
 class Shape extends AbstractShape {

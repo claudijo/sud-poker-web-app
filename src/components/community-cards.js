@@ -22,6 +22,7 @@ export default function CommunityCards({ x, y, cards }) {
 
   useEffect(() => {
     setCommunityCards(cards);
+    // eslint-disable-next-line
   }, [cards.length]);
 
   return transitions((animatedProps, card, transition, index) => (
@@ -31,5 +32,5 @@ export default function CommunityCards({ x, y, cards }) {
       rank={card.rank}
       suit={card.suit}
     />
-  ))
+  ));
 }

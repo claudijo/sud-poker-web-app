@@ -1,4 +1,3 @@
-import StackLabel from './stack-label';
 import { chipPositionOffset } from '../util/table';
 import ChipStack from './chip-stack';
 

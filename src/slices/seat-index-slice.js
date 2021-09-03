@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { cancelReservation, fetchTable, reserveSeat, sitDown } from './table-slice';
+import { cancelReservation, fetchTable, reserveSeat } from './table-slice';
 
 const initialState = {
   value: -1,

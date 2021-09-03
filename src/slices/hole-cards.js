@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchTable, tableSlice } from './table-slice';
+import { fetchTable } from './table-slice';
 
 const initialState = {
   value: [],
