@@ -18,11 +18,7 @@ export default function FullscreenButton({ children, x, y, ...props }) {
       x={x}
       y={y}
       radius={32}
-      fillStyle="#fff"
-      globalAlpha="1"
-      shadowColor="#00000055"
-      shadowOffsetY={8}
-      shadowBlur={16}
+      fillStyle="#eee"
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >

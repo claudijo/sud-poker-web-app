@@ -292,8 +292,8 @@ export default function GameOfPoker({ tableId }) {
 
         {!isFullscreen && (
           <FullscreenButton
-            x={stageWidth - 64}
-            y={stageHeight - 64}
+            x={stageWidth - 56}
+            y={stageHeight - 56}
             onClick={onFullscreenButtonClick}
           />
         )}
