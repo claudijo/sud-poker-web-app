@@ -206,7 +206,12 @@ export default function GameOfPoker({ tableId }) {
   };
 
   return (
-    <Stage width={stageWidth} height={stageHeight} scaleMode={ScaleMode.SCALE_TO_FIT}>
+    <Stage
+      width={stageWidth}
+      height={stageHeight}
+      scaleMode={ScaleMode.SCALE_TO_FIT}
+      backgroundColor="#fefcca"
+    >
       {/*Background layer*/}
       <Canvas>
         <Table

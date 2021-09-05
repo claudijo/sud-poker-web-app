@@ -7,6 +7,8 @@ body {
 
   margin: 0;
   padding: 0;
+
+  height: 100%
 }
 
 html {
@@ -22,7 +24,10 @@ body {
   font-size: 34px;
   color: #3689b3;
   line-height: 1.5;
-  background-color: #eee;
+  background-color: #fefcca;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 @font-face {

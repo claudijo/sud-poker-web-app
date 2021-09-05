@@ -7,7 +7,7 @@ export const ScaleMode = {
   SCALE_TO_COVER: Math.max,
 };
 
-export default function Stage({ scaleMode, width, height, children }) {
+export default function Stage({ scaleMode, width, height, backgroundColor, children }) {
   const stageElement = useRef(null);
   const [scale, setScale] = useState(1);
 
@@ -37,7 +37,7 @@ export default function Stage({ scaleMode, width, height, children }) {
         style={{
           width: `${width * scale}px`,
           height: `${height * scale}px`,
-          backgroundColor: '#fefdc8',
+          backgroundColor: backgroundColor,
           position: 'relative',
           overflow: 'hidden',
         }}
