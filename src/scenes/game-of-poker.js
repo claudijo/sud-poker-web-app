@@ -69,6 +69,12 @@ export default function GameOfPoker({ tableId }) {
       }
     }
 
+    const onBettingRoundEnd = payload => {
+      if (payload.table.id === tableId) {
+        dispatch(setTable(payload));
+      }
+    }
+
     clientSocketEmitter.on('reserveSeat', onTableChange);
     clientSocketEmitter.on('cancelReservation', onTableChange);
     clientSocketEmitter.on('sitDown', onTableChange);
@@ -77,7 +83,7 @@ export default function GameOfPoker({ tableId }) {
     clientSocketEmitter.on('startHand', onHoleCardsChange);
 
     clientSocketEmitter.on('actionTaken', onTableChange);
-    clientSocketEmitter.on('bettingRoundEnd', onTableChange);
+    clientSocketEmitter.on('bettingRoundEnd', onBettingRoundEnd);
 
     return () => {
       clientSocketEmitter.off('reserveSeat', onTableChange);
@@ -88,7 +94,7 @@ export default function GameOfPoker({ tableId }) {
       clientSocketEmitter.off('startHand', onHoleCardsChange);
 
       clientSocketEmitter.off('actionTaken', onTableChange);
-      clientSocketEmitter.off('bettingRoundEnd', onTableChange);
+      clientSocketEmitter.off('bettingRoundEnd', onBettingRoundEnd);
     };
   }, [dispatch, tableId]);
 
@@ -238,8 +244,8 @@ export default function GameOfPoker({ tableId }) {
               centerX={tableX + tableWidth / 2}
               centerY={tableY + tableHeight / 2}
               positions={positions}
-              potSizes={table?.pots?.map(pot => pot.size)}
-              betSizes={table?.seats?.map(seat => seat?.betSize ?? null)}
+              potSizes={table?.pots?.map(pot => pot.size) ?? []}
+              betSizes={table?.seats?.map(seat => seat?.betSize ?? null) ?? []}
               bigBlind={table?.forcedBets.bigBlind}
             />
           )}

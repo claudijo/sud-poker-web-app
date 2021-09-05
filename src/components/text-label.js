@@ -28,7 +28,7 @@ export default function TextLabel(
 
   useEffect(() => {
     setMeasuredChildWidth(childRef.current.width)
-  }, [])
+  }, [children])
 
   const width = Math.min(maxWidth, Math.max(minWidth, measuredChildWidth))
 

@@ -18,6 +18,7 @@ export default function CommunityCards({ x, y, cards }) {
     onStart: () => {
       dealCardSound.play();
     },
+    delay: 1600,
   });
 
   useEffect(() => {
