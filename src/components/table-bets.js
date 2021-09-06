@@ -24,7 +24,7 @@ export default function TableBets(
   }, []);
 
   const transitions = useTransition(sparseBetSizes, {
-    leave: { x: centerX, y: centerY - 60, globalAlpha: 0 },
+    leave: { x: centerX, y: centerY - 60, globalAlpha: 1 },
     from: (betSize) => {
       const position = positions[betSize.index];
       const { x, y } = chipPositionOffset(betSize.index, position);
