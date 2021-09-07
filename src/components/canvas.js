@@ -67,10 +67,12 @@ export default function Canvas({ children, interactive }) {
 
     canvas.addEventListener('attributeChanged', onUpdate);
     canvas.addEventListener('connected', onUpdate);
+    canvas.addEventListener('load', onUpdate);
 
     return () => {
       canvas.removeEventListener('attributeChanged', onUpdate);
       canvas.removeEventListener('connected', onUpdate);
+      canvas.removeEventListener('load', onUpdate);
     };
   }, [drawChildren, interactive]);
 

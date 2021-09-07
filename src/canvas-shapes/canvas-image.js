@@ -1,11 +1,14 @@
 import AbstractShape from './abstract-shape';
 import { boxPoint } from '../lib/intersects';
+import { Lru } from '../lib/cache';
 
 class Shape extends AbstractShape {
   constructor(args) {
     super();
 
     this.imageElement = null;
+    this.images = new Map();
+    this.imageCache = new Lru()
   }
 
   static get observedAttributes() {
@@ -67,67 +70,69 @@ class Shape extends AbstractShape {
     );
   }
 
-  getImageElement() {
-    return new Promise(resolve => {
-      if (this.imageElement) {
-        resolve(this.imageElement);
-        return;
-      }
-
-      const imageElement = new Image();
-
-      imageElement.onload = () => {
-        this.imageElement = imageElement;
-        resolve(this.imageElement);
-      };
-
-      imageElement.src = this.getAttribute('source');
-    });
-  }
-
   draw(ctx) {
-    this.getImageElement()
-      .then(image => {
-        ctx.save()
+    if (!this.source) {
+      return;
+    }
 
-        const x = this.x + this.offset.x + this.originX * this.width;
-        const y = this.y + this.offset.y + this.originY * this.height;
+    const image = this.imageCache.read(this.source);
 
-        if (this.rotation !== 0) {
-          // Maybe make add something like centerXOffset and centerYOffset
-          const { top, left } = this.getBoundingBox()
+    if (!image) {
+      const newImage = new Image();
+      newImage.onload = () => {
+        const customEvent = new CustomEvent('load', {
+          bubbles: true,
+        });
+        this.dispatchEvent(customEvent);
+      }
+      newImage.src = this.source;
+      this.imageCache.write(this.source, newImage);
+      return;
+    }
 
-          ctx.translate(left, top)
-          ctx.rotate(this.rotation)
-          ctx.translate(-left, -top)
-        }
+    if (!image.complete) {
+      return;
+    }
 
-        // This does not work if calling this.fillAndStroke(ctx), since draw
-        // image must come after ctx.save() and before ctx.restore(),so put it
-        // explicitly here
-        if (this.globalAlpha !== 1) {
-          ctx.globalAlpha = this.globalAlpha
-        }
+    ctx.save();
 
-        if (this.shadowColor !== null) {
-          ctx.shadowColor = this.shadowColor
-        }
+    const x = this.x + this.offset.x + this.originX * this.width;
+    const y = this.y + this.offset.y + this.originY * this.height;
 
-        if (this.shadowBlur !== 0) {
-          ctx.shadowBlur = this.shadowBlur
-        }
+    if (this.rotation !== 0) {
+      // Maybe make add something like centerXOffset and centerYOffset
+      const { top, left } = this.getBoundingBox();
 
-        if (this.shadowOffsetX !== 0) {
-          ctx.shadowOffsetX = this.shadowOffsetX
-        }
+      ctx.translate(left, top);
+      ctx.rotate(this.rotation);
+      ctx.translate(-left, -top);
+    }
 
-        if (this.shadowOffsetY !== 0) {
-          ctx.shadowOffsetY = this.shadowOffsetY;
-        }
+    // This does not work if calling this.fillAndStroke(ctx), since draw
+    // image must come after ctx.save() and before ctx.restore(),so put it
+    // explicitly here
+    if (this.globalAlpha !== 1) {
+      ctx.globalAlpha = this.globalAlpha;
+    }
 
-        ctx.drawImage(image, x, y, this.width, this.height);
-        ctx.restore();
-      });
+    if (this.shadowColor !== null) {
+      ctx.shadowColor = this.shadowColor;
+    }
+
+    if (this.shadowBlur !== 0) {
+      ctx.shadowBlur = this.shadowBlur;
+    }
+
+    if (this.shadowOffsetX !== 0) {
+      ctx.shadowOffsetX = this.shadowOffsetX;
+    }
+
+    if (this.shadowOffsetY !== 0) {
+      ctx.shadowOffsetY = this.shadowOffsetY;
+    }
+
+    ctx.drawImage(image, x, y, this.width, this.height);
+    ctx.restore();
   }
 }
 
