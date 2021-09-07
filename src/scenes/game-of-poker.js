@@ -240,6 +240,15 @@ export default function GameOfPoker({ tableId }) {
               holeCards={holeCards}
             />
           )}
+          {
+            table?.communityCards?.length && (
+              <CommunityCards
+                x={tableX + tableWidth / 2 - 33 - 2 * 60}
+                y={tableY + tableHeight / 2 - 11 }
+                cards={table.communityCards}
+              />
+            )
+          }
           { table && (
             <TableBets
               centerX={tableX + tableWidth / 2}
@@ -250,15 +259,6 @@ export default function GameOfPoker({ tableId }) {
               bigBlind={table?.forcedBets.bigBlind}
             />
           )}
-          {
-            table?.communityCards?.length && (
-              <CommunityCards
-                x={tableX + tableWidth / 2 - 33 - 2 * 60}
-                y={tableY + tableHeight / 2 - 11 }
-                cards={table.communityCards}
-              />
-            )
-          }
         </>
 
       </Canvas>

@@ -2,7 +2,6 @@ import TextLabel from './text-label';
 import Chip from './chip';
 
 export default function ChipStack({ x, y, size, bigBlind, globalAlpha = 1 }) {
-
   return (
     <>
       { globalAlpha === 1 && (
