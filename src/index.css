@@ -24,21 +24,21 @@ body {
   font-size: 34px;
   color: #3689b3;
   line-height: 1.5;
-  background-color: #fefcca;
+  background-color: #cbc9a3;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-@font-face {
-  font-family: "Krungthep";
-  src: local("Krungthep"),
-  url("./fonts/krungthep.woff2") format("woff2"),
-  url("./fonts/krungthep.woff") format("woff"),
-  url("./fonts/krungthep.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
+/*@font-face {*/
+/*  font-family: "Krungthep";*/
+/*  src: local("Krungthep"),*/
+/*  url("../public/fonts/krungthep.woff2") format("woff2"),*/
+/*  url("../public/fonts/krungthep.woff") format("woff"),*/
+/*  url("../public/fonts/krungthep.ttf") format("truetype");*/
+/*  font-weight: normal;*/
+/*  font-style: normal;*/
+/*}*/
 
 /* Find the suits at
     [   diamond
@@ -47,13 +47,13 @@ body {
     }   spade
     =   Single character "10"
  */
-@font-face {
-  font-family: "CardCharacters";
-  src: local("CardCharacters"),
-  url("./fonts/card-characters.woff2") format("woff2"),
-  url("./fonts/card-characters.woff") format("woff"),
-  url("./fonts/card-characters.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
+/*@font-face {*/
+/*  font-family: "CardCharacters";*/
+/*  src: local("CardCharacters"),*/
+/*  url("./fonts/card-characters.woff2") format("woff2"),*/
+/*  url("./fonts/card-characters.woff") format("woff"),*/
+/*  url("./fonts/card-characters.ttf") format("truetype");*/
+/*  font-weight: normal;*/
+/*  font-style: normal;*/
+/*}*/
 

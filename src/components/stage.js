@@ -35,7 +35,6 @@ export default function Stage({ scaleMode, width, height, backgroundColor, child
     <StageContext.Provider value={{ width, height, scale }}>
       <div
         style={{
-          fontFamily: 'CardCharacters',
           width: `${width * scale}px`,
           height: `${height * scale}px`,
           backgroundColor: backgroundColor,
