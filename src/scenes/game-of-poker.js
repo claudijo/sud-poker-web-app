@@ -51,7 +51,6 @@ export default function GameOfPoker({ tableId }) {
   const seatIndex = useSelector(state => state.seatIndex.value);
   const holeCards = useSelector(state => state.holeCards.value);
 
-  // console.log({ seatIndex, holeCards });
   useEffect(() => {
     setBetSize(table?.legalActions?.chipRange.min ?? 0);
   }, [setBetSize, table?.legalActions?.chipRange.min]);
@@ -86,6 +85,8 @@ export default function GameOfPoker({ tableId }) {
     clientSocketEmitter.on('actionTaken', onTableChange);
     clientSocketEmitter.on('bettingRoundEnd', onBettingRoundEnd);
 
+    clientSocketEmitter.on('showdown', onBettingRoundEnd);
+
     return () => {
       clientSocketEmitter.off('reserveSeat', onTableChange);
       clientSocketEmitter.off('cancelReservation', onTableChange);
@@ -96,6 +97,8 @@ export default function GameOfPoker({ tableId }) {
 
       clientSocketEmitter.off('actionTaken', onTableChange);
       clientSocketEmitter.off('bettingRoundEnd', onBettingRoundEnd);
+
+      clientSocketEmitter.off('showdown', onBettingRoundEnd);
     };
   }, [dispatch, tableId]);
 
@@ -126,7 +129,6 @@ export default function GameOfPoker({ tableId }) {
     open: requestFullScreen,
   } = useFullscreen();
 
-  console.log({isFullscreen})
 
   const onFullscreenButtonClick = event => {
     requestFullScreen();
