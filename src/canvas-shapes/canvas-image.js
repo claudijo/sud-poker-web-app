@@ -17,6 +17,7 @@ class Shape extends AbstractShape {
       'width',
       'height',
       'source',
+      'src',
     ];
   }
 
@@ -36,12 +37,12 @@ class Shape extends AbstractShape {
     this.setAttribute('height', value);
   }
 
-  get source() {
-    return this.getAttribute('source');
+  get src() {
+    return this.getAttribute('src');
   }
 
-  set source(value) {
-    this.setAttribute('source', value);
+  set src(value) {
+    this.setAttribute('src', value);
   }
 
   getBoundingBox() {
@@ -71,11 +72,11 @@ class Shape extends AbstractShape {
   }
 
   draw(ctx) {
-    if (!this.source) {
+    if (!this.src) {
       return;
     }
 
-    const image = this.imageCache.read(this.source);
+    const image = this.imageCache.read(this.src);
 
     if (!image) {
       const newImage = new Image();
@@ -85,8 +86,8 @@ class Shape extends AbstractShape {
         });
         this.dispatchEvent(customEvent);
       }
-      newImage.src = this.source;
-      this.imageCache.write(this.source, newImage);
+      newImage.src = this.src;
+      this.imageCache.write(this.src, newImage);
       return;
     }
 
@@ -138,7 +139,7 @@ class Shape extends AbstractShape {
 
 customElements.get('canvas-image') || customElements.define('canvas-image', Shape);
 
-export default function CanvasImage({ children, src, ...props }) {
+export default function CanvasImage({ children, ...props }) {
   return (
     <canvas-image {...props}>
       {children}

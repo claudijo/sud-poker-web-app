@@ -24,7 +24,7 @@ export default function PlayerButton({x, y, avatarStyle, nickname}) {
         y={-avatarSize / 2}
         width={avatarSize}
         height={avatarSize}
-        source={userIcon}
+        src={userIcon}
       />
     </CanvasCircle>
   );

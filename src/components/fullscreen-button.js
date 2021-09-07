@@ -27,7 +27,7 @@ export default function FullscreenButton({ children, x, y, ...props }) {
         y={-24}
         width={48}
         height={48}
-        source={FullScreenIcon}
+        src={FullScreenIcon}
       />
     </CanvasCircle>
   );
