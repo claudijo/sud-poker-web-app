@@ -243,8 +243,6 @@ export default function GameOfPoker({ tableId }) {
           {
             table?.communityCards?.length && (
               <CommunityCards
-                onAnimationStart={onCommunityCardsAnimationStart}
-                onAnimationRest={onCommunityCardsAnimationRest}
                 x={tableX + tableWidth / 2 - 33 - 2 * 60}
                 y={tableY + tableHeight / 2 - 11 }
                 cards={table.communityCards}
