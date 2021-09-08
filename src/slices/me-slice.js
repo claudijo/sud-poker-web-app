@@ -15,7 +15,7 @@ export const fetchMe = createAsyncThunk('me/fetchMe', async() => {
   return me;
 })
 
-export const meSlice = createSlice({
+const meSlice = createSlice({
   name: 'me',
   initialState,
   reducers: {},

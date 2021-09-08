@@ -4,6 +4,9 @@ import me from './slices/me-slice';
 import seatIndex from './slices/seat-index-slice'
 import seat from './slices/seat';
 import holeCards from './slices/hole-cards';
+import playerToAct from './slices/player-to-act';
+import communityCards from './slices/community-cards';
+import legalActions from './slices/legal-actions';
 
 export default configureStore({
   reducer: {
@@ -12,5 +15,8 @@ export default configureStore({
     seatIndex,
     seat,
     holeCards,
+    playerToAct,
+    communityCards,
+    legalActions,
   }
 })

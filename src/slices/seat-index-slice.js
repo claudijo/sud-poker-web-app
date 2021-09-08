@@ -4,10 +4,9 @@ import { cancelReservation, fetchTable, reserveSeat } from './table-slice';
 const initialState = {
   value: -1,
 };
-const name = 'seatIndex';
 
-export const seatIndexSlice = createSlice({
-  name,
+const seatIndexSlice = createSlice({
+  name: 'seatIndex',
   initialState,
   reducers: {},
   extraReducers: {

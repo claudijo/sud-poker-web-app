@@ -21,6 +21,10 @@ import ActionForm from '../components/action-form';
 import TableBets from '../components/table-bets';
 import CommunityCards from '../components/community-cards';
 import { setHoleCards } from '../slices/hole-cards';
+import CommandQueue from '../util/command-queue';
+import { setPlayerToAct } from '../slices/player-to-act';
+import { setCommunityCards } from '../slices/community-cards';
+import { setLegalActions } from '../slices/legal-actions';
 
 const stageWidth = 1280;
 const stageHeight = 720;
@@ -32,10 +36,13 @@ const tableX = stageWidth / 2 - tableWidth / 2;
 
 const positions = centerForPositions(tableWidth, tableHeight, tableX, tableY);
 
+const commandQueue = new CommandQueue();
+
 export default function GameOfPoker({ tableId }) {
   const [joinFormHidden, setJoinFormHidden] = useState(true);
   const [joinFormDisabled, setJoinFormDisabled] = useState(false);
   const [actionFormDisabled, setActionFormDisabled] = useState(false);
+  const [actionFormHidden, setActionFormHidden] = useState(true);
 
   const [avatar, onAvatarChange] = useEventState('IDENTICON');
   const [nickname, onNicknameChange] = useEventState('');
@@ -49,6 +56,11 @@ export default function GameOfPoker({ tableId }) {
   const me = useSelector(state => state.me.value);
   const seatIndex = useSelector(state => state.seatIndex.value);
   const holeCards = useSelector(state => state.holeCards.value);
+  const playerToAct = useSelector(state => state.playerToAct.value);
+  const communityCards = useSelector(state => state.communityCards.value);
+  const legalActions = useSelector(state => state.legalActions.value);
+
+  console.log(legalActions)
 
   useEffect(() => {
     setBetSize(table?.legalActions?.chipRange.min ?? 0);
@@ -64,40 +76,56 @@ export default function GameOfPoker({ tableId }) {
 
     const onHoleCardsChange = payload => {
       if (payload.table.id === tableId) {
-        dispatch(setHoleCards(payload))
+        dispatch(setHoleCards(payload));
       }
-    }
+    };
 
     const onBettingRoundEnd = payload => {
       if (payload.table.id === tableId) {
-        dispatch(setTable(payload));
+        commandQueue.enqueue(() => {
+          dispatch(setCommunityCards(payload.table.communityCards));
+        }, { delayEnd: 800 + payload.table.communityCards.length === 3 ? 3 * 800 : 800 });
+
+        commandQueue.enqueue(() => {
+          dispatch(setLegalActions(payload.table.legalActions))
+          dispatch(setPlayerToAct(payload.table.playerToAct))
+        });
       }
-    }
+    };
 
-    clientSocketEmitter.on('reserveSeat', onTableChange);
-    clientSocketEmitter.on('cancelReservation', onTableChange);
-    clientSocketEmitter.on('sitDown', onTableChange);
+    const onActionTaken = payload => {
+      if (payload.table.id === tableId) {
+        commandQueue.enqueue(() => {
+          dispatch(setLegalActions(payload.table.legalActions))
+          dispatch(setPlayerToAct(payload.table.playerToAct))
+        });
+      }
+    };
 
-    clientSocketEmitter.on('startHand', onTableChange);
-    clientSocketEmitter.on('startHand', onHoleCardsChange);
+    // clientSocketEmitter.on('reserveSeat', onTableChange);
+    // clientSocketEmitter.on('cancelReservation', onTableChange);
+    // clientSocketEmitter.on('sitDown', onTableChange);
+    //
+    // clientSocketEmitter.on('startHand', onTableChange);
+    // clientSocketEmitter.on('startHand', onHoleCardsChange);
 
-    clientSocketEmitter.on('actionTaken', onTableChange);
+    clientSocketEmitter.on('actionTaken', onActionTaken);
     clientSocketEmitter.on('bettingRoundEnd', onBettingRoundEnd);
-
-    clientSocketEmitter.on('showdown', onBettingRoundEnd);
+    //
+    // clientSocketEmitter.on('showdown', onBettingRoundEnd);
 
     return () => {
-      clientSocketEmitter.off('reserveSeat', onTableChange);
-      clientSocketEmitter.off('cancelReservation', onTableChange);
-      clientSocketEmitter.off('sitDown', onTableChange);
+      // clientSocketEmitter.off('reserveSeat', onTableChange);
+      // clientSocketEmitter.off('cancelReservation', onTableChange);
+      // clientSocketEmitter.off('sitDown', onTableChange);
+      //
+      // clientSocketEmitter.off('startHand', onTableChange);
+      // clientSocketEmitter.off('startHand', onHoleCardsChange);
 
-      clientSocketEmitter.off('startHand', onTableChange);
-      clientSocketEmitter.off('startHand', onHoleCardsChange);
-
-      clientSocketEmitter.off('actionTaken', onTableChange);
+      clientSocketEmitter.off('actionTaken', onActionTaken);
       clientSocketEmitter.off('bettingRoundEnd', onBettingRoundEnd);
-
-      clientSocketEmitter.off('showdown', onBettingRoundEnd);
+      //
+      // clientSocketEmitter.off('showdown', onBettingRoundEnd);
     };
   }, [dispatch, tableId]);
 
@@ -122,6 +150,10 @@ export default function GameOfPoker({ tableId }) {
       })();
     }
   }, [dispatch, tableId, me?.uid]);
+
+  useEffect(() => {
+    setActionFormHidden(playerToAct === -1 || playerToAct !== seatIndex);
+  }, [playerToAct, seatIndex]);
 
   const {
     fullScreen: isFullscreen,
@@ -188,28 +220,36 @@ export default function GameOfPoker({ tableId }) {
 
   const onBetFormSubmit = async event => {
     event.preventDefault();
-    const action = table.legalActions.actions.includes('bet') ? 'bet' : 'raise';
+    const action = legalActions.actions.includes('bet') ? 'bet' : 'raise';
 
     setActionFormDisabled(true);
 
-    await dispatch(actionTaken({
+    const { error } = await dispatch(actionTaken({
       tableId,
       action,
       betSize,
     }));
 
     setActionFormDisabled(false);
+
+    if (!error) {
+      setActionFormHidden(true);
+    }
   };
 
   const onActionButtonClick = action => async event => {
     setActionFormDisabled(true);
 
-    await dispatch(actionTaken({
+    const { error } = await dispatch(actionTaken({
       tableId,
       action,
     }));
 
     setActionFormDisabled(false);
+
+    if (!error) {
+      setActionFormHidden(true);
+    }
   };
 
   return (
@@ -241,15 +281,15 @@ export default function GameOfPoker({ tableId }) {
             />
           )}
           {
-            table?.communityCards?.length && (
+            communityCards.length && (
               <CommunityCards
                 x={tableX + tableWidth / 2 - 33 - 2 * 60}
-                y={tableY + tableHeight / 2 - 11 }
-                cards={table.communityCards}
+                y={tableY + tableHeight / 2 - 11}
+                cards={communityCards}
               />
             )
           }
-          { table && (
+          {table && (
             <TableBets
               centerX={tableX + tableWidth / 2}
               centerY={tableY + tableHeight / 2}
@@ -311,16 +351,16 @@ export default function GameOfPoker({ tableId }) {
         )}
       </Canvas>
       {/*Html overlays*/}
-      {table?.legalActions?.actions.length && table.playerToAct === seatIndex && (
+      {!actionFormHidden && (
         <ActionBar>
           <ActionForm
             disabled={actionFormDisabled}
             onSubmit={onBetFormSubmit}
-            actions={table.legalActions.actions}
+            actions={legalActions.actions}
             onBetSizeChange={onBetSizeChange}
             betSize={betSize}
-            min={table?.legalActions?.chipRange.min}
-            max={table?.legalActions?.chipRange.max}
+            min={legalActions.chipRange.min}
+            max={legalActions.chipRange.max}
             onActionButtonClick={onActionButtonClick}
           />
         </ActionBar>

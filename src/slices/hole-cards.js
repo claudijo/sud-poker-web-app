@@ -7,7 +7,7 @@ const initialState = {
 
 const name = 'holeCards'
 
-export const holeCardsSlice = createSlice({
+const holeCardsSlice = createSlice({
   name,
   initialState,
   reducers: {

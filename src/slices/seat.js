@@ -7,7 +7,7 @@ const initialState = {
 
 const name = 'seat'
 
-export const seatSlice = createSlice({
+const seatSlice = createSlice({
   name,
   initialState,
   reducers: {},

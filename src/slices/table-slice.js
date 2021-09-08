@@ -56,7 +56,7 @@ export const actionTaken = createAsyncThunk('table/actionTaken', async ({ tableI
   });
 });
 
-export const tableSlice = createSlice({
+const tableSlice = createSlice({
   name: 'table',
   initialState,
   reducers: {
@@ -119,11 +119,11 @@ export const tableSlice = createSlice({
 
     [actionTaken.pending]: state => {
       state.isFetching = true;
-      state.error = null;
+      // state.error = null;
     },
     [actionTaken.fulfilled]: (state, action) => {
       state.isFetching = false;
-      state.value = action.payload.table;
+      // state.value = action.payload.table;
     },
     [actionTaken.rejected]: (state, action) => {
       state.isFetching = false;
