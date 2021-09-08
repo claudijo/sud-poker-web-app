@@ -10,12 +10,12 @@ const communityCardsSlice = createSlice({
   initialState,
   reducers: {
     setCommunityCards: (state, action) => {
-      state.value = action.payload ?? [];
+      state.value = action.payload ?? initialState.value;
     },
   },
   extraReducers: {
     [fetchTable.fulfilled]: (state, action) => {
-      state.value = action.payload.table.communityCards ?? [];
+      state.value = action.payload.table.communityCards ?? initialState.value;
     },
   },
 });

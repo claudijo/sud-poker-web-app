@@ -12,12 +12,12 @@ const holeCardsSlice = createSlice({
   initialState,
   reducers: {
     setHoleCards: (state, action) => {
-      state.value = action.payload.holeCards;
+      state.value = action.payload ?? initialState.value;
     }
   },
   extraReducers: {
     [fetchTable.fulfilled]: (state, action) => {
-      state.value = action.payload.holeCards ?? [];
+      state.value = action.payload.holeCards ?? initialState.value;
     },
   }
 })
