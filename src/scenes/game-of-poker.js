@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import Stage, { ScaleMode } from '../components/stage';
 import Canvas from '../components/canvas';
 import Table from '../components/table';
@@ -21,7 +21,6 @@ import ActionForm from '../components/action-form';
 import TableBets from '../components/table-bets';
 import CommunityCards from '../components/community-cards';
 import { setHoleCards } from '../slices/hole-cards';
-import { useTransition } from "react";
 
 const stageWidth = 1280;
 const stageHeight = 720;
@@ -128,7 +127,6 @@ export default function GameOfPoker({ tableId }) {
     fullScreen: isFullscreen,
     open: requestFullScreen,
   } = useFullscreen();
-
 
   const onFullscreenButtonClick = event => {
     requestFullScreen();
@@ -245,6 +243,8 @@ export default function GameOfPoker({ tableId }) {
           {
             table?.communityCards?.length && (
               <CommunityCards
+                onAnimationStart={onCommunityCardsAnimationStart}
+                onAnimationRest={onCommunityCardsAnimationRest}
                 x={tableX + tableWidth / 2 - 33 - 2 * 60}
                 y={tableY + tableHeight / 2 - 11 }
                 cards={table.communityCards}
