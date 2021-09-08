@@ -14,7 +14,7 @@ export default function useFonts(fonts) {
       loadedFonts.forEach(document.fonts.add.bind(document.fonts))
       setIsLoaded(true);
     })()
-  }, [])
+  }, [fonts])
 
   return [isLoaded]
 }
