@@ -45,7 +45,6 @@ export default function TableBets(
       return { x, y, globalAlpha: 1 };
     },
     keys: item => item.index,
-    delay: 800,
     config: config.slow,
     onRest: () => {
       setIsPotSizeHidden(false)
