@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import FaceUpCard from './face-up-card';
 import { animated, useTransition } from '@react-spring/web';
 import { Sound } from '../lib/sound';
@@ -7,24 +7,16 @@ import dealCardAudio from '../audio/deal-card.mp3';
 const AnimatedFaceUpCard = animated(FaceUpCard);
 const dealCardSound = new Sound(dealCardAudio);
 
-export default function CommunityCards({ x, y, cards }) {
-  const [communityCards, setCommunityCards] = useState(cards);
-
-  const transitions = useTransition(communityCards, {
+export default function CommunityCards({ x, y, cards, immediate = false }) {
+  const transitions = useTransition(cards, {
     enter: { y, globalAlpha: 1 },
-    from: { y: y - 82, globalAlpha: 0 },
+    from: immediate ? null : { y: y - 82, globalAlpha: 0 },
     trail: 800,
     keys: card => card.rank + card.suit,
-    onStart: () => {
+    onStart: (result, spring, item) => {
       dealCardSound.play();
     },
-    delay: 2400,
   });
-
-  useEffect(() => {
-    setCommunityCards(cards);
-    // eslint-disable-next-line
-  }, [cards.length]);
 
   return transitions((animatedProps, card, transition, index) => (
     <AnimatedFaceUpCard
