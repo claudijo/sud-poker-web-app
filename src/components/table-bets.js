@@ -1,7 +1,7 @@
 import { chipPositionOffset } from '../util/table';
 import ChipStack from './chip-stack';
 import { animated, useTransition, config } from '@react-spring/web';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const AnimatedChipStack = animated(ChipStack);
 
@@ -23,7 +23,19 @@ export default function TableBets(
     return acc;
   }, []);
 
-  const [isPotSizeHidden, setIsPotSizeHidden] = useState(potSize === 0)
+  const [isPotSizeHidden, setIsPotSizeHidden] = useState(true)
+
+  useEffect(() => {
+    if (isPotSizeHidden) {
+      if (potSize > 0) {
+        setIsPotSizeHidden(false)
+      }
+    } else {
+      if (potSize === 0) {
+        setIsPotSizeHidden(true)
+      }
+    }
+  }, [potSize, isPotSizeHidden, setIsPotSizeHidden])
 
   const transitions = useTransition(sparseBetSizes, {
     leave: { x: centerX, y: centerY - 60, globalAlpha: 0 },
