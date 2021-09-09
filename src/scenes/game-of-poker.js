@@ -64,11 +64,9 @@ export default function GameOfPoker({ tableId }) {
   const seats = useSelector(state => state.seats.value);
   const pots = useSelector(state => state.pots.value);
 
-  console.log({ pots }, table);
-
   useEffect(() => {
-    setBetSize(table?.legalActions?.chipRange.min ?? 0);
-  }, [setBetSize, table?.legalActions?.chipRange.min]);
+    setBetSize(legalActions.chipRange.min);
+  }, [setBetSize, legalActions.chipRange.min]);
 
   // Set up table change listeners
   useEffect(() => {
