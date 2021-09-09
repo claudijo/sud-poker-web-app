@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import Stage, { ScaleMode } from '../components/stage';
 import Canvas from '../components/canvas';
 import Table from '../components/table';
@@ -60,8 +60,6 @@ export default function GameOfPoker({ tableId }) {
   const communityCards = useSelector(state => state.communityCards.value);
   const legalActions = useSelector(state => state.legalActions.value);
 
-  console.log(legalActions);
-
   useEffect(() => {
     setBetSize(table?.legalActions?.chipRange.min ?? 0);
   }, [setBetSize, table?.legalActions?.chipRange.min]);
@@ -110,7 +108,9 @@ export default function GameOfPoker({ tableId }) {
 
       commandQueue.enqueue(() => {
         dispatch(setCommunityCards(payload.table.communityCards));
-      }, { delayEnd: 800 + payload.table.communityCards.length === 3 ? 3 * 800 : 800 });
+      }, {
+        delayEnd: payload.table.communityCards.length === 3 ? 2400 : 800
+      });
 
       commandQueue.enqueue(() => {
         dispatch(setLegalActions(payload.table.legalActions));
