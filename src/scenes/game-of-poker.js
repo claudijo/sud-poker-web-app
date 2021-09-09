@@ -25,6 +25,8 @@ import CommandQueue from '../util/command-queue';
 import { setPlayerToAct } from '../slices/player-to-act';
 import { setCommunityCards } from '../slices/community-cards';
 import { setLegalActions } from '../slices/legal-actions';
+import { setPots } from '../slices/pots';
+import { setSeats } from '../slices/seats';
 
 const stageWidth = 1280;
 const stageHeight = 720;
@@ -59,6 +61,10 @@ export default function GameOfPoker({ tableId }) {
   const playerToAct = useSelector(state => state.playerToAct.value);
   const communityCards = useSelector(state => state.communityCards.value);
   const legalActions = useSelector(state => state.legalActions.value);
+  const seats = useSelector(state => state.seats.value);
+  const pots = useSelector(state => state.pots.value);
+
+  console.log({ pots }, table);
 
   useEffect(() => {
     setBetSize(table?.legalActions?.chipRange.min ?? 0);
@@ -84,13 +90,17 @@ export default function GameOfPoker({ tableId }) {
       }
 
       commandQueue.enqueue(() => {
-        dispatch(setCommunityCards([]))
+        dispatch(setCommunityCards([]));
         dispatch(setHoleCards([]));
       });
 
       commandQueue.enqueue(() => {
         dispatch(setPlayerToAct(payload.table.playerToAct));
-      }, { delayStart: 800, delayEnd: 800 })
+      }, { delayStart: 800 });
+
+      commandQueue.enqueue(() => {
+        dispatch(setSeats(payload.table.seats));
+      });
 
       commandQueue.enqueue(() => {
         dispatch(setHoleCards(payload.holeCards));
@@ -107,9 +117,17 @@ export default function GameOfPoker({ tableId }) {
       }
 
       commandQueue.enqueue(() => {
+        dispatch(setSeats(payload.table.seats))
+      })
+
+      commandQueue.enqueue(() => {
+        dispatch(setPots(payload.table.pots));
+      });
+
+      commandQueue.enqueue(() => {
         dispatch(setCommunityCards(payload.table.communityCards));
       }, {
-        delayEnd: payload.table.communityCards.length === 3 ? 2400 : 800
+        delayEnd: payload.table.communityCards.length === 3 ? 2400 : 800,
       });
 
       commandQueue.enqueue(() => {
@@ -123,6 +141,10 @@ export default function GameOfPoker({ tableId }) {
       if (payload.table.id !== tableId) {
         return;
       }
+
+      commandQueue.enqueue(() => {
+        dispatch(setSeats(payload.table.seats));
+      }, { delayEnd: 400 });
 
       commandQueue.enqueue(() => {
         dispatch(setLegalActions(payload.table.legalActions));
@@ -320,8 +342,8 @@ export default function GameOfPoker({ tableId }) {
               centerX={tableX + tableWidth / 2}
               centerY={tableY + tableHeight / 2}
               positions={positions}
-              potSizes={table?.pots?.map(pot => pot.size) ?? []}
-              betSizes={table?.seats?.map(seat => seat?.betSize ?? null) ?? []}
+              potSizes={pots.map(pot => pot.size) ?? []}
+              betSizes={seats.map(seat => seat?.betSize ?? null) ?? []}
               bigBlind={table?.forcedBets.bigBlind}
             />
           )}
@@ -331,31 +353,30 @@ export default function GameOfPoker({ tableId }) {
       {/*Ui layer*/}
       <Canvas interactive={true}>
         {
-          table?.seats
-            .map((seat, index) => (
-              <React.Fragment key={index}>
-                {table.seats[index] && (
-                  <PlayerMarker
-                    key={index}
-                    x={positions[index].x}
-                    y={positions[index].y}
-                    totalChips={table.seats[index].totalChips}
-                    stack={table.seats[index].stack}
-                    betSize={table.seats[index].betSize}
-                    nickname={table.reservations[index].name}
-                    avatarStyle={table.reservations[index].avatarStyle}
-                    showFaceDownCards={table.hasHoleCards?.[index] && index !== seatIndex}
-                  />
-                )}
-              </React.Fragment>
-            ))
+          seats.map((seat, index) => (
+            <React.Fragment key={index}>
+              {table.seats[index] && (
+                <PlayerMarker
+                  key={index}
+                  x={positions[index].x}
+                  y={positions[index].y}
+                  totalChips={seats[index].totalChips}
+                  stack={seats[index].stack}
+                  betSize={seats[index].betSize}
+                  nickname={table.reservations[index].name}
+                  avatarStyle={table.reservations[index].avatarStyle}
+                  showFaceDownCards={table.hasHoleCards?.[index] && index !== seatIndex}
+                />
+              )}
+            </React.Fragment>
+          ))
         }
 
         {
-          !table?.seats[seatIndex] && table?.reservations
+          !seats[seatIndex] && table?.reservations
             .map((reservation, index) => (
               <React.Fragment key={index}>
-                {!table.seats[index] && (
+                {seats[index] && (
                   <JoinButton
                     disabled={joinButtonsDisabled || !!table.reservations[index]}
                     key={index}

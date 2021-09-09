@@ -17,11 +17,11 @@ const potsSlice = createSlice({
   },
   extraReducers: {
     [fetchTable.fulfilled]: (state, action) => {
-      state.value = action.payload.pots ?? initialState.value;
+      state.value = action.payload.table.pots ?? initialState.value;
     },
   }
 })
 
-export const { setPots } = pots.actions;
+export const { setPots } = potsSlice.actions;
 
 export default potsSlice.reducer;

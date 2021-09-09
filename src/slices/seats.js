@@ -17,7 +17,7 @@ const seatsSlice = createSlice({
   },
   extraReducers: {
     [fetchTable.fulfilled]: (state, action) => {
-      state.value = action.payload.seats ?? initialState.value;
+      state.value = action.payload.table.seats ?? initialState.value;
     },
   }
 })
