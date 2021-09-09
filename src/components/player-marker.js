@@ -1,8 +1,6 @@
 import PlayerButton from './player-button';
 import StackLabel from './stack-label';
 import NameLabel from './name-label';
-import FaceDownCard from './face-down-card';
-import { useEffect } from 'react';
 
 export default function PlayerMarker(
   {
@@ -10,7 +8,6 @@ export default function PlayerMarker(
     y,
     avatarStyle,
     nickname,
-    showFaceDownCards,
     stack,
     isActing,
   },
@@ -30,19 +27,6 @@ export default function PlayerMarker(
       <NameLabel x={x} y={y + 37}>
         {nickname}
       </NameLabel>
-      {showFaceDownCards && (
-        <>
-          <FaceDownCard
-            x={x + 65}
-            y={y - 44}
-            rotation={20 * Math.PI / 180}
-          />
-          <FaceDownCard
-            x={x + 35}
-            y={y - 36}
-          />
-        </>
-      )}
     </>
   );
 }

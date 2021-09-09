@@ -7,13 +7,15 @@ import React from 'react';
 const AnimatedFaceUpCard = animated(FaceUpCard);
 const dealCardSound = new Sound(dealCardAudio)
 
-export default function PlayerHand({ x, y, holeCards }) {
+export default function PlayerHand({ x, y, holeCards, rtl }) {
   const slideDownRef = useSpringRef()
   const slideSideRef = useSpringRef()
 
+  const offset = rtl ? -196 : 0;
+
   const slideSideProps = useSpring({
-    to: { x: x + 40 },
-    from: { x: x + 98 },
+    to: { x: x + 40 + offset},
+    from: { x: x + 98 + offset},
     onStart: () => {
       dealCardSound.play()
     },
@@ -41,7 +43,7 @@ export default function PlayerHand({ x, y, holeCards }) {
       />
       <AnimatedFaceUpCard
         {...slideDownProps}
-        x={x + 98}
+        x={x + 98 + offset}
         rank={holeCards[0].rank}
         suit={holeCards[0].suit}
       />

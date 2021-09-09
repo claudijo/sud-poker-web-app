@@ -9,7 +9,7 @@ import useEventState, { numberOrEmptyStringFromEvent } from '../hooks/use-event-
 import useFullscreen from '../hooks/use-fullscreen';
 import FullscreenButton from '../components/fullscreen-button';
 import Popup from '../components/popup';
-import { centerForPositions } from '../util/table';
+import { centerForPositions, showCardsRtl } from '../util/table';
 import { useSelector, useDispatch } from 'react-redux';
 import { actionTaken, cancelReservation, fetchTable, reserveSeat, setTable, sitDown } from '../slices/table-slice';
 import { fetchMe } from '../slices/me-slice';
@@ -27,6 +27,8 @@ import { setCommunityCards } from '../slices/community-cards';
 import { setLegalActions } from '../slices/legal-actions';
 import { setPots } from '../slices/pots';
 import { setSeats } from '../slices/seats';
+import FaceDownCard from '../components/face-down-card';
+import OpponentHand from '../components/opponent-hand';
 
 const stageWidth = 1280;
 const stageHeight = 720;
@@ -64,6 +66,8 @@ export default function GameOfPoker({ tableId }) {
   const seats = useSelector(state => state.seats.value);
   const pots = useSelector(state => state.pots.value);
 
+  console.log(!seats[seatIndex], table?.reservations)
+
   useEffect(() => {
     setBetSize(legalActions.chipRange.min);
   }, [setBetSize, legalActions.chipRange.min]);
@@ -90,6 +94,7 @@ export default function GameOfPoker({ tableId }) {
       commandQueue.enqueue(() => {
         dispatch(setCommunityCards([]));
         dispatch(setHoleCards([]));
+        dispatch(setPots([]));
       });
 
       commandQueue.enqueue(() => {
@@ -115,8 +120,8 @@ export default function GameOfPoker({ tableId }) {
       }
 
       commandQueue.enqueue(() => {
-        dispatch(setSeats(payload.table.seats))
-      })
+        dispatch(setSeats(payload.table.seats));
+      });
 
       commandQueue.enqueue(() => {
         dispatch(setPots(payload.table.pots));
@@ -324,6 +329,7 @@ export default function GameOfPoker({ tableId }) {
               x={positions[seatIndex].x}
               y={positions[seatIndex].y}
               holeCards={holeCards}
+              rtl={showCardsRtl(seatIndex)}
             />
           )}
           {
@@ -353,19 +359,28 @@ export default function GameOfPoker({ tableId }) {
         {
           seats.map((seat, index) => (
             <React.Fragment key={index}>
-              {table.seats[index] && (
-                <PlayerMarker
-                  key={index}
-                  x={positions[index].x}
-                  y={positions[index].y}
-                  totalChips={seats[index].totalChips}
-                  stack={seats[index].stack}
-                  betSize={seats[index].betSize}
-                  nickname={table.reservations[index].name}
-                  avatarStyle={table.reservations[index].avatarStyle}
-                  showFaceDownCards={table.hasHoleCards?.[index] && index !== seatIndex}
-                  isActing={index === playerToAct}
-                />
+              {seats[index] && (
+                <>
+                  <PlayerMarker
+                    key={index}
+                    x={positions[index].x}
+                    y={positions[index].y}
+                    totalChips={seats[index].totalChips}
+                    stack={seats[index].stack}
+                    betSize={seats[index].betSize}
+                    nickname={table.reservations[index]?.name}
+                    avatarStyle={table.reservations[index]?.avatarStyle}
+                    isActing={index === playerToAct}
+                  />
+                  {table.hasHoleCards?.[index] && index !== seatIndex && (
+                    <OpponentHand
+                      x={positions[index].x}
+                      y={positions[index].y}
+                      rtl={showCardsRtl(index)}
+                    />
+                  )}
+
+                </>
               )}
             </React.Fragment>
           ))
@@ -375,7 +390,7 @@ export default function GameOfPoker({ tableId }) {
           !seats[seatIndex] && table?.reservations
             .map((reservation, index) => (
               <React.Fragment key={index}>
-                {seats[index] && (
+                {!seats[index] && (
                   <JoinButton
                     disabled={joinButtonsDisabled || !!table.reservations[index]}
                     key={index}

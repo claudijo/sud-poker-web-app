@@ -68,3 +68,7 @@ export const buttonPositionOffset = (seatIndex, position) => {
       return { x: x + xOffset, y: y - yOffset}
   }
 }
+
+export const showCardsRtl = seatIndex => {
+  return seatIndex >= 6 && seatIndex <= 7
+}
