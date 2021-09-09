@@ -86,6 +86,11 @@ export default function GameOfPoker({ tableId }) {
       }
 
       commandQueue.enqueue(() => {
+        dispatch(setCommunityCards([]))
+        dispatch(setHoleCards([]));
+      });
+
+      commandQueue.enqueue(() => {
         dispatch(setPlayerToAct(payload.table.playerToAct));
       }, { delayStart: 800, delayEnd: 800 })
 
