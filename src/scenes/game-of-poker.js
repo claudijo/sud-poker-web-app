@@ -96,7 +96,7 @@ export default function GameOfPoker({ tableId }) {
 
       commandQueue.enqueue(() => {
         dispatch(setPlayerToAct(payload.table.playerToAct));
-      }, { delayStart: 800 });
+      }, { delayEnd: 800 });
 
       commandQueue.enqueue(() => {
         dispatch(setSeats(payload.table.seats));
@@ -366,6 +366,7 @@ export default function GameOfPoker({ tableId }) {
                   nickname={table.reservations[index].name}
                   avatarStyle={table.reservations[index].avatarStyle}
                   showFaceDownCards={table.hasHoleCards?.[index] && index !== seatIndex}
+                  isActing={index === playerToAct}
                 />
               )}
             </React.Fragment>
