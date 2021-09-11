@@ -7,7 +7,7 @@ export default function ChipStack({ x, y, size, bigBlind, globalAlpha = 1 }) {
       { globalAlpha === 1 && (
         <TextLabel
           x={x}
-          y={y}
+          y={y - 18}
           backgroundColor="#fff"
           color="#666"
           fontSize={28}
@@ -21,15 +21,15 @@ export default function ChipStack({ x, y, size, bigBlind, globalAlpha = 1 }) {
           {size}
         </TextLabel>
       )}
-      <Chip x={x - 26} y={y + 18} color="#e16057" globalAlpha={globalAlpha}/>
+      <Chip x={x - 26} y={y} color="#e16057" globalAlpha={globalAlpha}/>
       { size === bigBlind && (
-        <Chip x={x - 26} y={y + 10} color="#e16057" globalAlpha={globalAlpha}/>
+        <Chip x={x - 26} y={y - 8} color="#e16057" globalAlpha={globalAlpha}/>
       )}
       {
         size > bigBlind && (
           <>
-            <Chip x={x - 52} y={y + 18} color="#e16057" globalAlpha={globalAlpha}/>
-            <Chip x={x - 40} y={y + 10} color="#555555" globalAlpha={globalAlpha}/>
+            <Chip x={x - 52} y={y} color="#e16057" globalAlpha={globalAlpha}/>
+            <Chip x={x - 40} y={y - 8 } color="#555555" globalAlpha={globalAlpha}/>
           </>
         )
       }

@@ -2,24 +2,25 @@ import { createSlice } from '@reduxjs/toolkit';
 import { fetchTable } from './table-slice';
 
 const initialState = {
-  value: [],
+  value: -1,
 }
 
-const holeCardsSlice = createSlice({
-  name: 'holeCards',
+const buttonSlice = createSlice({
+  name: 'button',
   initialState,
   reducers: {
-    setHoleCards: (state, action) => {
+    setButton: (state, action) => {
       state.value = action.payload ?? initialState.value;
     }
   },
   extraReducers: {
     [fetchTable.fulfilled]: (state, action) => {
-      state.value = action.payload.holeCards ?? initialState.value;
+      state.value = action.payload.table.button ?? initialState.value;
     },
   }
 })
 
-export const { setHoleCards } = holeCardsSlice.actions;
+export const { setButton } = buttonSlice.actions;
 
-export default holeCardsSlice.reducer;
+export default buttonSlice.reducer;
+

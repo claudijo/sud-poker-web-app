@@ -18,10 +18,10 @@ export const centerForPositions = (width, height, offsetX = 0, offsetY = 0) => {
 export const chipPositionOffset = (seatIndex, position) => {
   const { x, y } = position
 
-  const yTop = 90
-  const yTopMiddle = 60
-  const yBottomMiddle = -50
-  const yBottom = -128
+  const yTop = 108
+  const yTopMiddle = 78
+  const yBottomMiddle = -32
+  const yBottom = -110
 
   const xMiddleLeft = 20
   const xMiddle = 40
@@ -54,10 +54,10 @@ export const chipPositionOffset = (seatIndex, position) => {
 }
 
 export const buttonPositionOffset = (seatIndex, position) => {
+  const { x, y } = chipPositionOffset(seatIndex, position)
+
   const yOffset = 0 //10
   const xOffset = 48
-
-  const { x, y } = chipPositionOffset(seatIndex, position)
 
   switch (seatIndex) {
     case 6:
@@ -70,5 +70,5 @@ export const buttonPositionOffset = (seatIndex, position) => {
 }
 
 export const showCardsRtl = seatIndex => {
-  return seatIndex >= 6 && seatIndex <= 7
+  return seatIndex >= 4 && seatIndex <= 7
 }

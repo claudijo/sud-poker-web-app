@@ -9,6 +9,7 @@ import communityCards from './slices/community-cards';
 import legalActions from './slices/legal-actions';
 import seats from './slices/seats';
 import pots from './slices/pots';
+import button from './slices/button';
 
 export default configureStore({
   reducer: {
@@ -22,5 +23,6 @@ export default configureStore({
     legalActions,
     seats,
     pots,
+    button,
   },
 });

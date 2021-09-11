@@ -9,7 +9,7 @@ import useEventState, { numberOrEmptyStringFromEvent } from '../hooks/use-event-
 import useFullscreen from '../hooks/use-fullscreen';
 import FullscreenButton from '../components/fullscreen-button';
 import Popup from '../components/popup';
-import { centerForPositions, showCardsRtl } from '../util/table';
+import { buttonPositionOffset, centerForPositions, showCardsRtl } from '../util/table';
 import { useSelector, useDispatch } from 'react-redux';
 import { actionTaken, cancelReservation, fetchTable, reserveSeat, setTable, sitDown } from '../slices/table-slice';
 import { fetchMe } from '../slices/me-slice';
@@ -29,6 +29,8 @@ import { setPots } from '../slices/pots';
 import { setSeats } from '../slices/seats';
 import FaceDownCard from '../components/face-down-card';
 import OpponentHand from '../components/opponent-hand';
+import DealerButton from '../components/dealer-button';
+import { setButton } from '../slices/button';
 
 const stageWidth = 1280;
 const stageHeight = 720;
@@ -65,8 +67,9 @@ export default function GameOfPoker({ tableId }) {
   const legalActions = useSelector(state => state.legalActions.value);
   const seats = useSelector(state => state.seats.value);
   const pots = useSelector(state => state.pots.value);
+  const button = useSelector(state => state.button.value)
 
-  console.log(!seats[seatIndex], table?.reservations)
+  console.log(button)
 
   useEffect(() => {
     setBetSize(legalActions.chipRange.min);
@@ -95,7 +98,8 @@ export default function GameOfPoker({ tableId }) {
         dispatch(setCommunityCards([]));
         dispatch(setHoleCards([]));
         dispatch(setPots([]));
-      });
+        dispatch(setButton(payload.table.button))
+      }, { delayEnd: 800 });
 
       commandQueue.enqueue(() => {
         dispatch(setPlayerToAct(payload.table.playerToAct));
@@ -324,6 +328,15 @@ export default function GameOfPoker({ tableId }) {
       {/*Animation layer*/}
       <Canvas>
         <>
+          {
+            button !== -1 && (
+              <DealerButton
+                x={buttonPositionOffset(button, positions[button]).x}
+                y={buttonPositionOffset(button, positions[button]).y}
+              />
+            )
+          }
+
           {positions[seatIndex] && holeCards.length && (
             <PlayerHand
               x={positions[seatIndex].x}

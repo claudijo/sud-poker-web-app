@@ -57,7 +57,7 @@ export default function TableBets(
         !isPotSizeHidden && (
           <ChipStack
             x={centerX}
-            y={centerY - 60}
+            y={centerY - 42}
             size={potSize}
             bigBlind={bigBlind}
           />
