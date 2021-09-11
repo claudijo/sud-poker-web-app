@@ -42,8 +42,6 @@ const tableX = stageWidth / 2 - tableWidth / 2;
 
 const positions = centerForPositions(tableWidth, tableHeight, tableX, tableY);
 
-const commandQueue = new CommandQueue();
-
 export default function GameOfPoker({ tableId }) {
   const [joinFormHidden, setJoinFormHidden] = useState(true);
   const [joinFormDisabled, setJoinFormDisabled] = useState(false);
@@ -69,120 +67,9 @@ export default function GameOfPoker({ tableId }) {
   const pots = useSelector(state => state.pots.value);
   const button = useSelector(state => state.button.value)
 
-  console.log(button)
-
   useEffect(() => {
     setBetSize(legalActions.chipRange.min);
   }, [setBetSize, legalActions.chipRange.min]);
-
-  // Set up table change listeners
-  useEffect(() => {
-    // const onTableChange = payload => {
-    //   if (payload.table.id === tableId) {
-    //     dispatch(setTable(payload));
-    //   }
-    // };
-    //
-    // const onHoleCardsChange = payload => {
-    //   if (payload.table.id === tableId) {
-    //     dispatch(setHoleCards(payload));
-    //   }
-    // };
-
-    const onStartHand = payload => {
-      if (payload.table.id !== tableId) {
-        return;
-      }
-
-      commandQueue.enqueue(() => {
-        dispatch(setCommunityCards([]));
-        dispatch(setHoleCards([]));
-        dispatch(setPots([]));
-        dispatch(setButton(payload.table.button))
-      }, { delayEnd: 800 });
-
-      commandQueue.enqueue(() => {
-        dispatch(setPlayerToAct(payload.table.playerToAct));
-      }, { delayEnd: 800 });
-
-      commandQueue.enqueue(() => {
-        dispatch(setSeats(payload.table.seats));
-      });
-
-      commandQueue.enqueue(() => {
-        dispatch(setHoleCards(payload.holeCards));
-      }, { delayEnd: 1200 });
-
-      commandQueue.enqueue(() => {
-        dispatch(setLegalActions(payload.table.legalActions));
-      });
-    };
-
-    const onBettingRoundEnd = payload => {
-      if (payload.table.id !== tableId) {
-        return;
-      }
-
-      commandQueue.enqueue(() => {
-        dispatch(setSeats(payload.table.seats));
-      });
-
-      commandQueue.enqueue(() => {
-        dispatch(setPots(payload.table.pots));
-      });
-
-      commandQueue.enqueue(() => {
-        dispatch(setCommunityCards(payload.table.communityCards));
-      }, {
-        delayEnd: payload.table.communityCards.length === 3 ? 2400 : 800,
-      });
-
-      commandQueue.enqueue(() => {
-        dispatch(setLegalActions(payload.table.legalActions));
-        dispatch(setPlayerToAct(payload.table.playerToAct));
-      });
-
-    };
-
-    const onActionTaken = payload => {
-      if (payload.table.id !== tableId) {
-        return;
-      }
-
-      commandQueue.enqueue(() => {
-        dispatch(setSeats(payload.table.seats));
-      }, { delayEnd: 400 });
-
-      commandQueue.enqueue(() => {
-        dispatch(setLegalActions(payload.table.legalActions));
-        dispatch(setPlayerToAct(payload.table.playerToAct));
-      });
-    };
-
-    // clientSocketEmitter.on('reserveSeat', onTableChange);
-    // clientSocketEmitter.on('cancelReservation', onTableChange);
-    // clientSocketEmitter.on('sitDown', onTableChange);
-    //
-    clientSocketEmitter.on('startHand', onStartHand);
-    clientSocketEmitter.on('actionTaken', onActionTaken);
-    clientSocketEmitter.on('bettingRoundEnd', onBettingRoundEnd);
-    //
-    // clientSocketEmitter.on('showdown', onBettingRoundEnd);
-
-    return () => {
-      // clientSocketEmitter.off('reserveSeat', onTableChange);
-      // clientSocketEmitter.off('cancelReservation', onTableChange);
-      // clientSocketEmitter.off('sitDown', onTableChange);
-      //
-      // clientSocketEmitter.off('startHand', onHoleCardsChange);
-
-      clientSocketEmitter.off('startHand', onStartHand);
-      clientSocketEmitter.off('actionTaken', onActionTaken);
-      clientSocketEmitter.off('bettingRoundEnd', onBettingRoundEnd);
-      //
-      // clientSocketEmitter.off('showdown', onBettingRoundEnd);
-    };
-  }, [dispatch, tableId]);
 
   // Kick off by fetching user
   useEffect(() => {
