@@ -13,24 +13,14 @@ import { buttonPositionOffset, centerForPositions, showCardsRtl } from '../util/
 import { useSelector, useDispatch } from 'react-redux';
 import { actionTaken, cancelReservation, fetchTable, reserveSeat, setTable, sitDown } from '../slices/table-slice';
 import { fetchMe } from '../slices/me-slice';
-import { clientSocketEmitter } from '../socket/client-socket-emitter';
 import PlayerMarker from '../components/player-marker';
 import PlayerHand from '../components/player-hand';
 import ActionBar from '../components/action-bar';
 import ActionForm from '../components/action-form';
 import TableBets from '../components/table-bets';
 import CommunityCards from '../components/community-cards';
-import { setHoleCards } from '../slices/hole-cards';
-import CommandQueue from '../util/command-queue';
-import { setPlayerToAct } from '../slices/player-to-act';
-import { setCommunityCards } from '../slices/community-cards';
-import { setLegalActions } from '../slices/legal-actions';
-import { setPots } from '../slices/pots';
-import { setSeats } from '../slices/seats';
-import FaceDownCard from '../components/face-down-card';
 import OpponentHand from '../components/opponent-hand';
 import DealerButton from '../components/dealer-button';
-import { setButton } from '../slices/button';
 
 const stageWidth = 1280;
 const stageHeight = 720;
