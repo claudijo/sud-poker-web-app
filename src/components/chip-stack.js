@@ -22,17 +22,6 @@ export default function ChipStack({ x, y, size, bigBlind, globalAlpha = 1 }) {
         </TextLabel>
       )}
       <Chip x={x - 26} y={y} color="#e16057" globalAlpha={globalAlpha}/>
-      { size === bigBlind && (
-        <Chip x={x - 26} y={y - 8} color="#e16057" globalAlpha={globalAlpha}/>
-      )}
-      {
-        size > bigBlind && (
-          <>
-            <Chip x={x - 52} y={y} color="#e16057" globalAlpha={globalAlpha}/>
-            <Chip x={x - 40} y={y - 8 } color="#555555" globalAlpha={globalAlpha}/>
-          </>
-        )
-      }
     </>
   );
 }

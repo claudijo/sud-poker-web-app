@@ -5,7 +5,7 @@ export default function Chip({ x, y, color, globalAlpha }) {
     <CanvasCircle
       x={x}
       y={y}
-      radius={16}
+      radius={18}
       fillStyle={color}
       shadowColor="#00000055"
       shadowOffsetX={4}
@@ -14,10 +14,10 @@ export default function Chip({ x, y, color, globalAlpha }) {
       globalAlpha={globalAlpha}
     >
       <CanvasCircle
-        radius={14}
+        radius={16}
         lineWidth={6}
         strokeStyle="#fff"
-        lineDash="5.5, 9.1"
+        lineDash="7, 10"
         globalAlpha={globalAlpha}
       />
     </CanvasCircle>

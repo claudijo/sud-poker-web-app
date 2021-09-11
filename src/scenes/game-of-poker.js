@@ -361,7 +361,6 @@ export default function GameOfPoker({ tableId }) {
               positions={positions}
               potSizes={pots.map(pot => pot.size) ?? []}
               betSizes={seats.map(seat => seat?.betSize ?? null) ?? []}
-              bigBlind={table?.forcedBets.bigBlind}
             />
           )}
         </>

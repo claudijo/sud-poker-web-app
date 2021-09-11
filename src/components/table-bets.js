@@ -11,7 +11,6 @@ export default function TableBets(
     centerY,
     potSizes,
     betSizes,
-    bigBlind,
     positions,
   },
 ) {
@@ -59,7 +58,6 @@ export default function TableBets(
             x={centerX}
             y={centerY - 42}
             size={potSize}
-            bigBlind={bigBlind}
           />
         )
       }
@@ -69,7 +67,6 @@ export default function TableBets(
             <AnimatedChipStack
               {...animatedProps}
               size={item.betSize}
-              bigBlind={bigBlind}
             />
           );
         })
