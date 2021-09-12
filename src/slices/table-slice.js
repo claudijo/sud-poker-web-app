@@ -84,7 +84,7 @@ const tableSlice = createSlice({
     },
     [reserveSeat.fulfilled]: (state, action) => {
       state.isFetching = false;
-      state.value = action.payload.table;
+      // state.value = action.payload.table;
     },
     [reserveSeat.rejected]: (state, action) => {
       state.isFetching = false;
@@ -97,7 +97,7 @@ const tableSlice = createSlice({
     },
     [cancelReservation.fulfilled]: (state, action) => {
       state.isFetching = false;
-      state.value = action.payload.table;
+      // state.value = action.payload.table;
     },
     [cancelReservation.rejected]: (state, action) => {
       state.isFetching = false;
@@ -110,7 +110,7 @@ const tableSlice = createSlice({
     },
     [sitDown.fulfilled]: (state, action) => {
       state.isFetching = false;
-      state.value = action.payload.table;
+      // state.value = action.payload.table;
     },
     [sitDown.rejected]: (state, action) => {
       state.isFetching = false;
@@ -119,7 +119,7 @@ const tableSlice = createSlice({
 
     [actionTaken.pending]: state => {
       state.isFetching = true;
-      // state.error = null;
+      state.error = null;
     },
     [actionTaken.fulfilled]: (state, action) => {
       state.isFetching = false;

@@ -9,6 +9,7 @@ import { setLegalActions } from '../slices/legal-actions';
 import { clientSocketEmitter } from '../socket/client-socket-emitter';
 import { useDispatch } from 'react-redux';
 import CommandQueue from '../util/command-queue';
+import { setReservations } from '../slices/reservations';
 
 const commandQueue = new CommandQueue();
 
@@ -85,15 +86,26 @@ export default function RealTimeEventHandler({ tableId }) {
     });
   }, [dispatch, tableId]);
 
-  const onReserveSeat = useCallback(payload => {
+  const onReservationChange = useCallback(payload => {
+    if (payload.table.id !== tableId) {
+      return;
+    }
+    dispatch(setReservations(payload.table.reservations))
+  }, [dispatch, tableId])
 
+  const onSitDown = useCallback(payload => {
+    if (payload.table.id !== tableId) {
+      return;
+    }
+    dispatch(setReservations(payload.table.reservations))
+    dispatch(setSeats(payload.table.seats))
   }, [dispatch, tableId])
 
   // Set up table change listeners
   useEffect(() => {
-    clientSocketEmitter.on('reserveSeat', onReserveSeat);
-    // clientSocketEmitter.on('cancelReservation', onTableChange);
-    // clientSocketEmitter.on('sitDown', onTableChange);
+    clientSocketEmitter.on('reserveSeat', onReservationChange);
+    clientSocketEmitter.on('cancelReservation', onReservationChange);
+    clientSocketEmitter.on('sitDown', onSitDown);
     //
     clientSocketEmitter.on('startHand', onStartHand);
     clientSocketEmitter.on('actionTaken', onActionTaken);
@@ -102,9 +114,9 @@ export default function RealTimeEventHandler({ tableId }) {
     // clientSocketEmitter.on('showdown', onBettingRoundEnd);
 
     return () => {
-      clientSocketEmitter.off('reserveSeat', onReserveSeat);
-      // clientSocketEmitter.off('cancelReservation', onTableChange);
-      // clientSocketEmitter.off('sitDown', onTableChange);
+      clientSocketEmitter.off('reserveSeat', onReservationChange);
+      clientSocketEmitter.off('cancelReservation', onReservationChange);
+      clientSocketEmitter.off('sitDown', onSitDown);
       //
       // clientSocketEmitter.off('startHand', onHoleCardsChange);
 
@@ -114,7 +126,7 @@ export default function RealTimeEventHandler({ tableId }) {
       //
       // clientSocketEmitter.off('showdown', onBettingRoundEnd);
     };
-  }, [onReserveSeat, onStartHand, onActionTaken, onBettingRoundEnd]);
+  }, [onReservationChange, onStartHand, onActionTaken, onBettingRoundEnd]);
 
   return null;
 }

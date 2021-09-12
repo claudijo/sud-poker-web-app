@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import table from './slices/table-slice';
 import me from './slices/me-slice';
-import seatIndex from './slices/seat-index-slice';
+import seatIndex from './slices/seat-index';
 import seat from './slices/seat';
 import holeCards from './slices/hole-cards';
 import playerToAct from './slices/player-to-act';
@@ -10,6 +10,7 @@ import legalActions from './slices/legal-actions';
 import seats from './slices/seats';
 import pots from './slices/pots';
 import button from './slices/button';
+import reservations from './slices/reservations';
 
 export default configureStore({
   reducer: {
@@ -24,5 +25,6 @@ export default configureStore({
     seats,
     pots,
     button,
+    reservations,
   },
 });

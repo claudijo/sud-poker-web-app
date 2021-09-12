@@ -55,7 +55,8 @@ export default function GameOfPoker({ tableId }) {
   const legalActions = useSelector(state => state.legalActions.value);
   const seats = useSelector(state => state.seats.value);
   const pots = useSelector(state => state.pots.value);
-  const button = useSelector(state => state.button.value)
+  const button = useSelector(state => state.button.value);
+  const reservations = useSelector(state => state.reservations.value);
 
   useEffect(() => {
     setBetSize(legalActions.chipRange.min);
@@ -257,8 +258,8 @@ export default function GameOfPoker({ tableId }) {
                     totalChips={seats[index].totalChips}
                     stack={seats[index].stack}
                     betSize={seats[index].betSize}
-                    nickname={table.reservations[index]?.name}
-                    avatarStyle={table.reservations[index]?.avatarStyle}
+                    nickname={reservations[index]?.name}
+                    avatarStyle={reservations[index]?.avatarStyle}
                     isActing={index === playerToAct}
                   />
                   {table.hasHoleCards?.[index] && index !== seatIndex && (
@@ -276,20 +277,19 @@ export default function GameOfPoker({ tableId }) {
         }
 
         {
-          !seats[seatIndex] && table?.reservations
-            .map((reservation, index) => (
-              <React.Fragment key={index}>
-                {!seats[index] && (
-                  <JoinButton
-                    disabled={joinButtonsDisabled || !!table.reservations[index]}
-                    key={index}
-                    x={positions[index].x}
-                    y={positions[index].y}
-                    onClick={onJoinButtonClick(index)}
-                  />
-                )}
-              </React.Fragment>
-            ))
+          !seats[seatIndex] && reservations.map((reservation, index) => (
+            <React.Fragment key={index}>
+              {!seats[index] && (
+                <JoinButton
+                  disabled={joinButtonsDisabled || !!reservations[index]}
+                  key={index}
+                  x={positions[index].x}
+                  y={positions[index].y}
+                  onClick={onJoinButtonClick(index)}
+                />
+              )}
+            </React.Fragment>
+          ))
         }
 
         {!isFullscreen && (
