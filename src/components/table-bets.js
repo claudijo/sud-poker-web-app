@@ -16,34 +16,32 @@ export default function TableBets(
 ) {
   const potSize = potSizes.reduce((acc, size) => acc + size, 0);
 
-  const sparseBetSizes = betSizes.reduce((acc, betSize, index) => {
+  const tablePotX = centerX;
+  const tablePotY = centerY - 42;
+
+  const chipStacks = betSizes.reduce((acc, betSize, index) => {
     if (!betSize) return acc;
-    acc.push({ betSize, index });
+    const position = positions[index];
+    const { x, y } = chipPositionOffset(index, position);
+    acc.push({ betSize, index, x, y });
     return acc;
-  }, []);
+  }, [])
 
   const [isPotSizeHidden, setIsPotSizeHidden] = useState(true)
 
   useEffect(() => {
-    if (isPotSizeHidden) {
-      if (potSize > 0) {
-        setIsPotSizeHidden(false)
-      }
-    } else {
-      if (potSize === 0) {
-        setIsPotSizeHidden(true)
-      }
+    if (potSize === 0) {
+      setIsPotSizeHidden(true)
     }
-  }, [potSize, isPotSizeHidden, setIsPotSizeHidden])
+  }, [potSize, setIsPotSizeHidden])
 
-  const transitions = useTransition(sparseBetSizes, {
-    leave: { x: centerX, y: centerY - 60, globalAlpha: 0 },
-    from: (betSize) => {
-      const position = positions[betSize.index];
-      const { x, y } = chipPositionOffset(betSize.index, position);
+  const transitions = useTransition(chipStacks, {
+    leave: { x: tablePotX, y: tablePotY, globalAlpha: 0 },
+    from: (chipStack) => {
+      const { x, y } = chipStack
       return { x, y, globalAlpha: 1 };
     },
-    keys: item => item.index,
+    keys: chipStack => chipStack.index,
     config: config.slow,
     onRest: () => {
       setIsPotSizeHidden(false)
@@ -55,21 +53,35 @@ export default function TableBets(
       {
         !isPotSizeHidden && (
           <ChipStack
-            x={centerX}
-            y={centerY - 42}
+            x={tablePotX}
+            y={tablePotY}
             size={potSize}
           />
         )
       }
       {
+        // Display chips only (will animate on remove)
         transitions((animatedProps, item, transition, index) => {
           return (
             <AnimatedChipStack
               {...animatedProps}
               size={item.betSize}
+              hideLabel={true}
             />
           );
         })
+      }
+      {
+        // Display labels only
+        chipStacks.map(({index, betSize, x, y}) => (
+          <ChipStack
+            key={`${index}:${betSize}`}
+            x={x}
+            y={y}
+            size={betSize}
+            hideChips={true}
+          />
+        ))
       }
     </>
   );

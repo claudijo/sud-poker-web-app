@@ -1,10 +1,19 @@
 import TextLabel from './text-label';
 import Chip from './chip';
 
-export default function ChipStack({ x, y, size, bigBlind, globalAlpha = 1 }) {
+export default function ChipStack(
+  {
+    x,
+    y,
+    size,
+    hideLabel = false,
+    hideChips = false,
+    globalAlpha = 1,
+  },
+) {
   return (
     <>
-      { globalAlpha === 1 && (
+      {!hideLabel && (
         <TextLabel
           x={x}
           y={y - 18}
@@ -21,7 +30,9 @@ export default function ChipStack({ x, y, size, bigBlind, globalAlpha = 1 }) {
           {size}
         </TextLabel>
       )}
-      <Chip x={x - 26} y={y} color="#e16057" globalAlpha={globalAlpha}/>
+      {!hideChips && (
+        <Chip x={x - 26} y={y} color="#e16057" globalAlpha={globalAlpha}/>
+      )}
     </>
   );
 }
