@@ -11,7 +11,6 @@ export default function FaceDownCard({ x, y, rotation }) {
       shadowColor="#00000055"
       shadowOffsetX={4}
       shadowOffsetY={4}
-      shadowBlur={4}
       src={CardBackSide}
       rotation={rotation}
     />
