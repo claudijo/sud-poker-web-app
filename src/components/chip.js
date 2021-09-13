@@ -8,9 +8,8 @@ export default function Chip({ x, y, color, globalAlpha }) {
       radius={18}
       fillStyle={color}
       shadowColor="#00000055"
-      shadowOffsetX={4}
-      shadowOffsetY={4}
-      shadowBlur={4}
+      shadowOffsetX={3}
+      shadowOffsetY={5}
       globalAlpha={globalAlpha}
     >
       <CanvasCircle

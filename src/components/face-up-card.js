@@ -2,7 +2,7 @@ import CanvasRectangle from '../canvas-shapes/rectangle';
 import CanvasText from '../canvas-shapes/canvas-text';
 import { parseRank, parseSuit, suitColor } from '../util/card';
 
-export default function FaceUpCard({ x, y, globalAlpha, rank, suit}) {
+export default function FaceUpCard({ x, y, globalAlpha, rank, suit }) {
   const color = suitColor(suit);
 
   return (
@@ -12,10 +12,9 @@ export default function FaceUpCard({ x, y, globalAlpha, rank, suit}) {
       width={50}
       height={70}
       fillStyle="#faffec"
-      shadowColor="#00000055"
+      shadowColor="#00000066"
       shadowOffsetX={4}
       shadowOffsetY={4}
-      shadowBlur={4}
       globalAlpha={globalAlpha}
     >
       <CanvasText
