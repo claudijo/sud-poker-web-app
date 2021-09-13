@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import FaceUpCard from './face-up-card';
 import { animated, useTransition } from '@react-spring/web';
 import { Sound } from '../lib/sound';
