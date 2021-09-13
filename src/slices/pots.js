@@ -5,10 +5,8 @@ const initialState = {
   value: [],
 }
 
-const name = 'pots'
-
 const potsSlice = createSlice({
-  name,
+  name: 'pots',
   initialState,
   reducers: {
     setPots: (state, action) => {
