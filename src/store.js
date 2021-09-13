@@ -11,6 +11,7 @@ import seats from './slices/seats';
 import pots from './slices/pots';
 import button from './slices/button';
 import reservations from './slices/reservations';
+import winners from './slices/winners';
 
 export default configureStore({
   reducer: {
@@ -26,5 +27,6 @@ export default configureStore({
     pots,
     button,
     reservations,
+    winners,
   },
 });

@@ -10,11 +10,12 @@ import { clientSocketEmitter } from '../socket/client-socket-emitter';
 import { useDispatch } from 'react-redux';
 import CommandQueue from '../util/command-queue';
 import { setReservations } from '../slices/reservations';
+import { setWinners } from '../slices/winners';
 
 const commandQueue = new CommandQueue();
 
 export default function RealTimeEventHandler({ tableId }) {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const onStartHand = useCallback(payload => {
     if (payload.table.id !== tableId) {
@@ -25,7 +26,8 @@ export default function RealTimeEventHandler({ tableId }) {
       dispatch(setCommunityCards([]));
       dispatch(setHoleCards([]));
       dispatch(setPots([]));
-      dispatch(setButton(payload.table.button))
+      dispatch(setButton(payload.table.button));
+      dispatch(setWinners([]));
     }, { delayEnd: 800 });
 
     commandQueue.enqueue(() => {
@@ -69,7 +71,7 @@ export default function RealTimeEventHandler({ tableId }) {
       dispatch(setPlayerToAct(payload.table.playerToAct));
     });
 
-  },[dispatch, tableId]);
+  }, [dispatch, tableId]);
 
   const onActionTaken = useCallback(payload => {
     if (payload.table.id !== tableId) {
@@ -90,41 +92,44 @@ export default function RealTimeEventHandler({ tableId }) {
     if (payload.table.id !== tableId) {
       return;
     }
-    dispatch(setReservations(payload.table.reservations))
-  }, [dispatch, tableId])
+
+    dispatch(setReservations(payload.table.reservations));
+  }, [dispatch, tableId]);
 
   const onSitDown = useCallback(payload => {
     if (payload.table.id !== tableId) {
       return;
     }
-    dispatch(setReservations(payload.table.reservations))
-    dispatch(setSeats(payload.table.seats))
-  }, [dispatch, tableId])
+
+    dispatch(setReservations(payload.table.reservations));
+    dispatch(setSeats(payload.table.seats));
+  }, [dispatch, tableId]);
+
+  const onShowdown = useCallback(payload => {
+    if (payload.table.id !== tableId) {
+      return;
+    }
+    dispatch(setWinners(payload.table.reveals));
+  }, [dispatch, tableId]);
 
   // Set up table change listeners
   useEffect(() => {
     clientSocketEmitter.on('reserveSeat', onReservationChange);
     clientSocketEmitter.on('cancelReservation', onReservationChange);
     clientSocketEmitter.on('sitDown', onSitDown);
-    //
     clientSocketEmitter.on('startHand', onStartHand);
     clientSocketEmitter.on('actionTaken', onActionTaken);
     clientSocketEmitter.on('bettingRoundEnd', onBettingRoundEnd);
-    //
-    // clientSocketEmitter.on('showdown', onBettingRoundEnd);
+    clientSocketEmitter.on('showdown', onShowdown);
 
     return () => {
       clientSocketEmitter.off('reserveSeat', onReservationChange);
       clientSocketEmitter.off('cancelReservation', onReservationChange);
       clientSocketEmitter.off('sitDown', onSitDown);
-      //
-      // clientSocketEmitter.off('startHand', onHoleCardsChange);
-
       clientSocketEmitter.off('startHand', onStartHand);
       clientSocketEmitter.off('actionTaken', onActionTaken);
       clientSocketEmitter.off('bettingRoundEnd', onBettingRoundEnd);
-      //
-      // clientSocketEmitter.off('showdown', onBettingRoundEnd);
+      clientSocketEmitter.off('showdown', onShowdown);
     };
   }, [onReservationChange, onStartHand, onActionTaken, onBettingRoundEnd]);
 
