@@ -3,7 +3,7 @@ import { animated, useTransition } from '@react-spring/web';
 import { Sound } from '../lib/sound';
 import dealCardAudio from '../audio/deal-card.mp3';
 import { useCallback } from 'react';
-import { isWinningCards } from '../util/card';
+import { isWinningCard } from '../util/card';
 
 const AnimatedFaceUpCard = animated(FaceUpCard);
 const dealCardSound = new Sound(dealCardAudio);
@@ -33,8 +33,8 @@ export default function CommunityCards(
       x={x + index * 64}
       rank={card.rank}
       suit={card.suit}
-      elevated={isWinningCards(winners, card)}
-      dimmed={winners.length && !isWinningCards(winners, card)}
+      elevated={isWinningCard(winners, card)}
+      dimmed={winners.length && !isWinningCard(winners, card)}
     />
   ));
 }

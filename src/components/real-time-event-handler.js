@@ -113,7 +113,7 @@ export default function RealTimeEventHandler({ tableId }) {
     payload.table.winners.forEach(potWinners => {
       commandQueue.enqueue(() => {
         dispatch(setWinners(potWinners))
-      }, { delayEnd: 3000})
+      }, { delayEnd: 3500})
     })
   }, [dispatch, tableId]);
 

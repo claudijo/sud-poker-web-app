@@ -3,7 +3,7 @@ import { useSpring, useChain, animated, useSpringRef } from '@react-spring/web';
 import dealCardAudio from '../audio/deal-card.mp3';
 import { Sound } from '../lib/sound';
 import React from 'react';
-import { isWinningCards } from '../util/card';
+import { isWinningCard } from '../util/card';
 
 const AnimatedFaceUpCard = animated(FaceUpCard);
 const dealCardSound = new Sound(dealCardAudio)
@@ -41,16 +41,16 @@ export default function PlayerHand({ x, y, holeCards, rtl, winners }) {
         {...slideDownProps}
         rank={holeCards[1].rank}
         suit={holeCards[1].suit}
-        elevated={isWinningCards(winners, holeCards[1])}
-        dimmed={winners.length && !isWinningCards(winners, holeCards[1])}
+        elevated={isWinningCard(winners, holeCards[1])}
+        dimmed={winners.length && !isWinningCard(winners, holeCards[1])}
       />
       <AnimatedFaceUpCard
         {...slideDownProps}
         x={x + 98 + offset}
         rank={holeCards[0].rank}
         suit={holeCards[0].suit}
-        elevated={isWinningCards(winners, holeCards[0])}
-        dimmed={winners.length && !isWinningCards(winners, holeCards[0])}
+        elevated={isWinningCard(winners, holeCards[0])}
+        dimmed={winners.length && !isWinningCard(winners, holeCards[0])}
       />
     </>
   );
