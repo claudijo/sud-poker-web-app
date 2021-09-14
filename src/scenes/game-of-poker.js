@@ -32,9 +32,6 @@ const tableX = stageWidth / 2 - tableWidth / 2;
 
 const positions = centerForPositions(tableWidth, tableHeight, tableX, tableY);
 
-// const STAGE_BACKGROUND_COLOR = '#ffe0b2'
-// const STAGE_BACKGROUND_COLOR = '#ffecb3'
-// const STAGE_BACKGROUND_COLOR = '#fff9c4'
 const STAGE_BACKGROUND_COLOR = '#F6E299'
 
 export default function GameOfPoker({ tableId }) {
@@ -62,6 +59,7 @@ export default function GameOfPoker({ tableId }) {
   const pots = useSelector(state => state.pots.value);
   const button = useSelector(state => state.button.value);
   const reservations = useSelector(state => state.reservations.value);
+  const winners = useSelector(state => state.winners.value);
 
   useEffect(() => {
     setBetSize(legalActions.chipRange.min);
@@ -226,17 +224,9 @@ export default function GameOfPoker({ tableId }) {
               y={positions[seatIndex].y}
               holeCards={holeCards}
               rtl={showCardsRtl(seatIndex)}
+              winners={winners}
             />
           )}
-          {
-            communityCards.length && (
-              <CommunityCards
-                x={tableX + tableWidth / 2 - 33 - 2 * 60}
-                y={tableY + tableHeight / 2 - 11}
-                cards={communityCards}
-              />
-            )
-          }
           {table && (
             <TableBets
               centerX={tableX + tableWidth / 2}
@@ -246,6 +236,16 @@ export default function GameOfPoker({ tableId }) {
               betSizes={seats.map(seat => seat?.betSize ?? null) ?? []}
             />
           )}
+          {
+            communityCards.length && (
+              <CommunityCards
+                x={tableX + tableWidth / 2 - 33 - 2 * 60}
+                y={tableY + tableHeight / 2 - 11}
+                cards={communityCards}
+                winners={winners}
+              />
+            )
+          }
         </>
 
       </Canvas>
@@ -274,7 +274,6 @@ export default function GameOfPoker({ tableId }) {
                       rtl={showCardsRtl(index)}
                     />
                   )}
-
                 </>
               )}
             </React.Fragment>

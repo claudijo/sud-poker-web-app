@@ -27,3 +27,16 @@ export const suitColor = suit => {
       throw new Error(`Invalid rank "${suit}"`)
   }
 }
+
+export const isWinningCards = (winners, card) => {
+  for (const winner of winners) {
+    const isWinningCard = winner.cards.some(winningCard => {
+      return card.rank === winningCard.rank && card.suit === winningCard.suit
+    })
+    if (isWinningCard) {
+      return true
+    }
+  }
+
+  return false;
+}

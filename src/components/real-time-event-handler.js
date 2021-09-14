@@ -109,7 +109,12 @@ export default function RealTimeEventHandler({ tableId }) {
     if (payload.table.id !== tableId) {
       return;
     }
-    dispatch(setWinners(payload.table.reveals));
+
+    payload.table.winners.forEach(potWinners => {
+      commandQueue.enqueue(() => {
+        dispatch(setWinners(potWinners))
+      }, { delayEnd: 3000})
+    })
   }, [dispatch, tableId]);
 
   // Set up table change listeners
