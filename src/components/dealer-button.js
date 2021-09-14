@@ -15,7 +15,7 @@ export default function DealerButton({ x, y }) {
       {...animatedProps}
       radius={14}
       fillStyle="#eaeaea"
-      shadowColor="#00000066"
+      shadowColor="#00000055"
       shadowOffsetX={2}
       shadowOffsetY={4}
     >

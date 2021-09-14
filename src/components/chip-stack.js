@@ -1,6 +1,10 @@
 import TextLabel from './text-label';
 import Chip from './chip';
 
+const CHIP_STACK_LABEL_BACKGROUND_COLOR = '#fff'
+const CHIP_STACK_LABEL_TEXT_COLOR = '#4D435B'
+const CHIP_COLOR = '#EB4448'
+
 export default function ChipStack(
   {
     x,
@@ -17,8 +21,8 @@ export default function ChipStack(
         <TextLabel
           x={x}
           y={y - 18}
-          backgroundColor="#fff"
-          color="#666"
+          backgroundColor={CHIP_STACK_LABEL_BACKGROUND_COLOR}
+          color={CHIP_STACK_LABEL_TEXT_COLOR}
           fontSize={28}
           fontFamily="Krungthep"
           paddingTop={4}
@@ -31,7 +35,7 @@ export default function ChipStack(
         </TextLabel>
       )}
       {!hideChips && (
-        <Chip x={x - 26} y={y} color="#e16057" globalAlpha={globalAlpha}/>
+        <Chip x={x - 26} y={y} color={CHIP_COLOR} globalAlpha={globalAlpha}/>
       )}
     </>
   );

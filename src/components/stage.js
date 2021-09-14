@@ -7,7 +7,7 @@ export const ScaleMode = {
   SCALE_TO_COVER: Math.max,
 };
 
-export default function Stage({ scaleMode, width, height, backgroundColor, children }) {
+export default function Stage({ scaleMode, width, height, backgroundColor = 'transparent', children }) {
   const stageElement = useRef(null);
   const [scale, setScale] = useState(1);
 

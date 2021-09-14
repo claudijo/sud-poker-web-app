@@ -40,12 +40,14 @@ export default function PlayerHand({ x, y, holeCards, rtl }) {
         {...slideDownProps}
         rank={holeCards[1].rank}
         suit={holeCards[1].suit}
+        dimmed={true}
       />
       <AnimatedFaceUpCard
         {...slideDownProps}
         x={x + 98 + offset}
         rank={holeCards[0].rank}
         suit={holeCards[0].suit}
+        elevated={true}
       />
     </>
   );

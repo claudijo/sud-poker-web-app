@@ -1,11 +1,13 @@
 import TextLabel from './text-label';
 
+const NAME_LABEL_BACKGROUND_COLOR = '#28A179';
+
 export default function NameLabel({ children, x, y }) {
   return (
     <TextLabel
       x={x}
       y={y}
-      backgroundColor="#009557"
+      backgroundColor={NAME_LABEL_BACKGROUND_COLOR}
       color="#fff"
       fontSize={20}
       fontFamily="Krungthep"

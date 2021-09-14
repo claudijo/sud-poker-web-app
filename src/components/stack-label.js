@@ -1,11 +1,13 @@
 import TextLabel from './text-label';
 
+const STACK_LABEL_BACKGROUND_COLOR = "#EC745F"
+
 export default function StackLabel({ children, x, y, stack}) {
   return (
     <TextLabel
       x={x}
       y={y}
-      backgroundColor="#e16057"
+      backgroundColor={STACK_LABEL_BACKGROUND_COLOR}
       color="#fff"
       fontSize={24}
       fontFamily="Krungthep"

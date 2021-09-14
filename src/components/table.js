@@ -4,6 +4,11 @@ import React from 'react';
 import { range } from '../lib/array';
 import CanvasText from '../canvas-shapes/canvas-text';
 
+const TABLE_TEXT_COLOR = '#7CC579';
+const TABLE_BACKGROUND_COLOR = '#29A079'
+const TABLE_HIGHLIGHT_COLOR = '#7CC579'
+const TABLE_SHADOW_COLOR = '#4D435B';
+
 export default function Table({ x, y, width, height, borderWidth }) {
   return (
     <>
@@ -13,7 +18,7 @@ export default function Table({ x, y, width, height, borderWidth }) {
         width={width - borderWidth}
         height={height - borderWidth}
         radius={Math.min(width - borderWidth, height - borderWidth) / 2}
-        fillStyle="#3689b3"
+        fillStyle={TABLE_SHADOW_COLOR}
       />
       <RoundedRectangle
         x={x + borderWidth * 1.5}
@@ -21,7 +26,7 @@ export default function Table({ x, y, width, height, borderWidth }) {
         width={width - borderWidth * 2}
         height={height - borderWidth * 2}
         radius={Math.min(width - borderWidth * 2, height - borderWidth * 2) / 2}
-        fillStyle="#45b0e6"
+        fillStyle={TABLE_BACKGROUND_COLOR}
       />
       <RoundedRectangle
         x={x + borderWidth * 0.5}
@@ -29,13 +34,14 @@ export default function Table({ x, y, width, height, borderWidth }) {
         width={width - borderWidth}
         height={height - borderWidth}
         radius={Math.min(width - borderWidth, height - borderWidth) / 2}
-        strokeStyle="#4dc3ff"
+        strokeStyle={TABLE_HIGHLIGHT_COLOR}
         lineWidth={borderWidth}
+
       />
       <CanvasText
         x={x + width / 2}
         y={y + height / 2 - 54}
-        fillStyle="#4dc3ff"
+        fillStyle={TABLE_TEXT_COLOR}
         font="30px Krungthep"
         originX={-0.5}
       >
@@ -49,7 +55,7 @@ export default function Table({ x, y, width, height, borderWidth }) {
             y={y + height / 2 - 14}
             width={56}
             height={76}
-            strokeStyle="#4dc3ff"
+            strokeStyle={TABLE_TEXT_COLOR}
             lineWidth={4}
           />
         ))

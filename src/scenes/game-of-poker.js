@@ -32,6 +32,11 @@ const tableX = stageWidth / 2 - tableWidth / 2;
 
 const positions = centerForPositions(tableWidth, tableHeight, tableX, tableY);
 
+// const STAGE_BACKGROUND_COLOR = '#ffe0b2'
+// const STAGE_BACKGROUND_COLOR = '#ffecb3'
+// const STAGE_BACKGROUND_COLOR = '#fff9c4'
+const STAGE_BACKGROUND_COLOR = '#F6E299'
+
 export default function GameOfPoker({ tableId }) {
   const [joinFormHidden, setJoinFormHidden] = useState(true);
   const [joinFormDisabled, setJoinFormDisabled] = useState(false);
@@ -190,7 +195,7 @@ export default function GameOfPoker({ tableId }) {
       width={stageWidth}
       height={stageHeight}
       scaleMode={ScaleMode.SCALE_TO_FIT}
-      backgroundColor="#fefcca"
+      backgroundColor={STAGE_BACKGROUND_COLOR}
     >
       {/*Background layer*/}
       <Canvas>

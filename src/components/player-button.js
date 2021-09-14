@@ -5,6 +5,8 @@ import CanvasImage from '../canvas-shapes/canvas-image';
 import CircularTimeoutMeter from './circular-timeout-meter';
 
 const AVATAR_SIZE = 48;
+const BUTTON_BACKGROUND_COLOR = '#CBEDC6'
+const BUTTON_BORDER_COLOR = '#29A079'
 
 export default function PlayerButton(
   {
@@ -24,8 +26,8 @@ export default function PlayerButton(
       x={x}
       y={y}
       radius={32}
-      fillStyle="#89d9d1"
-      strokeStyle={isActing ? '#89d9d1' : '#009557'}
+      fillStyle={BUTTON_BACKGROUND_COLOR}
+      strokeStyle={isActing ? BUTTON_BACKGROUND_COLOR : BUTTON_BORDER_COLOR}
       lineWidth={6}
     >
       <CanvasImage
@@ -36,7 +38,7 @@ export default function PlayerButton(
         src={userIcon}
       />
       {isActing && (
-        <CircularTimeoutMeter/>
+        <CircularTimeoutMeter strokeStyle={BUTTON_BORDER_COLOR}/>
       )}
     </CanvasCircle>
   );

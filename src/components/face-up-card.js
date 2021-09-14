@@ -6,6 +6,8 @@ import { animated, useSpring } from '@react-spring/web';
 const AnimatedRectangle = animated(CanvasRectangle);
 const AnimatedText = animated(CanvasText);
 
+const CARD_BACKGROUND_COLOR = '#fffbef'
+
 export default function FaceUpCard({ x, y, globalAlpha, elevated, dimmed, rank, suit }) {
   const color = suitColor(suit);
 
@@ -25,7 +27,7 @@ export default function FaceUpCard({ x, y, globalAlpha, elevated, dimmed, rank, 
       {...animatedElevatedProps}
       width={50}
       height={70}
-      fillStyle="#faffec"
+      fillStyle={CARD_BACKGROUND_COLOR}
       shadowColor="#00000055"
       shadowOffsetX={4 + (elevated ? 4 : 0)}
       shadowOffsetY={4 + (elevated ? 8 : 0)}
