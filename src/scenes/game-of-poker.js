@@ -21,6 +21,7 @@ import TableBets from '../components/table-bets';
 import CommunityCards from '../components/community-cards';
 import OpponentHand from '../components/opponent-hand';
 import DealerButton from '../components/dealer-button';
+import ShoutOut from '../components/shout-out';
 
 const stageWidth = 1280;
 const stageHeight = 720;
@@ -303,6 +304,13 @@ export default function GameOfPoker({ tableId }) {
             onClick={onFullscreenButtonClick}
           />
         )}
+
+        <ShoutOut
+          x={stageWidth / 2}
+          y={stageHeight / 2}
+        >
+          WINNER
+        </ShoutOut>
       </Canvas>
       {/*Html overlays*/}
       {!actionFormHidden && (
