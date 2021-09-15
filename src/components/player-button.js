@@ -3,10 +3,9 @@ import { generateUserIcon } from '../util/avatar';
 import CanvasCircle from '../canvas-shapes/circle';
 import CanvasImage from '../canvas-shapes/canvas-image';
 import CircularTimeoutMeter from './circular-timeout-meter';
+import { BUTTON_BACKGROUND_COLOR, BUTTON_BORDER_COLOR } from '../util/colors';
 
 const AVATAR_SIZE = 48;
-const BUTTON_BACKGROUND_COLOR = '#CBEDC6'
-const BUTTON_BORDER_COLOR = '#29A079'
 
 export default function PlayerButton(
   {

@@ -1,6 +1,5 @@
 import TextLabel from './text-label';
-
-const STACK_LABEL_BACKGROUND_COLOR = "#EC745F"
+import { STACK_LABEL_BACKGROUND_COLOR } from '../util/colors';
 
 export default function StackLabel({ children, x, y, stack}) {
   return (

@@ -1,9 +1,7 @@
 import TextLabel from './text-label';
 import Chip from './chip';
+import { CHIP_STACK_LABEL_BACKGROUND_COLOR, CHIP_STACK_LABEL_TEXT_COLOR, CHIP_COLOR } from '../util/colors';
 
-const CHIP_STACK_LABEL_BACKGROUND_COLOR = '#fff'
-const CHIP_STACK_LABEL_TEXT_COLOR = '#4D435B'
-const CHIP_COLOR = '#EB4448'
 
 export default function ChipStack(
   {

@@ -21,6 +21,7 @@ import TableBets from '../components/table-bets';
 import CommunityCards from '../components/community-cards';
 import OpponentHand from '../components/opponent-hand';
 import DealerButton from '../components/dealer-button';
+import { STAGE_BACKGROUND_COLOR } from '../util/colors';
 
 const stageWidth = 1280;
 const stageHeight = 720;
@@ -31,8 +32,6 @@ const tableY = 160;
 const tableX = stageWidth / 2 - tableWidth / 2;
 
 const positions = centerForPositions(tableWidth, tableHeight, tableX, tableY);
-
-const STAGE_BACKGROUND_COLOR = '#F6E299'
 
 export default function GameOfPoker({ tableId }) {
   const [joinFormHidden, setJoinFormHidden] = useState(true);

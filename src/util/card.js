@@ -42,6 +42,7 @@ export const rankingDescriptions = [
 ];
 
 const relevantCardsCount = ranking => {
+  console.log('Winner', rankingDescriptions[ranking], ranking)
   switch (ranking) {
     case 0:
       return 1;

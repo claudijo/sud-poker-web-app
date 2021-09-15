@@ -2,9 +2,7 @@ import CanvasCircle from '../canvas-shapes/circle';
 import CanvasImage from '../canvas-shapes/canvas-image';
 import AddUserIcon from '../icons/add-user.svg';
 import { useState } from 'react';
-
-const BUTTON_BACKGROUND_COLOR = '#CBEDC6'
-const BUTTON_BORDER_COLOR = '#1E79DA'
+import { BUTTON_BACKGROUND_COLOR, BUTTON_BORDER_COLOR, BUTTON_HOVER_BACKGROUND_COLOR, BUTTON_ACTIVE_BACKGROUND_COLOR } from '../util/colors';
 
 export default function JoinButton({ children, x, y, disabled, onClick, ...props }) {
 
@@ -15,26 +13,26 @@ export default function JoinButton({ children, x, y, disabled, onClick, ...props
       return;
     }
     document.body.style.cursor = 'pointer';
-    setFillStyle('#69bfb6');
+    setFillStyle(BUTTON_HOVER_BACKGROUND_COLOR);
   };
 
   const onMouseLeave = event => {
     document.body.style.cursor = 'default';
-    setFillStyle('#89d9d1');
+    setFillStyle(BUTTON_BACKGROUND_COLOR);
   };
 
   const onMouseDown = event => {
     if (disabled) {
       return;
     }
-    setFillStyle('#54a89f');
+    setFillStyle(BUTTON_ACTIVE_BACKGROUND_COLOR);
   };
 
   const onMouseUp = event => {
     if (disabled) {
       return;
     }
-    setFillStyle('#69bfb6');
+    setFillStyle(BUTTON_BACKGROUND_COLOR);
   };
 
   const onClickProxy = event => {

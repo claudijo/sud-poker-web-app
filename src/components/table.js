@@ -3,11 +3,7 @@ import CanvasRectangle from '../canvas-shapes/rectangle';
 import React from 'react';
 import { range } from '../lib/array';
 import CanvasText from '../canvas-shapes/canvas-text';
-
-const TABLE_TEXT_COLOR = '#7CC579';
-const TABLE_BACKGROUND_COLOR = '#29A079'
-const TABLE_HIGHLIGHT_COLOR = '#7CC579'
-const TABLE_SHADOW_COLOR = '#4D435B';
+import { TABLE_HIGHLIGHT_COLOR, TABLE_SHADOW_COLOR, TABLE_BACKGROUND_COLOR, TABLE_TEXT_COLOR } from '../util/colors';
 
 export default function Table({ x, y, width, height, borderWidth }) {
   return (
@@ -51,7 +47,7 @@ export default function Table({ x, y, width, height, borderWidth }) {
         range(5).map(index => (
           <CanvasRectangle
             key={index}
-            x={x + width / 2 - 28 - (index - 2) * 64 }
+            x={x + width / 2 - 28 - (index - 2) * 64}
             y={y + height / 2 - 14}
             width={56}
             height={76}

@@ -1,12 +1,11 @@
 import CanvasRectangle from '../canvas-shapes/rectangle';
 import CanvasText from '../canvas-shapes/canvas-text';
 import { parseRank, parseSuit, suitColor } from '../util/card';
-import { animated, useSpring } from '@react-spring/web';
+import { animated, config, useSpring } from '@react-spring/web';
+import { FACE_UP_CARD_BACKGROUND_COLOR } from '../util/colors';
 
 const AnimatedRectangle = animated(CanvasRectangle);
 const AnimatedText = animated(CanvasText);
-
-const CARD_BACKGROUND_COLOR = '#fffbef'
 
 export default function FaceUpCard({ x, y, globalAlpha, elevated, dimmed, rank, suit }) {
   const color = suitColor(suit);
@@ -17,8 +16,19 @@ export default function FaceUpCard({ x, y, globalAlpha, elevated, dimmed, rank, 
   })
 
   const animatedElevatedProps = useSpring({
-    from: { x: x - (elevated ?  0 : 4), y: y - (elevated ?  0 : 8)},
-    to: { x: x - (elevated ?  4 : 0), y: y - (elevated ?  8 : 0)},
+    from: {
+      x: x - (elevated ?  0 : 4),
+      y: y - (elevated ?  0 : 8),
+      shadowOffsetX: 4,
+      shadowOffsetY: 4,
+    },
+    to: {
+      x: x - (elevated ?  4 : 0),
+      y: y - (elevated ?  8 : 0),
+      shadowOffsetX: 4 + (elevated ? 4 : 0),
+      shadowOffsetY: 4 + (elevated ? 8 : 0),
+    },
+    config: config.stiff
   })
 
   return (
@@ -27,10 +37,9 @@ export default function FaceUpCard({ x, y, globalAlpha, elevated, dimmed, rank, 
       {...animatedElevatedProps}
       width={50}
       height={70}
-      fillStyle={CARD_BACKGROUND_COLOR}
+      fillStyle={FACE_UP_CARD_BACKGROUND_COLOR}
       shadowColor="#00000055"
-      shadowOffsetX={4 + (elevated ? 4 : 0)}
-      shadowOffsetY={4 + (elevated ? 8 : 0)}
+
     >
       <AnimatedText
         {...animatedDimmedProps}

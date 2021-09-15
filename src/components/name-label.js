@@ -1,6 +1,5 @@
 import TextLabel from './text-label';
-
-const NAME_LABEL_BACKGROUND_COLOR = '#28A179';
+import { NAME_LABEL_BACKGROUND_COLOR } from '../util/colors';
 
 export default function NameLabel({ children, x, y }) {
   return (
