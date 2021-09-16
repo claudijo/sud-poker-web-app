@@ -101,12 +101,14 @@ class Shape extends AbstractShape {
     const y = this.y + this.offset.y + this.originY * this.height;
 
     if (this.rotation !== 0) {
-      // Maybe make add something like centerXOffset and centerYOffset
       const { top, left } = this.getBoundingBox();
 
-      ctx.translate(left, top);
+      const translateX = left + this.width * this.originX
+      const translateY = top + this.height * this.originY
+
+      ctx.translate(translateX, translateY);
       ctx.rotate(this.rotation);
-      ctx.translate(-left, -top);
+      ctx.translate(-translateX, -translateY);
     }
 
     // This does not work if calling this.fillAndStroke(ctx), since draw
@@ -132,7 +134,21 @@ class Shape extends AbstractShape {
       ctx.shadowOffsetY = this.shadowOffsetY;
     }
 
+    if (this.scaleX !== 1 || this.scaleY !== 1) {
+      const { top, left } = this.getBoundingBox();
+
+      const translateX = left + this.width * this.originX
+      const translateY = top + this.height * this.originY
+      ctx.translate(translateX, translateY);
+      ctx.scale(this.scaleX, this.scaleY);
+      ctx.translate(-translateX, -translateY);
+    }
+
     ctx.drawImage(image, x, y, this.width, this.height);
+
+    // Reset current transformation matrix to the identity matrix when scaling
+    // ctx.setTransform(1, 0, 0, 1, 0, 0);
+
     ctx.restore();
   }
 }

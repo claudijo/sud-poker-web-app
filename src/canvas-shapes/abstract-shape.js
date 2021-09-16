@@ -15,6 +15,8 @@ export default class AbstractShape extends HTMLElement {
       'originy',
       'rotation',
       'linedash',
+      'scalex',
+      'scaley',
     ];
   }
 
@@ -140,6 +142,22 @@ export default class AbstractShape extends HTMLElement {
 
   set rotation(value) {
     this.setAttribute('rotation', value);
+  }
+
+  get scaleX() {
+    return parseFloat(this.getAttribute('scaleX') ?? 1);
+  }
+
+  set scaleX(value) {
+    this.setAttribute('scaleX', value);
+  }
+
+  get scaleY() {
+    return parseFloat(this.getAttribute('scaleY') ?? 1);
+  }
+
+  set scaleY(value) {
+    this.setAttribute('scaleY', value);
   }
 
   get lineDash() {
