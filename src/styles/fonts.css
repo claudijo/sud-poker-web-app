@@ -1,0 +1,27 @@
+
+@font-face {
+    font-family: "Krungthep";
+    src: local("Krungthep"),
+    url("../fonts/krungthep.woff2") format("woff2"),
+    url("../fonts/krungthep.woff") format("woff"),
+    url("../fonts/krungthep.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Find the suits at
+    [   diamond
+    ]   club
+    {   heart
+    }   spade
+    =   Single character "10"
+ */
+@font-face {
+    font-family: "CardCharacters";
+    src: local("CardCharacters"),
+    url("../fonts/card-characters.woff2") format("woff2"),
+    url("../fonts/card-characters.woff") format("woff"),
+    url("../fonts/card-characters.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
