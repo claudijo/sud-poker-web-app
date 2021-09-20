@@ -28,7 +28,6 @@ export function PlayingCard(
     delay: flipDelay,
   })
 
-
   const animatedDimmedProps = useSpring({
     globalAlpha: dimmed ? 0.5 : globalAlpha,
   })

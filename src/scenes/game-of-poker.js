@@ -271,6 +271,7 @@ export default function GameOfPoker({ tableId }) {
                       x={positions[index].x}
                       y={positions[index].y}
                       rtl={showCardsRtl(index)}
+                      winner={winners.find(winner => winner.seatIndex === index)}
                     />
                   )}
                 </>
