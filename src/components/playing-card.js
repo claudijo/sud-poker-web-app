@@ -4,9 +4,9 @@ import CanvasRectangle from '../canvas-shapes/rectangle';
 import backSideImage from '../icons/card-back-side.svg';
 import { animated, useSpring } from '@react-spring/web';
 import { useMemo, useState } from 'react';
+import Card from './card';
 
-const AnimatedImage = animated(CanvasImage);
-const AnimatedRectangle = animated(CanvasRectangle);
+const AnimatedCard = animated(Card);
 
 export function PlayingCard(
   {
@@ -18,32 +18,16 @@ export function PlayingCard(
     globalAlpha= 1,
     faceUp = true,
     card,
-    animationDelay = 0,
+    flipDelay = 0,
   },
 ) {
   const faceUpImage = useMemo(() => generateFaceUpCard(card), [card?.suit, card?.rank]);
 
-  const [src, setSrc] = useState(faceUp ? faceUpImage : backSideImage)
-  const [cardYOffset, setcardYOffset] = useState(0)
-  const [shadowYOffset, setshadowYOffset] = useState(4)
-  const [shadowXOffset, setshadowXOffset] = useState( 4)
-  const [shadowWidth, setShadowWidth] = useState(50)
-
-  const animatedCardProps = useSpring({
-    scaleX: faceUp ?  1 : -1,
-    onChange: ({ value }) => {
-      setSrc(value.scaleX < 0 ? backSideImage : faceUpImage)
-      setcardYOffset(Math.abs(value.scaleX * 16) - 16)
-      setshadowYOffset(4 + -Math.abs(value.scaleX * 4) + 4)
-      setShadowWidth(50 + Math.abs(value.scaleX * 16) - 16)
-      setshadowXOffset(4 - Math.abs(value.scaleX * 16) + 16)
-    },
-    delay: animationDelay,
+  const animatedFaceUpProps = useSpring({
+    flip: faceUp ? 0 : Math.PI,
+    delay: flipDelay,
   })
 
-  const animatedElevatedProps = useSpring({
-    y: elevated ? y - 8 : y,
-  })
 
   const animatedDimmedProps = useSpring({
     globalAlpha: dimmed ? 0.5 : globalAlpha,
@@ -53,35 +37,22 @@ export function PlayingCard(
     rotation,
   })
 
+  const animatedElevatedProps = useSpring({
+    elevation: elevated ? 8 : 0,
+  })
+
   return (
-    <AnimatedRectangle
+    <AnimatedCard
+      {...animatedFaceUpProps}
       {...animatedElevatedProps}
+      {...animatedRotationProps}
+      {...animatedDimmedProps}
       x={x}
-    >
-      <AnimatedRectangle
-        {...animatedDimmedProps}
-        {...animatedRotationProps}
-        y={shadowYOffset}
-        x={shadowXOffset}
-        fillStyle="#00000055"
-        width={shadowWidth}
-        height={70}
-        originX={0.5}
-        originY={0.5}
-        globalAlpha={globalAlpha}
-      />
-      <AnimatedImage
-        {...animatedCardProps}
-        {...animatedDimmedProps}
-        {...animatedRotationProps}
-        src={src}
-        y={cardYOffset}
-        x={0}
-        width={50}
-        height={70}
-        originX={0.5}
-        originY={0.5}
-      />
-    </AnimatedRectangle>
+      y={y}
+      width={50}
+      height={70}
+      frontSide={faceUpImage}
+      backSide={backSideImage}
+    />
   );
 }
