@@ -1,56 +1,55 @@
-import FaceUpCard from './face-up-card';
 import { useSpring, useChain, animated, useSpringRef } from '@react-spring/web';
 import dealCardAudio from '../audio/deal-card.mp3';
 import { Sound } from '../lib/sound';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { isWinningCard } from '../util/card';
+import { PlayingCard } from './playing-card';
 
-const AnimatedFaceUpCard = animated(FaceUpCard);
-const dealCardSound = new Sound(dealCardAudio)
+const AnimatedPlayingCard = animated(PlayingCard)
+const dealCardSound = new Sound(dealCardAudio);
 
 export default function PlayerHand({ x, y, holeCards, rtl, winners }) {
-  const slideDownRef = useSpringRef()
-  const slideSideRef = useSpringRef()
+  const slideDownRef = useSpringRef();
+  const slideSideRef = useSpringRef();
 
   const offset = rtl ? -196 : 0;
 
   const slideSideProps = useSpring({
-    to: { x: x + 40 + offset},
-    from: { x: x + 98 + offset},
+    to: { x: x + 15 + offset },
+    from: { x: x + 73 + offset },
     onStart: () => {
-      dealCardSound.play()
+      dealCardSound.play();
     },
-    ref: slideSideRef
-  })
+    ref: slideSideRef,
+  });
 
   const slideDownProps = useSpring({
-    to: { y: y - 36, globalAlpha: 1 },
-    from: { y: y - 82, globalAlpha: 0 },
+    to: { y: y - 71, globalAlpha: 1 },
+    from: { y: y - 141, globalAlpha: 0 },
     onStart: () => {
-      dealCardSound.play()
+      dealCardSound.play();
     },
-    ref: slideDownRef
-  })
+    ref: slideDownRef,
+  });
 
-  useChain([slideDownRef, slideSideRef], [0, 0.5])
+  useChain([slideDownRef, slideSideRef], [0, 0.5]);
 
   return (
     <>
-      <AnimatedFaceUpCard
+      <AnimatedPlayingCard
         {...slideSideProps}
         {...slideDownProps}
-        rank={holeCards[1].rank}
-        suit={holeCards[1].suit}
+        card={holeCards[1]}
         elevated={isWinningCard(winners, holeCards[1])}
         dimmed={winners.length && !isWinningCard(winners, holeCards[1])}
       />
-      <AnimatedFaceUpCard
+      <AnimatedPlayingCard
         {...slideDownProps}
-        x={x + 98 + offset}
-        rank={holeCards[0].rank}
-        suit={holeCards[0].suit}
+        x={x + 73 + offset}
+        card={holeCards[0]}
         elevated={isWinningCard(winners, holeCards[0])}
         dimmed={winners.length && !isWinningCard(winners, holeCards[0])}
+        animationDelay={100}
       />
     </>
   );

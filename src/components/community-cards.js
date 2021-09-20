@@ -1,11 +1,10 @@
-import FaceUpCard from './face-up-card';
 import { animated, useTransition } from '@react-spring/web';
 import { Sound } from '../lib/sound';
 import dealCardAudio from '../audio/deal-card.mp3';
-import { useCallback } from 'react';
 import { isWinningCard } from '../util/card';
+import { PlayingCard } from './playing-card';
 
-const AnimatedFaceUpCard = animated(FaceUpCard);
+const AnimatedPlayingCard = animated(PlayingCard)
 const dealCardSound = new Sound(dealCardAudio);
 
 export default function CommunityCards(
@@ -18,8 +17,8 @@ export default function CommunityCards(
   },
 ) {
   const transitions = useTransition(cards, {
-    enter: { y, globalAlpha: 1 },
-    from: immediate ? null : { y: y - 82, globalAlpha: 0 },
+    enter: { y: y - 35, globalAlpha: 1 },
+    from: immediate ? null : { y: y - 105, globalAlpha: 0 },
     trail: 800,
     keys: card => card.rank + card.suit,
     onStart: (result, spring, item) => {
@@ -28,11 +27,10 @@ export default function CommunityCards(
   });
 
   return transitions((animatedProps, card, transition, index) => (
-    <AnimatedFaceUpCard
+    <AnimatedPlayingCard
       {...animatedProps}
-      x={x + index * 64}
-      rank={card.rank}
-      suit={card.suit}
+      x={x - 25 + index * 64}
+      card={card}
       elevated={isWinningCard(winners, card)}
       dimmed={winners.length && !isWinningCard(winners, card)}
     />

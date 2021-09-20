@@ -1,20 +1,21 @@
-import FaceDownCard from './face-down-card';
 import React from 'react';
+import { PlayingCard } from './playing-card';
 
 export default function OpponentHand({ x, y, rtl = true }) {
-
-  const offset = rtl ? -146 : 0;
+  const offset = rtl ? -196 : 0;
 
   return (
     <>
-      <FaceDownCard
-        x={x + 65 + offset}
-        y={y - 44}
+      <PlayingCard
+        x={x + 73 + offset}
+        y={y - 71}
         rotation={20 * Math.PI / 180}
+        faceUp={false}
       />
-      <FaceDownCard
-        x={x + 35 + offset}
-        y={y - 36}
+      <PlayingCard
+        x={x + 43 + offset}
+        y={y - 71}
+        faceUp={false}
       />
     </>
   )

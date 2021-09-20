@@ -56,8 +56,23 @@ class Shape extends AbstractShape {
     const x =  this.x + this.offset.x + this.originX * this.width;
     const y =  this.y + this.offset.y + this.originY * this.height;
 
+    ctx.save();
+    if (this.rotation !== 0) {
+      const { top, left } = this.getBoundingBox();
+
+      const translateX = left + this.width * this.originX
+      const translateY = top + this.height * this.originY
+
+      ctx.translate(translateX, translateY);
+      ctx.rotate(this.rotation);
+      ctx.translate(-translateX, -translateY);
+    }
+
     ctx.beginPath();
     ctx.rect(x, y, this.width, this.height);
+
+    ctx.restore();
+
     this.fillAndStroke(ctx);
   }
 }
