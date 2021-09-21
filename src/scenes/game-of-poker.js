@@ -47,7 +47,6 @@ export default function GameOfPoker({ tableId }) {
   const [betSize, onBetSizeChange, setBetSize] = useEventState(0, numberOrEmptyStringFromEvent);
 
   const dispatch = useDispatch();
-  const table = useSelector(state => state.table.value);
   const me = useSelector(state => state.me.value);
   const seatIndex = useSelector(state => state.seatIndex.value);
   const holeCards = useSelector(state => state.holeCards.value);
@@ -70,22 +69,22 @@ export default function GameOfPoker({ tableId }) {
     dispatch(fetchMe());
   }, [dispatch]);
 
-  // Fetch table if current user and show initial join form if applicable
+  // Fetch once we have current user
   useEffect(() => {
     if (me?.uid) {
       (async () => {
-        const { payload } = await dispatch(fetchTable(tableId));
-
-        if (payload) {
-          const { table, index: seatIndex } = payload;
-          if (!table.seats[seatIndex] && seatIndex > -1) {
-            setJoinButtonsDisabled(true);
-            setJoinFormHidden(false);
-          }
-        }
+        await dispatch(fetchTable(tableId));
       })();
     }
   }, [dispatch, tableId, me?.uid]);
+
+  // Show initial join form if applicable
+  useEffect(() => {
+    if (!seats[seatIndex] && seatIndex > -1) {
+      setJoinButtonsDisabled(true);
+      setJoinFormHidden(false);
+    }
+  }, [seats, seatIndex, setJoinButtonsDisabled, setJoinFormHidden])
 
   useEffect(() => {
     setActionFormHidden(!legalActions.actions.length || playerToAct === -1 || playerToAct !== seatIndex);
@@ -228,15 +227,13 @@ export default function GameOfPoker({ tableId }) {
               winners={winners}
             />
           )}
-          {table && (
-            <TableBets
-              centerX={tableX + tableWidth / 2}
-              centerY={tableY + tableHeight / 2}
-              positions={positions}
-              potSizes={pots.map(pot => pot.size) ?? []}
-              betSizes={seats.map(seat => seat?.betSize ?? null) ?? []}
-            />
-          )}
+          <TableBets
+            centerX={tableX + tableWidth / 2}
+            centerY={tableY + tableHeight / 2}
+            positions={positions}
+            potSizes={pots.map(pot => pot.size) ?? []}
+            betSizes={seats.map(seat => seat?.betSize ?? null) ?? []}
+          />
           {
             communityCards.length && (
               <CommunityCards
