@@ -38,12 +38,11 @@ export default function GameOfPoker({ tableId }) {
   const [joinFormDisabled, setJoinFormDisabled] = useState(false);
   const [actionFormDisabled, setActionFormDisabled] = useState(false);
   const [actionFormHidden, setActionFormHidden] = useState(true);
+  const [joinButtonsDisabled, setJoinButtonsDisabled] = useState(false);
 
   const [avatar, onAvatarChange] = useEventState('IDENTICON');
   const [nickname, onNicknameChange] = useEventState('');
   const [buyIn, onBuyInChange] = useEventState(200, numberOrEmptyStringFromEvent);
-  const [joinButtonsDisabled, setJoinButtonsDisabled] = useState(false);
-
   const [betSize, onBetSizeChange, setBetSize] = useEventState(0, numberOrEmptyStringFromEvent);
 
   const dispatch = useDispatch();
