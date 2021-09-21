@@ -41,14 +41,12 @@ export default function PlayerHand({ x, y, holeCards, rtl, winners }) {
         {...slideDownProps}
         card={holeCards[1]}
         elevated={isWinningCard(winners, holeCards[1])}
-        dimmed={winners.length && !isWinningCard(winners, holeCards[1])}
       />
       <AnimatedPlayingCard
         {...slideDownProps}
         x={x + 73 + offset}
         card={holeCards[0]}
         elevated={isWinningCard(winners, holeCards[0])}
-        dimmed={winners.length && !isWinningCard(winners, holeCards[0])}
         animationDelay={100}
       />
     </>

@@ -13,7 +13,6 @@ export default function OpponentHand({ x, y, rtl = true, winner }) {
         rotation={winner ? 0 : 20 * Math.PI / 180}
         faceUp={!!winner}
         elevated={winner && isWinningCard([winner], winner?.holeCards[0])}
-        dimmed={winner && !isWinningCard([winner], winner?.holeCards[0])}
         card={winner?.holeCards[0]}
       />
       <PlayingCard
@@ -21,7 +20,6 @@ export default function OpponentHand({ x, y, rtl = true, winner }) {
         y={y - 71}
         faceUp={!!winner}
         elevated={winner && isWinningCard([winner], winner?.holeCards[1])}
-        dimmed={winner && !isWinningCard([winner], winner?.holeCards[1])}
         card={winner?.holeCards[1]}
       />
     </>
