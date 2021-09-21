@@ -47,6 +47,14 @@ export function PlayingCard(
     ref: animatedElevatedRef,
   })
 
+  const animatedGlobalAlphaProps = useSpring({
+    globalAlpha,
+  })
+
+  const animatedPosProps = useSpring({
+    x, y
+  })
+
   useChain([
     animatedRotationRef,
     animatedFaceUpRef,
@@ -62,9 +70,8 @@ export function PlayingCard(
       {...animatedElevatedProps}
       {...animatedRotationProps}
       {...animatedDimmedProps}
-      x={x}
-      y={y}
-      gloabalAlpha={globalAlpha}
+      {...animatedGlobalAlphaProps}
+      {...animatedPosProps}
       width={50}
       height={70}
       frontSide={faceUpImage}
