@@ -1,8 +1,6 @@
-import CanvasImage from '../canvas-shapes/canvas-image';
 import { generateFaceUpCard } from '../util/card';
-import CanvasRectangle from '../canvas-shapes/rectangle';
 import backSideImage from '../icons/card-back-side.svg';
-import { animated, useSpring } from '@react-spring/web';
+import { animated, useChain, useSpring, useSpringRef } from '@react-spring/web';
 import { useMemo, useState } from 'react';
 import Card from './card';
 
@@ -12,33 +10,51 @@ export function PlayingCard(
   {
     x,
     y,
-    rotation,
-    dimmed,
-    elevated,
+    rotation = 0,
+    dimmed = false,
+    elevated = false,
     globalAlpha= 1,
     faceUp = true,
-    card,
+    card = null,
     flipDelay = 0,
   },
 ) {
   const faceUpImage = useMemo(() => generateFaceUpCard(card), [card?.suit, card?.rank]);
 
+  const animatedFaceUpRef = useSpringRef();
+  const animatedElevatedRef = useSpringRef()
+  const animatedDimmedRef = useSpringRef()
+  const animatedRotationRef = useSpringRef()
+
   const animatedFaceUpProps = useSpring({
     flip: faceUp ? 0 : Math.PI,
     delay: flipDelay,
+    ref: animatedFaceUpRef,
   })
 
   const animatedDimmedProps = useSpring({
-    globalAlpha: dimmed ? 0.5 : globalAlpha,
+    demotion: dimmed ? 0.5 : 0,
+    ref: animatedDimmedRef,
   })
 
   const animatedRotationProps = useSpring({
     rotation,
+    animatedRotationRef,
   })
 
   const animatedElevatedProps = useSpring({
     elevation: elevated ? 8 : 0,
+    ref: animatedElevatedRef,
   })
+
+  useChain([
+    animatedRotationRef,
+    animatedFaceUpRef,
+    animatedDimmedRef,
+    animatedElevatedRef
+  ], [
+    0, 0.2, 0.4, 0.8
+  ])
 
   return (
     <AnimatedCard
@@ -48,6 +64,7 @@ export function PlayingCard(
       {...animatedDimmedProps}
       x={x}
       y={y}
+      gloabalAlpha={globalAlpha}
       width={50}
       height={70}
       frontSide={faceUpImage}

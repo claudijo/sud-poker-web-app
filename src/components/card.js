@@ -8,7 +8,8 @@ export default function Card(
     width,
     height,
     elevation = 0,
-    globalAlpha,
+    demotion = 0,
+    globalAlpha = 1,
     rotation,
     frontSide,
     backSide,
@@ -31,7 +32,7 @@ export default function Card(
       originX={0.5}
       originY={0.5}
       scaleX={scaleX}
-      globalAlpha={globalAlpha}
+      globalAlpha={Math.max(globalAlpha- demotion, 0)}
       rotation={rotation}
     >
       <CanvasImage
@@ -43,7 +44,7 @@ export default function Card(
         originX={0.5}
         originY={0.5}
         scaleX={scaleX}
-        globalAlpha={globalAlpha}
+        globalAlpha={Math.max(globalAlpha- demotion, 0)}
         rotation={rotation}
       />
     </CanvasRectangle>
