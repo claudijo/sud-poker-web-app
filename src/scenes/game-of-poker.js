@@ -59,7 +59,7 @@ export default function GameOfPoker({ tableId }) {
   const button = useSelector(state => state.button.value);
   const reservations = useSelector(state => state.reservations.value);
   const winners = useSelector(state => state.winners.value);
-  const hasHoleCards = useSelector(state => state.hasHoleCards.value);
+  const handPlayers = useSelector(state => state.handPlayers.value);
 
   useEffect(() => {
     setBetSize(legalActions.chipRange.min);
@@ -224,6 +224,7 @@ export default function GameOfPoker({ tableId }) {
               y={positions[seatIndex].y}
               holeCards={holeCards}
               rtl={showCardsRtl(seatIndex)}
+              isHandPlayer={handPlayers[seatIndex]}
               winners={winners}
             />
           )}
@@ -267,7 +268,7 @@ export default function GameOfPoker({ tableId }) {
                     avatarStyle={reservations[index]?.avatarStyle}
                     isActing={index === playerToAct}
                   />
-                  {hasHoleCards[index] && index !== seatIndex && (
+                  {handPlayers[index] && index !== seatIndex && (
                     <OpponentHand
                       x={positions[index].x}
                       y={positions[index].y}

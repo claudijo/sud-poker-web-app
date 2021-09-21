@@ -11,7 +11,7 @@ import { useDispatch } from 'react-redux';
 import CommandQueue from '../util/command-queue';
 import { setReservations } from '../slices/reservations';
 import { setWinners } from '../slices/winners';
-import { setHasHoleCards } from '../slices/has-hole-cards';
+import { setHandPlayers } from '../slices/hand-players';
 
 const commandQueue = new CommandQueue();
 
@@ -26,7 +26,7 @@ export default function RealTimeEventHandler({ tableId }) {
     commandQueue.enqueue(() => {
       dispatch(setCommunityCards([]));
       dispatch(setHoleCards([]));
-      dispatch(setHasHoleCards([]));
+      dispatch(setHandPlayers([]))
       dispatch(setPots([]));
       dispatch(setButton(payload.table.button));
       dispatch(setWinners([]));
@@ -42,7 +42,7 @@ export default function RealTimeEventHandler({ tableId }) {
 
     commandQueue.enqueue(() => {
       dispatch(setHoleCards(payload.holeCards));
-      dispatch(setHasHoleCards(payload.table.hasHoleCards))
+      dispatch(setHandPlayers(payload.table.handPlayers))
     }, { delayEnd: 1200 });
 
     commandQueue.enqueue(() => {
@@ -77,11 +77,13 @@ export default function RealTimeEventHandler({ tableId }) {
   }, [dispatch, tableId]);
 
   const onActionTaken = useCallback(payload => {
+    console.log('Action taken', payload)
     if (payload.table.id !== tableId) {
       return;
     }
 
     commandQueue.enqueue(() => {
+      dispatch(setHandPlayers(payload.table.handPlayers))
       dispatch(setSeats(payload.table.seats));
     }, { delayEnd: 400 });
 

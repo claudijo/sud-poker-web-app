@@ -8,7 +8,7 @@ import { PlayingCard } from './playing-card';
 const AnimatedPlayingCard = animated(PlayingCard)
 const dealCardSound = new Sound(dealCardAudio);
 
-export default function PlayerHand({ x, y, holeCards, rtl, winners }) {
+export default function PlayerHand({ x, y, holeCards, rtl, winners, isHandPlayer }) {
   const slideDownRef = useSpringRef();
   const slideSideRef = useSpringRef();
 
@@ -41,6 +41,7 @@ export default function PlayerHand({ x, y, holeCards, rtl, winners }) {
         {...slideDownProps}
         card={holeCards[1]}
         elevated={isWinningCard(winners, holeCards[1])}
+        dimmed={!isHandPlayer}
       />
       <AnimatedPlayingCard
         {...slideDownProps}
@@ -48,6 +49,7 @@ export default function PlayerHand({ x, y, holeCards, rtl, winners }) {
         card={holeCards[0]}
         elevated={isWinningCard(winners, holeCards[0])}
         animationDelay={100}
+        dimmed={!isHandPlayer}
       />
     </>
   );
