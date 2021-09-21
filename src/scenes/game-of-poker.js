@@ -34,6 +34,8 @@ const tableX = stageWidth / 2 - tableWidth / 2;
 const positions = centerForPositions(tableWidth, tableHeight, tableX, tableY);
 
 export default function GameOfPoker({ tableId }) {
+  const dispatch = useDispatch();
+
   const [joinFormHidden, setJoinFormHidden] = useState(true);
   const [joinFormDisabled, setJoinFormDisabled] = useState(false);
   const [actionFormDisabled, setActionFormDisabled] = useState(false);
@@ -45,7 +47,6 @@ export default function GameOfPoker({ tableId }) {
   const [buyIn, onBuyInChange] = useEventState(200, numberOrEmptyStringFromEvent);
   const [betSize, onBetSizeChange, setBetSize] = useEventState(0, numberOrEmptyStringFromEvent);
 
-  const dispatch = useDispatch();
   const me = useSelector(state => state.me.value);
   const seatIndex = useSelector(state => state.seatIndex.value);
   const holeCards = useSelector(state => state.holeCards.value);
