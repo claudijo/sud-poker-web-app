@@ -21,7 +21,7 @@ export default function CommunityCards(
     from: immediate ? null : { y: y - 105, globalAlpha: 0 },
     trail: 800,
     keys: card => card.rank + card.suit,
-    onStart: (result, spring, item) => {
+    onStart: () => {
       dealCardSound.play();
     },
   });
