@@ -33,7 +33,7 @@ export function PlayingCard(
   })
 
   const animatedDimmedProps = useSpring({
-    demotion: dimmed ? 0.5 : 0,
+    demotion: dimmed ? 0.25 : 0,
     ref: animatedDimmedRef,
   })
 
