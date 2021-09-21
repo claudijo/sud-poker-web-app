@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import CommandQueue from '../util/command-queue';
 import { setReservations } from '../slices/reservations';
 import { setWinners } from '../slices/winners';
+import { setHasHoleCards } from '../slices/has-hole-cards';
 
 const commandQueue = new CommandQueue();
 
@@ -25,6 +26,7 @@ export default function RealTimeEventHandler({ tableId }) {
     commandQueue.enqueue(() => {
       dispatch(setCommunityCards([]));
       dispatch(setHoleCards([]));
+      dispatch(setHasHoleCards([]));
       dispatch(setPots([]));
       dispatch(setButton(payload.table.button));
       dispatch(setWinners([]));
@@ -40,6 +42,7 @@ export default function RealTimeEventHandler({ tableId }) {
 
     commandQueue.enqueue(() => {
       dispatch(setHoleCards(payload.holeCards));
+      dispatch(setHasHoleCards(payload.table.hasHoleCards))
     }, { delayEnd: 1200 });
 
     commandQueue.enqueue(() => {
