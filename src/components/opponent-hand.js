@@ -5,8 +5,6 @@ import { isWinningCard } from '../util/card';
 export default function OpponentHand({ x, y, rtl = true, winner }) {
   const offset = rtl ? -196 : 0;
 
-  console.log('Opponent is winner', winner)
-
   return (
     <>
       <PlayingCard
