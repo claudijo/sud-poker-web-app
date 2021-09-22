@@ -1,5 +1,4 @@
 import { configureStore } from '@reduxjs/toolkit';
-import table from './slices/table-slice';
 import me from './slices/me-slice';
 import seatIndex from './slices/seat-index';
 import seat from './slices/seat';
@@ -13,10 +12,10 @@ import button from './slices/button';
 import reservations from './slices/reservations';
 import winners from './slices/winners';
 import handPlayers from './slices/hand-players';
+import action from './slices/action';
 
 export default configureStore({
   reducer: {
-    table,
     me,
     seatIndex,
     seat,
@@ -30,5 +29,6 @@ export default configureStore({
     reservations,
     winners,
     handPlayers,
+    action,
   },
 });

@@ -12,6 +12,7 @@ import CommandQueue from '../util/command-queue';
 import { setReservations } from '../slices/reservations';
 import { setWinners } from '../slices/winners';
 import { setHandPlayers } from '../slices/hand-players';
+import { setAction } from '../slices/action';
 
 const commandQueue = new CommandQueue();
 
@@ -82,6 +83,8 @@ export default function RealTimeEventHandler({ tableId }) {
       return;
     }
 
+    dispatch(setAction({action: payload.action, seatIndex: payload.index }))
+
     commandQueue.enqueue(() => {
       dispatch(setHandPlayers(payload.table.handPlayers))
       dispatch(setSeats(payload.table.seats));
@@ -91,6 +94,8 @@ export default function RealTimeEventHandler({ tableId }) {
       dispatch(setLegalActions(payload.table.legalActions));
       dispatch(setPlayerToAct(payload.table.playerToAct));
     });
+
+
   }, [dispatch, tableId]);
 
   const onReservationChange = useCallback(payload => {
