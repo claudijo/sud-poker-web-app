@@ -1,4 +1,3 @@
-
 export const throttle = fn => {
   let tick = false;
   return (...args) => {
