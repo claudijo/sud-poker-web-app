@@ -1,8 +1,7 @@
-import CanvasCircle from '../canvas-shapes/circle';
-import CanvasText from '../canvas-shapes/canvas-text';
 import { animated, useSpring } from '@react-spring/web';
+import { Circle, Label } from 'react-2d-canvas';
 
-const AnimatedCircle = animated(CanvasCircle);
+const AnimatedCircle = animated(Circle);
 
 export default function DealerButton({ x, y }) {
 
@@ -14,19 +13,22 @@ export default function DealerButton({ x, y }) {
     <AnimatedCircle
       {...animatedProps}
       radius={14}
-      fillStyle="#eaeaea"
+      backgroundColor="#eaeaea"
       shadowColor="#00000055"
       shadowOffsetX={2}
       shadowOffsetY={4}
     >
-      <CanvasText
-        originX={-0.5}
-        originY={-0.5}
-        fillStyle="#666"
-        font="20px Krungthep"
+      <Label
+        y={3}
+        x={1}
+        baseline="middle"
+        align="center"
+        color="#666"
+        fontSize={20}
+        fontFamily="Krungthep"
       >
         D
-      </CanvasText>
+      </Label>
     </AnimatedCircle>
   )
 }

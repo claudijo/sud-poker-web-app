@@ -207,17 +207,17 @@ export default function GameOfPoker({ tableId }) {
         />
       </Layer>
 
-      {/*Animation layer*/}
-      {/*<Canvas>*/}
-      {/*  <>*/}
-      {/*    {*/}
-      {/*      button !== -1 && (*/}
-      {/*        <DealerButton*/}
-      {/*          x={buttonPositionOffset(button, positions[button]).x}*/}
-      {/*          y={buttonPositionOffset(button, positions[button]).y}*/}
-      {/*        />*/}
-      {/*      )*/}
-      {/*    }*/}
+      {/*Game action layer*/}
+      <Layer>
+        <>
+          {
+            button !== -1 && (
+              <DealerButton
+                x={buttonPositionOffset(button, positions[button]).x}
+                y={buttonPositionOffset(button, positions[button]).y}
+              />
+            )
+          }
 
       {/*    {positions[seatIndex] && holeCards.length && (*/}
       {/*      <PlayerHand*/}
@@ -246,9 +246,8 @@ export default function GameOfPoker({ tableId }) {
       {/*        />*/}
       {/*      )*/}
       {/*    }*/}
-      {/*  </>*/}
-
-      {/*</Canvas>*/}
+        </>
+      </Layer>
       {/*/!*Ui layer*!/*/}
       <Layer>
         {
@@ -307,20 +306,20 @@ export default function GameOfPoker({ tableId }) {
         )}
       </Layer>
       {/*/!*Html overlays*!/*/}
-      {/*{!actionFormHidden && (*/}
-      {/*  <ActionBar>*/}
-      {/*    <ActionForm*/}
-      {/*      disabled={actionFormDisabled}*/}
-      {/*      onSubmit={onBetFormSubmit}*/}
-      {/*      actions={legalActions.actions}*/}
-      {/*      onBetSizeChange={onBetSizeChange}*/}
-      {/*      betSize={betSize}*/}
-      {/*      min={legalActions.chipRange.min}*/}
-      {/*      max={legalActions.chipRange.max}*/}
-      {/*      onActionButtonClick={onActionButtonClick}*/}
-      {/*    />*/}
-      {/*  </ActionBar>*/}
-      {/*)}*/}
+      {!actionFormHidden && (
+        <ActionBar>
+          <ActionForm
+            disabled={actionFormDisabled}
+            onSubmit={onBetFormSubmit}
+            actions={legalActions.actions}
+            onBetSizeChange={onBetSizeChange}
+            betSize={betSize}
+            min={legalActions.chipRange.min}
+            max={legalActions.chipRange.max}
+            onActionButtonClick={onActionButtonClick}
+          />
+        </ActionBar>
+      )}
 
       <Popup show={!joinFormHidden}>
         <JoinForm
