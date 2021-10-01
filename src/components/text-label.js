@@ -1,7 +1,5 @@
-import CanvasText from '../canvas-shapes/canvas-text';
 import React, { useEffect, useRef, useState } from 'react';
-import RoundedRectangle from '../canvas-shapes/rounded-rectangle';
-
+import { Label, RoundedRectangle } from 'react-2d-canvas';
 export default function TextLabel(
   {
     children,
@@ -11,23 +9,20 @@ export default function TextLabel(
     backgroundColor = 'transparent',
     fontSize = 10,
     fontFamily = 'sans-serif',
-    paddingTop = 0,
-    paddingBottom = 0,
-    paddingLeft = 0,
-    paddingRight = 0,
+    paddingTopBottom = 0,
+    paddingLeftRight = 0,
     radius = 0,
     borderWidth,
     borderColor,
     minWidth = 0,
     maxWidth = Number.POSITIVE_INFINITY,
-    originX = 0,
   },
 ) {
   const [measuredChildWidth, setMeasuredChildWidth] = useState(0)
-  const childRef = useRef(null)
+  const labelElementRef = useRef(null)
 
   useEffect(() => {
-    setMeasuredChildWidth(childRef.current.width)
+    setMeasuredChildWidth(labelElementRef.current.width)
   }, [children])
 
   const width = Math.min(maxWidth, Math.max(minWidth, measuredChildWidth))
@@ -36,23 +31,23 @@ export default function TextLabel(
     <RoundedRectangle
       x={x}
       y={y}
-      width={width + paddingLeft + paddingRight}
-      height={fontSize + paddingTop + paddingBottom}
-      originX={originX}
-      fillStyle={backgroundColor}
+      width={width + paddingLeftRight * 2}
+      height={fontSize + paddingTopBottom * 2}
+      backgroundColor={backgroundColor}
       radius={radius}
-      strokeStyle={borderColor}
-      lineWidth={borderWidth}
+      borderColor={borderColor}
+      borderWidth={borderWidth}
     >
-      <CanvasText
-        ref={childRef}
-        x={paddingLeft + paddingLeft * originX + paddingRight * originX}
-        y={paddingTop}
-        fillStyle={color}
-        font={`${fontSize}px ${fontFamily}`}
-        originX={originX}
+      <Label
+        ref={labelElementRef}
+        y={2}
+        color={color}
+        fontSize={fontSize}
+        fontFamily={fontFamily}
         maxWidth={maxWidth}
-      >{children}</CanvasText>
+        baseline="middle"
+        align="center"
+      >{children}</Label>
     </RoundedRectangle>
   );
 }

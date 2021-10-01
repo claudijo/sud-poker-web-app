@@ -21,10 +21,10 @@ export default function PlayerMarker(
         nickname={nickname}
         isActing={isActing}
       />
-      <StackLabel x={x} y={y - 78}>
+      <StackLabel x={x} y={y - 54}>
         {stack}
       </StackLabel>
-      <NameLabel x={x} y={y + 37}>
+      <NameLabel x={x} y={y + 54}>
         {nickname}
       </NameLabel>
     </>

@@ -1,12 +1,12 @@
 import { animated, useSpring } from '@react-spring/web';
-import CanvasArc from '../canvas-shapes/canvas-arc';
+import { Arc } from 'react-2d-canvas';
 
-const AnimatedArc = animated(CanvasArc);
+const AnimatedArc = animated(Arc);
 
-export default function CircularTimeoutMeter({ x, y, duration = 25000, strokeStyle }) {
+export default function CircularTimeoutMeter({ x, y, duration = 25000, borderColor }) {
   const arcProgressProps = useSpring({
-    to: { endAngle: 1.5 * Math.PI },
-    from: { endAngle: -0.5 * Math.PI },
+    to: { endAngle: 360 * Math.PI / 180 },
+    from: { endAngle: 0 },
     config: {
       duration,
     }
@@ -18,9 +18,8 @@ export default function CircularTimeoutMeter({ x, y, duration = 25000, strokeSty
       y={y}
       {...arcProgressProps}
       radius={32}
-      strokeStyle={strokeStyle}
-      lineWidth={6}
-      startAngle={-0.5 * Math.PI}
+      borderColor={borderColor}
+      borderWidth={6}
     />
   )
 }

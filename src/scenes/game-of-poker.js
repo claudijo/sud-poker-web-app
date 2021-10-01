@@ -251,36 +251,36 @@ export default function GameOfPoker({ tableId }) {
       {/*</Canvas>*/}
       {/*/!*Ui layer*!/*/}
       <Layer>
-      {/*  {*/}
-      {/*    seats.map((seat, index) => (*/}
-      {/*      <React.Fragment key={index}>*/}
-      {/*        {seats[index] && (*/}
-      {/*          <>*/}
-      {/*            <PlayerMarker*/}
-      {/*              action={action.seatIndex === index ? action.action : ''}*/}
-      {/*              key={index}*/}
-      {/*              x={positions[index].x}*/}
-      {/*              y={positions[index].y}*/}
-      {/*              totalChips={seats[index].totalChips}*/}
-      {/*              stack={seats[index].stack}*/}
-      {/*              betSize={seats[index].betSize}*/}
-      {/*              nickname={reservations[index]?.name}*/}
-      {/*              avatarStyle={reservations[index]?.avatarStyle}*/}
-      {/*              isActing={index === playerToAct}*/}
-      {/*            />*/}
-      {/*            {handPlayers[index] && index !== seatIndex && (*/}
-      {/*              <OpponentHand*/}
-      {/*                x={positions[index].x}*/}
-      {/*                y={positions[index].y}*/}
-      {/*                rtl={showCardsRtl(index)}*/}
-      {/*                winner={winners.find(winner => winner.seatIndex === index)}*/}
-      {/*              />*/}
-      {/*            )}*/}
-      {/*          </>*/}
-      {/*        )}*/}
-      {/*      </React.Fragment>*/}
-      {/*    ))*/}
-      {/*  }*/}
+        {
+          seats.map((seat, index) => (
+            <React.Fragment key={index}>
+              {seats[index] && (
+                <>
+                  <PlayerMarker
+                    action={action.seatIndex === index ? action.action : ''}
+                    key={index}
+                    x={positions[index].x}
+                    y={positions[index].y}
+                    totalChips={seats[index].totalChips}
+                    stack={seats[index].stack}
+                    betSize={seats[index].betSize}
+                    nickname={reservations[index]?.name}
+                    avatarStyle={reservations[index]?.avatarStyle}
+                    isActing={index === playerToAct}
+                  />
+                  {handPlayers[index] && index !== seatIndex && (
+                    <OpponentHand
+                      x={positions[index].x}
+                      y={positions[index].y}
+                      rtl={showCardsRtl(index)}
+                      winner={winners.find(winner => winner.seatIndex === index)}
+                    />
+                  )}
+                </>
+              )}
+            </React.Fragment>
+          ))
+        }
 
         {
           !seats[seatIndex] && reservations.map((reservation, index) => (

@@ -1,5 +1,4 @@
-import CanvasRectangle from '../canvas-shapes/rectangle';
-import CanvasImage from '../canvas-shapes/canvas-image';
+import { Image, Rectangle } from 'react-2d-canvas';
 
 export default function Card(
   {
@@ -9,7 +8,7 @@ export default function Card(
     height,
     elevation = 0,
     demotion = 0,
-    globalAlpha = 1,
+    opacity = 1,
     rotation,
     frontSide,
     backSide,
@@ -23,30 +22,25 @@ export default function Card(
   const src = scaleX > 0 ? frontSide : backSide
 
   return (
-    <CanvasRectangle
+    <Rectangle
       x={x + shadowXOffset - elevation / 4}
       y={y + shadowYOffset / 2 + elevation / 2}
       width={shadowWidth}
       height={height}
-      fillStyle="#00000055"
-      originX={0.5}
-      originY={0.5}
+      backgroundColor="#00000055"
       scaleX={scaleX}
-      globalAlpha={Math.max(globalAlpha- demotion, 0)}
+      opacity={Math.max(opacity- demotion, 0)}
       rotation={rotation}
     >
-      <CanvasImage
+      <Image
         x={-shadowXOffset - elevation / 4}
         y={-4 - shadowYOffset - elevation}
         width={width}
         height={height}
         src={src}
-        originX={0.5}
-        originY={0.5}
         scaleX={scaleX}
-        globalAlpha={Math.max(globalAlpha- demotion, 0)}
-        rotation={rotation}
+        opacity={Math.max(opacity- demotion, 0)}
       />
-    </CanvasRectangle>
+    </Rectangle>
   )
 }

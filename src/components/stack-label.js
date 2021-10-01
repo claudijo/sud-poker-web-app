@@ -1,7 +1,7 @@
 import TextLabel from './text-label';
 import { STACK_LABEL_BACKGROUND_COLOR } from '../util/colors';
 
-export default function StackLabel({ children, x, y, stack}) {
+export default function StackLabel({ children, x, y}) {
   return (
     <TextLabel
       x={x}
@@ -10,14 +10,11 @@ export default function StackLabel({ children, x, y, stack}) {
       color="#fff"
       fontSize={24}
       fontFamily="Krungthep"
-      paddingTop={8}
-      paddingBottom={8}
-      paddingLeft={12}
-      paddingRight={12}
+      paddingTopBottom={8}
+      paddingLeftRight={16}
       radius={16}
       borderColor="#fff"
       borderWidth={4}
-      originX={-0.5}
     >
       {children}
     </TextLabel>
