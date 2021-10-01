@@ -1,62 +1,61 @@
-import RoundedRectangle from '../canvas-shapes/rounded-rectangle';
-import CanvasRectangle from '../canvas-shapes/rectangle';
+import { RoundedRectangle, Rectangle, Label } from 'react-2d-canvas';
 import React from 'react';
 import { range } from '../lib/array';
-import CanvasText from '../canvas-shapes/canvas-text';
 import { TABLE_HIGHLIGHT_COLOR, TABLE_SHADOW_COLOR, TABLE_BACKGROUND_COLOR, TABLE_TEXT_COLOR } from '../util/colors';
 
 export default function Table({ x, y, width, height, borderWidth }) {
   return (
     <>
       <RoundedRectangle
-        x={x + borderWidth * 0.5}
-        y={y + borderWidth * 0.5}
+        x={x}
+        y={y}
         width={width - borderWidth}
         height={height - borderWidth}
         radius={Math.min(width - borderWidth, height - borderWidth) / 2}
-        fillStyle={TABLE_SHADOW_COLOR}
+        backgroundColor={TABLE_SHADOW_COLOR}
       />
       <RoundedRectangle
-        x={x + borderWidth * 1.5}
-        y={y + borderWidth * 1.5}
+        x={x + borderWidth / 2}
+        y={y + borderWidth / 2}
         width={width - borderWidth * 2}
         height={height - borderWidth * 2}
         radius={Math.min(width - borderWidth * 2, height - borderWidth * 2) / 2}
-        fillStyle={TABLE_BACKGROUND_COLOR}
+        backgroundColor={TABLE_BACKGROUND_COLOR}
+        // opacity={0.5}
       />
       <RoundedRectangle
-        x={x + borderWidth * 0.5}
-        y={y + +borderWidth * 0.5}
-        width={width - borderWidth}
-        height={height - borderWidth}
+        x={x}
+        y={y}
+        width={width}
+        height={height}
         radius={Math.min(width - borderWidth, height - borderWidth) / 2}
-        strokeStyle={TABLE_HIGHLIGHT_COLOR}
-        lineWidth={borderWidth}
-
+        borderColor={TABLE_HIGHLIGHT_COLOR}
+        borderWidth={borderWidth}
       />
-      <CanvasText
-        x={x + width / 2}
-        y={y + height / 2 - 54}
-        fillStyle={TABLE_TEXT_COLOR}
-        font="30px Krungthep"
-        originX={-0.5}
+      <Label
+        x={x}
+        y={y - 54}
+        color={TABLE_TEXT_COLOR}
+        fontSize={30}
+        fontFamily="Krungthep"
+        align="center"
+        baseline="center"
       >
         shuffleupanddeal.online
-      </CanvasText>
+      </Label>
       {
         range(5).map(index => (
-          <CanvasRectangle
+          <Rectangle
             key={index}
-            x={x + width / 2 - 28 - (index - 2) * 64}
-            y={y + height / 2 - 14}
+            x={x - (index - 2) * 64}
+            y={y}
             width={56}
             height={76}
-            strokeStyle={TABLE_TEXT_COLOR}
-            lineWidth={4}
+            borderColor={TABLE_TEXT_COLOR}
+            borderWidth={4}
           />
         ))
       }
-
     </>
   );
 }

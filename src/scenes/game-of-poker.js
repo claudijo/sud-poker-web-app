@@ -1,6 +1,6 @@
 import React from 'react';
-import Stage, { ScaleMode } from '../components/stage';
-import Canvas from '../components/canvas';
+// import Stage, { ScaleMode } from '../components/stage';
+// import Canvas from '../components/canvas';
 import Table from '../components/table';
 import { useEffect, useState } from 'react';
 import JoinButton from '../components/join-button';
@@ -22,14 +22,15 @@ import CommunityCards from '../components/community-cards';
 import OpponentHand from '../components/opponent-hand';
 import DealerButton from '../components/dealer-button';
 import { STAGE_BACKGROUND_COLOR } from '../util/colors';
+import { Stage, Layer, ScaleMode } from 'react-2d-canvas';
 
 const stageWidth = 1280;
 const stageHeight = 720;
 
 const tableWidth = 600;
 const tableHeight = 300;
-const tableY = 160;
-const tableX = stageWidth / 2 - tableWidth / 2;
+const tableY = 310;
+const tableX = stageWidth / 2;
 
 const positions = centerForPositions(tableWidth, tableHeight, tableX, tableY);
 
@@ -196,7 +197,7 @@ export default function GameOfPoker({ tableId }) {
       backgroundColor={STAGE_BACKGROUND_COLOR}
     >
       {/*Background layer*/}
-      <Canvas>
+      <Layer>
         <Table
           x={tableX}
           y={tableY}
@@ -204,122 +205,122 @@ export default function GameOfPoker({ tableId }) {
           height={tableHeight}
           borderWidth={16}
         />
-      </Canvas>
+      </Layer>
 
       {/*Animation layer*/}
-      <Canvas>
-        <>
-          {
-            button !== -1 && (
-              <DealerButton
-                x={buttonPositionOffset(button, positions[button]).x}
-                y={buttonPositionOffset(button, positions[button]).y}
-              />
-            )
-          }
+      {/*<Canvas>*/}
+      {/*  <>*/}
+      {/*    {*/}
+      {/*      button !== -1 && (*/}
+      {/*        <DealerButton*/}
+      {/*          x={buttonPositionOffset(button, positions[button]).x}*/}
+      {/*          y={buttonPositionOffset(button, positions[button]).y}*/}
+      {/*        />*/}
+      {/*      )*/}
+      {/*    }*/}
 
-          {positions[seatIndex] && holeCards.length && (
-            <PlayerHand
-              x={positions[seatIndex].x}
-              y={positions[seatIndex].y}
-              holeCards={holeCards}
-              rtl={showCardsRtl(seatIndex)}
-              isHandPlayer={handPlayers[seatIndex]}
-              winners={winners}
-            />
-          )}
-          <TableBets
-            centerX={tableX + tableWidth / 2}
-            centerY={tableY + tableHeight / 2}
-            positions={positions}
-            potSizes={pots.map(pot => pot.size) ?? []}
-            betSizes={seats.map(seat => seat?.betSize ?? null) ?? []}
-          />
-          {
-            communityCards.length && (
-              <CommunityCards
-                x={tableX + tableWidth / 2 - 33 - 2 * 60}
-                y={tableY + tableHeight / 2 - 11}
-                cards={communityCards}
-                winners={winners}
-              />
-            )
-          }
-        </>
+      {/*    {positions[seatIndex] && holeCards.length && (*/}
+      {/*      <PlayerHand*/}
+      {/*        x={positions[seatIndex].x}*/}
+      {/*        y={positions[seatIndex].y}*/}
+      {/*        holeCards={holeCards}*/}
+      {/*        rtl={showCardsRtl(seatIndex)}*/}
+      {/*        isHandPlayer={handPlayers[seatIndex]}*/}
+      {/*        winners={winners}*/}
+      {/*      />*/}
+      {/*    )}*/}
+      {/*    <TableBets*/}
+      {/*      centerX={tableX + tableWidth / 2}*/}
+      {/*      centerY={tableY + tableHeight / 2}*/}
+      {/*      positions={positions}*/}
+      {/*      potSizes={pots.map(pot => pot.size) ?? []}*/}
+      {/*      betSizes={seats.map(seat => seat?.betSize ?? null) ?? []}*/}
+      {/*    />*/}
+      {/*    {*/}
+      {/*      communityCards.length && (*/}
+      {/*        <CommunityCards*/}
+      {/*          x={tableX + tableWidth / 2 - 33 - 2 * 60}*/}
+      {/*          y={tableY + tableHeight / 2 - 11}*/}
+      {/*          cards={communityCards}*/}
+      {/*          winners={winners}*/}
+      {/*        />*/}
+      {/*      )*/}
+      {/*    }*/}
+      {/*  </>*/}
 
-      </Canvas>
-      {/*Ui layer*/}
-      <Canvas interactive={true}>
-        {
-          seats.map((seat, index) => (
-            <React.Fragment key={index}>
-              {seats[index] && (
-                <>
-                  <PlayerMarker
-                    action={action.seatIndex === index ? action.action : ''}
-                    key={index}
-                    x={positions[index].x}
-                    y={positions[index].y}
-                    totalChips={seats[index].totalChips}
-                    stack={seats[index].stack}
-                    betSize={seats[index].betSize}
-                    nickname={reservations[index]?.name}
-                    avatarStyle={reservations[index]?.avatarStyle}
-                    isActing={index === playerToAct}
-                  />
-                  {handPlayers[index] && index !== seatIndex && (
-                    <OpponentHand
-                      x={positions[index].x}
-                      y={positions[index].y}
-                      rtl={showCardsRtl(index)}
-                      winner={winners.find(winner => winner.seatIndex === index)}
-                    />
-                  )}
-                </>
-              )}
-            </React.Fragment>
-          ))
-        }
+      {/*</Canvas>*/}
+      {/*/!*Ui layer*!/*/}
+      {/*<Canvas interactive={true}>*/}
+      {/*  {*/}
+      {/*    seats.map((seat, index) => (*/}
+      {/*      <React.Fragment key={index}>*/}
+      {/*        {seats[index] && (*/}
+      {/*          <>*/}
+      {/*            <PlayerMarker*/}
+      {/*              action={action.seatIndex === index ? action.action : ''}*/}
+      {/*              key={index}*/}
+      {/*              x={positions[index].x}*/}
+      {/*              y={positions[index].y}*/}
+      {/*              totalChips={seats[index].totalChips}*/}
+      {/*              stack={seats[index].stack}*/}
+      {/*              betSize={seats[index].betSize}*/}
+      {/*              nickname={reservations[index]?.name}*/}
+      {/*              avatarStyle={reservations[index]?.avatarStyle}*/}
+      {/*              isActing={index === playerToAct}*/}
+      {/*            />*/}
+      {/*            {handPlayers[index] && index !== seatIndex && (*/}
+      {/*              <OpponentHand*/}
+      {/*                x={positions[index].x}*/}
+      {/*                y={positions[index].y}*/}
+      {/*                rtl={showCardsRtl(index)}*/}
+      {/*                winner={winners.find(winner => winner.seatIndex === index)}*/}
+      {/*              />*/}
+      {/*            )}*/}
+      {/*          </>*/}
+      {/*        )}*/}
+      {/*      </React.Fragment>*/}
+      {/*    ))*/}
+      {/*  }*/}
 
-        {
-          !seats[seatIndex] && reservations.map((reservation, index) => (
-            <React.Fragment key={index}>
-              {!seats[index] && (
-                <JoinButton
-                  disabled={joinButtonsDisabled || !!reservations[index]}
-                  key={index}
-                  x={positions[index].x}
-                  y={positions[index].y}
-                  onClick={onJoinButtonClick(index)}
-                />
-              )}
-            </React.Fragment>
-          ))
-        }
+      {/*  {*/}
+      {/*    !seats[seatIndex] && reservations.map((reservation, index) => (*/}
+      {/*      <React.Fragment key={index}>*/}
+      {/*        {!seats[index] && (*/}
+      {/*          <JoinButton*/}
+      {/*            disabled={joinButtonsDisabled || !!reservations[index]}*/}
+      {/*            key={index}*/}
+      {/*            x={positions[index].x}*/}
+      {/*            y={positions[index].y}*/}
+      {/*            onClick={onJoinButtonClick(index)}*/}
+      {/*          />*/}
+      {/*        )}*/}
+      {/*      </React.Fragment>*/}
+      {/*    ))*/}
+      {/*  }*/}
 
-        {!isFullscreen && (
-          <FullscreenButton
-            x={stageWidth - 56}
-            y={stageHeight - 56}
-            onClick={onFullscreenButtonClick}
-          />
-        )}
-      </Canvas>
-      {/*Html overlays*/}
-      {!actionFormHidden && (
-        <ActionBar>
-          <ActionForm
-            disabled={actionFormDisabled}
-            onSubmit={onBetFormSubmit}
-            actions={legalActions.actions}
-            onBetSizeChange={onBetSizeChange}
-            betSize={betSize}
-            min={legalActions.chipRange.min}
-            max={legalActions.chipRange.max}
-            onActionButtonClick={onActionButtonClick}
-          />
-        </ActionBar>
-      )}
+      {/*  {!isFullscreen && (*/}
+      {/*    <FullscreenButton*/}
+      {/*      x={stageWidth - 56}*/}
+      {/*      y={stageHeight - 56}*/}
+      {/*      onClick={onFullscreenButtonClick}*/}
+      {/*    />*/}
+      {/*  )}*/}
+      {/*</Canvas>*/}
+      {/*/!*Html overlays*!/*/}
+      {/*{!actionFormHidden && (*/}
+      {/*  <ActionBar>*/}
+      {/*    <ActionForm*/}
+      {/*      disabled={actionFormDisabled}*/}
+      {/*      onSubmit={onBetFormSubmit}*/}
+      {/*      actions={legalActions.actions}*/}
+      {/*      onBetSizeChange={onBetSizeChange}*/}
+      {/*      betSize={betSize}*/}
+      {/*      min={legalActions.chipRange.min}*/}
+      {/*      max={legalActions.chipRange.max}*/}
+      {/*      onActionButtonClick={onActionButtonClick}*/}
+      {/*    />*/}
+      {/*  </ActionBar>*/}
+      {/*)}*/}
 
       <Popup show={!joinFormHidden}>
         <JoinForm
