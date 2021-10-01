@@ -250,7 +250,7 @@ export default function GameOfPoker({ tableId }) {
 
       {/*</Canvas>*/}
       {/*/!*Ui layer*!/*/}
-      {/*<Canvas interactive={true}>*/}
+      <Layer>
       {/*  {*/}
       {/*    seats.map((seat, index) => (*/}
       {/*      <React.Fragment key={index}>*/}
@@ -298,14 +298,14 @@ export default function GameOfPoker({ tableId }) {
       {/*    ))*/}
       {/*  }*/}
 
-      {/*  {!isFullscreen && (*/}
-      {/*    <FullscreenButton*/}
-      {/*      x={stageWidth - 56}*/}
-      {/*      y={stageHeight - 56}*/}
-      {/*      onClick={onFullscreenButtonClick}*/}
-      {/*    />*/}
-      {/*  )}*/}
-      {/*</Canvas>*/}
+        {!isFullscreen && (
+          <FullscreenButton
+            x={stageWidth - 56}
+            y={stageHeight - 56}
+            onClick={onFullscreenButtonClick}
+          />
+        )}
+      </Layer>
       {/*/!*Html overlays*!/*/}
       {/*{!actionFormHidden && (*/}
       {/*  <ActionBar>*/}

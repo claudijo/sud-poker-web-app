@@ -1,34 +1,31 @@
-import CanvasCircle from '../canvas-shapes/circle';
-import CanvasImage from '../canvas-shapes/canvas-image';
+import { Circle, Image } from 'react-2d-canvas';
 import FullScreenIcon from '../icons/fullscreen.svg';
 
 export default function FullscreenButton({ children, x, y, ...props }) {
 
-  const onMouseEnter = event => {
+  const onMouseOver = event => {
     document.body.style.cursor = 'pointer'
   }
 
-  const onMouseLeave = event => {
+  const onMouseOut = event => {
     document.body.style.cursor = 'default'
   }
 
   return (
-    <CanvasCircle
+    <Circle
       {...props}
       x={x}
       y={y}
       radius={32}
-      fillStyle="#eee"
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
+      backgroundColor="#eee"
+      onMouseOver={onMouseOver}
+      onMouseOut={onMouseOut}
     >
-      <CanvasImage
-        x={-24}
-        y={-24}
+      <Image
         width={48}
         height={48}
         src={FullScreenIcon}
       />
-    </CanvasCircle>
+    </Circle>
   );
 }
