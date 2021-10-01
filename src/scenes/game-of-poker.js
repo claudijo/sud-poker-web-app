@@ -236,16 +236,16 @@ export default function GameOfPoker({ tableId }) {
             potSizes={pots.map(pot => pot.size) ?? []}
             betSizes={seats.map(seat => seat?.betSize ?? null) ?? []}
           />
-          {/*{*/}
-      {/*      communityCards.length && (*/}
-      {/*        <CommunityCards*/}
-      {/*          x={tableX + tableWidth / 2 - 33 - 2 * 60}*/}
-      {/*          y={tableY + tableHeight / 2 - 11}*/}
-      {/*          cards={communityCards}*/}
-      {/*          winners={winners}*/}
-      {/*        />*/}
-      {/*      )*/}
-      {/*    }*/}
+          {
+            communityCards.length && (
+              <CommunityCards
+                x={tableX}
+                y={tableY}
+                cards={communityCards}
+                winners={winners}
+              />
+            )
+          }
         </>
       </Layer>
       {/*/!*Ui layer*!/*/}

@@ -17,8 +17,8 @@ export default function CommunityCards(
   },
 ) {
   const transitions = useTransition(cards, {
-    enter: { y: y - 35, globalAlpha: 1 },
-    from: immediate ? null : { y: y - 105, globalAlpha: 0 },
+    enter: { y: y + 4, opacity: 1 },
+    from: immediate ? null : { y: y - 66, opacity: 0 },
     trail: 800,
     keys: card => card.rank + card.suit,
     onStart: () => {
@@ -29,7 +29,7 @@ export default function CommunityCards(
   return transitions((animatedProps, card, transition, index) => (
     <AnimatedPlayingCard
       {...animatedProps}
-      x={x - 25 + index * 64}
+      x={x - 128 + index * 64}
       card={card}
       elevated={isWinningCard(winners, card)}
       dimmed={winners.length && !isWinningCard(winners, card)}
