@@ -1,4 +1,3 @@
-import CanvasCircle from '../canvas-shapes/circle';
 import { Circle } from 'react-2d-canvas';
 
 export default function Chip({ x, y, color, opacity }) {
