@@ -1,7 +1,7 @@
 import { useSpring, useChain, animated, useSpringRef } from '@react-spring/web';
 import dealCardAudio from '../audio/deal-card.mp3';
 import { Sound } from '../lib/sound';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { isWinningCard } from '../util/card';
 import { PlayingCard } from './playing-card';
 
@@ -12,7 +12,7 @@ export default function PlayerHand({ x, y, holeCards, rtl, winners, isHandPlayer
   const slideDownRef = useSpringRef();
   const slideSideRef = useSpringRef();
 
-  const offset = rtl ? -196 : 0;
+  const offset = rtl ? -140 : 48;
 
   const slideSideProps = useSpring({
     to: { x: x + 15 + offset },
@@ -24,8 +24,8 @@ export default function PlayerHand({ x, y, holeCards, rtl, winners, isHandPlayer
   });
 
   const slideDownProps = useSpring({
-    to: { y: y - 71, globalAlpha: 1 },
-    from: { y: y - 141, globalAlpha: 0 },
+    to: { y, opacity: 1 },
+    from: { y: y - 141, opacity: 0 },
     onStart: () => {
       dealCardSound.play();
     },

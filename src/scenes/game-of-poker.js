@@ -219,16 +219,16 @@ export default function GameOfPoker({ tableId }) {
             )
           }
 
-      {/*    {positions[seatIndex] && holeCards.length && (*/}
-      {/*      <PlayerHand*/}
-      {/*        x={positions[seatIndex].x}*/}
-      {/*        y={positions[seatIndex].y}*/}
-      {/*        holeCards={holeCards}*/}
-      {/*        rtl={showCardsRtl(seatIndex)}*/}
-      {/*        isHandPlayer={handPlayers[seatIndex]}*/}
-      {/*        winners={winners}*/}
-      {/*      />*/}
-      {/*    )}*/}
+          {positions[seatIndex] && holeCards.length && (
+            <PlayerHand
+              x={positions[seatIndex].x}
+              y={positions[seatIndex].y}
+              holeCards={holeCards}
+              rtl={showCardsRtl(seatIndex)}
+              isHandPlayer={handPlayers[seatIndex]}
+              winners={winners}
+            />
+          )}
       {/*    <TableBets*/}
       {/*      centerX={tableX + tableWidth / 2}*/}
       {/*      centerY={tableY + tableHeight / 2}*/}

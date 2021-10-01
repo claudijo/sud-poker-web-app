@@ -1,7 +1,7 @@
 import { generateFaceUpCard } from '../util/card';
 import backSideImage from '../icons/card-back-side.svg';
 import { animated, useChain, useSpring, useSpringRef } from '@react-spring/web';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import Card from './card';
 
 const AnimatedCard = animated(Card);
@@ -13,7 +13,7 @@ export function PlayingCard(
     rotation = 0,
     dimmed = false,
     elevated = false,
-    globalAlpha= 1,
+    opacity= 1,
     faceUp = true,
     card = null,
     flipDelay = 0,
@@ -47,8 +47,8 @@ export function PlayingCard(
     ref: animatedElevatedRef,
   })
 
-  const animatedGlobalAlphaProps = useSpring({
-    globalAlpha,
+  const animatedOpacityProps = useSpring({
+    opacity,
   })
 
   const animatedPosProps = useSpring({
@@ -70,7 +70,7 @@ export function PlayingCard(
       {...animatedElevatedProps}
       {...animatedRotationProps}
       {...animatedDimmedProps}
-      {...animatedGlobalAlphaProps}
+      {...animatedOpacityProps}
       {...animatedPosProps}
       width={50}
       height={70}
