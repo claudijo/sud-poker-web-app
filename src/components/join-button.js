@@ -7,7 +7,7 @@ export default function JoinButton({ x, y, disabled, onClick }) {
 
   const [fillStyle, setFillStyle] = useState(BUTTON_BACKGROUND_COLOR);
 
-  const onMouseEnter = event => {
+  const onMouseOver = event => {
     if (disabled) {
       return;
     }
@@ -15,7 +15,7 @@ export default function JoinButton({ x, y, disabled, onClick }) {
     setFillStyle(BUTTON_HOVER_BACKGROUND_COLOR);
   };
 
-  const onMouseLeave = event => {
+  const onMouseOut = event => {
     document.body.style.cursor = 'default';
     setFillStyle(BUTTON_BACKGROUND_COLOR);
   };
@@ -51,15 +51,13 @@ export default function JoinButton({ x, y, disabled, onClick }) {
       borderColor={BUTTON_BORDER_COLOR}
       borderWidth={6}
       opacity={disabled ? 0.5 : 1}
-      onMouseOver={onMouseEnter}
-      onMouseOut={onMouseLeave}
+      onMouseOver={onMouseOver}
+      onMouseOut={onMouseOut}
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
       onClick={onClickProxy}
     >
       <Image
-        x={-20}
-        y={-20}
         width={40}
         height={40}
         opacity={disabled ? 0.5 : 1}

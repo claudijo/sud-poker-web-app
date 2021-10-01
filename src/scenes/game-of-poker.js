@@ -32,7 +32,7 @@ const tableHeight = 300;
 const tableY = 310;
 const tableX = stageWidth / 2;
 
-const positions = centerForPositions(tableWidth, tableHeight, tableX, tableY);
+const positions = centerForPositions(tableWidth, tableHeight, tableX - tableWidth / 2, tableY - tableHeight / 2);
 
 export default function GameOfPoker({ tableId }) {
   const dispatch = useDispatch();
@@ -282,21 +282,21 @@ export default function GameOfPoker({ tableId }) {
       {/*    ))*/}
       {/*  }*/}
 
-      {/*  {*/}
-      {/*    !seats[seatIndex] && reservations.map((reservation, index) => (*/}
-      {/*      <React.Fragment key={index}>*/}
-      {/*        {!seats[index] && (*/}
-      {/*          <JoinButton*/}
-      {/*            disabled={joinButtonsDisabled || !!reservations[index]}*/}
-      {/*            key={index}*/}
-      {/*            x={positions[index].x}*/}
-      {/*            y={positions[index].y}*/}
-      {/*            onClick={onJoinButtonClick(index)}*/}
-      {/*          />*/}
-      {/*        )}*/}
-      {/*      </React.Fragment>*/}
-      {/*    ))*/}
-      {/*  }*/}
+        {
+          !seats[seatIndex] && reservations.map((reservation, index) => (
+            <React.Fragment key={index}>
+              {!seats[index] && (
+                <JoinButton
+                  disabled={joinButtonsDisabled || !!reservations[index]}
+                  key={index}
+                  x={positions[index].x}
+                  y={positions[index].y}
+                  onClick={onJoinButtonClick(index)}
+                />
+              )}
+            </React.Fragment>
+          ))
+        }
 
         {!isFullscreen && (
           <FullscreenButton
