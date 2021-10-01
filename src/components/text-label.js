@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Label, RoundedRectangle } from 'react-2d-canvas';
+
 export default function TextLabel(
   {
     children,
@@ -12,41 +13,60 @@ export default function TextLabel(
     paddingTopBottom = 0,
     paddingLeftRight = 0,
     radius = 0,
-    borderWidth,
+    borderWidth = 0,
     borderColor,
     minWidth = 0,
     maxWidth = Number.POSITIVE_INFINITY,
+    align = 'center',
   },
 ) {
-  const [measuredChildWidth, setMeasuredChildWidth] = useState(0)
-  const labelElementRef = useRef(null)
+  const [measuredChildWidth, setMeasuredChildWidth] = useState(0);
+  const labelElementRef = useRef(null);
 
   useEffect(() => {
-    setMeasuredChildWidth(labelElementRef.current.width)
-  }, [children])
+    setMeasuredChildWidth(labelElementRef.current.width);
+  }, [children]);
 
-  const width = Math.min(maxWidth, Math.max(minWidth, measuredChildWidth))
+  const width = Math.min(maxWidth, Math.max(minWidth, measuredChildWidth));
+
+  const originX = (align) => {
+    switch (align) {
+      case 'start':
+      case 'left':
+        return 0;
+      case 'end':
+      case 'right':
+        return 1;
+      default:
+        return 0.5;
+    }
+  };
+
+  const labelWidth = width + paddingLeftRight * 2 + borderWidth * 2;
 
   return (
     <RoundedRectangle
       x={x}
       y={y}
-      width={width + paddingLeftRight * 2}
-      height={fontSize + paddingTopBottom * 2}
+      width={labelWidth}
+      height={fontSize + paddingTopBottom * 2 + borderWidth * 2}
       backgroundColor={backgroundColor}
       radius={radius}
       borderColor={borderColor}
       borderWidth={borderWidth}
+      originX={originX(align)}
     >
       <Label
         ref={labelElementRef}
-        y={2}
+        y={1}
+        x={align === 'center' ? 0 : labelWidth / 2}
         color={color}
         fontSize={fontSize}
         fontFamily={fontFamily}
         maxWidth={maxWidth}
         baseline="middle"
         align="center"
+        borderWidth={0}
       >{children}</Label>
     </RoundedRectangle>
   );

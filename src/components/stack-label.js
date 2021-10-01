@@ -10,8 +10,8 @@ export default function StackLabel({ children, x, y}) {
       color="#fff"
       fontSize={24}
       fontFamily="Krungthep"
-      paddingTopBottom={8}
-      paddingLeftRight={16}
+      paddingTopBottom={4}
+      paddingLeftRight={12}
       radius={16}
       borderColor="#fff"
       borderWidth={4}

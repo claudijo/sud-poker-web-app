@@ -229,14 +229,14 @@ export default function GameOfPoker({ tableId }) {
               winners={winners}
             />
           )}
-      {/*    <TableBets*/}
-      {/*      centerX={tableX + tableWidth / 2}*/}
-      {/*      centerY={tableY + tableHeight / 2}*/}
-      {/*      positions={positions}*/}
-      {/*      potSizes={pots.map(pot => pot.size) ?? []}*/}
-      {/*      betSizes={seats.map(seat => seat?.betSize ?? null) ?? []}*/}
-      {/*    />*/}
-      {/*    {*/}
+          <TableBets
+            centerX={tableX + tableWidth / 2}
+            centerY={tableY + tableHeight / 2}
+            positions={positions}
+            potSizes={pots.map(pot => pot.size) ?? []}
+            betSizes={seats.map(seat => seat?.betSize ?? null) ?? []}
+          />
+          {/*{*/}
       {/*      communityCards.length && (*/}
       {/*        <CommunityCards*/}
       {/*          x={tableX + tableWidth / 2 - 33 - 2 * 60}*/}

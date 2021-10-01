@@ -10,7 +10,7 @@ export default function NameLabel({ children, x, y }) {
       color="#fff"
       fontSize={20}
       fontFamily="Krungthep"
-      paddingTopBottom={8}
+      paddingTopBottom={4}
       paddingLeftRight={12}
       radius={16}
       borderColor="#fff"

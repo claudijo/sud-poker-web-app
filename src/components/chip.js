@@ -1,24 +1,25 @@
 import CanvasCircle from '../canvas-shapes/circle';
+import { Circle } from 'react-2d-canvas';
 
-export default function Chip({ x, y, color, globalAlpha }) {
+export default function Chip({ x, y, color, opacity }) {
   return (
-    <CanvasCircle
+    <Circle
       x={x}
       y={y}
       radius={18}
-      fillStyle={color}
+      backgroundColor={color}
       shadowColor="#00000055"
       shadowOffsetX={3}
       shadowOffsetY={5}
-      globalAlpha={globalAlpha}
+      opacity={opacity}
     >
-      <CanvasCircle
-        radius={16}
-        lineWidth={6}
-        strokeStyle="#fff"
-        lineDash="7, 10"
-        globalAlpha={globalAlpha}
+      <Circle
+        radius={18}
+        BorderWidth={6}
+        borderColor="#fff"
+        borderDash="6, 7.6"
+        opacity={opacity}
       />
-    </CanvasCircle>
+    </Circle>
   )
 }

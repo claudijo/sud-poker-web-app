@@ -36,10 +36,10 @@ export default function TableBets(
   }, [potSize, setIsPotSizeHidden])
 
   const transitions = useTransition(chipStacks, {
-    leave: { x: tablePotX, y: tablePotY, globalAlpha: 0 },
+    leave: { x: tablePotX, y: tablePotY, opacity: 0 },
     from: (chipStack) => {
       const { x, y } = chipStack
-      return { x, y, globalAlpha: 1 };
+      return { x, y, opacity: 1 };
     },
     keys: chipStack => chipStack.index,
     config: config.slow,
