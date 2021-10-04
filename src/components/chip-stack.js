@@ -1,6 +1,14 @@
 import TextLabel from './text-label';
 import Chip from './chip';
 import { CHIP_STACK_LABEL_BACKGROUND_COLOR, CHIP_STACK_LABEL_TEXT_COLOR, CHIP_COLOR } from '../util/colors';
+import { useEffect, useState } from 'react';
+import { animated, useSpring } from '@react-spring/web';
+
+const AnimatedChip = animated(Chip)
+
+const easeInSine = x => {
+  return 1 - Math.cos((x * Math.PI) / 2);
+}
 
 export default function ChipStack(
   {
@@ -12,6 +20,25 @@ export default function ChipStack(
     opacity = 1,
   },
 ) {
+
+  const [flipProps, api] = useSpring(() => (
+    {
+      spin: 0,
+      onRest: () => {
+        api.set({ spin: 0 });
+      },
+      config: {
+        duration: 800,
+        easing: easeInSine,
+      },
+    }
+  ))
+
+  useEffect(() => {
+    api.start({ spin: 6 * 360 * Math.PI/180})
+  }, [size])
+
+
   return (
     <>
       {!hideLabel && (
@@ -31,7 +58,7 @@ export default function ChipStack(
         </TextLabel>
       )}
       {!hideChips && (
-        <Chip x={x - 26} y={y} color={CHIP_COLOR} opacity={opacity}/>
+        <AnimatedChip {...flipProps} x={x - 26} y={y} color={CHIP_COLOR} opacity={opacity}/>
       )}
     </>
   );
