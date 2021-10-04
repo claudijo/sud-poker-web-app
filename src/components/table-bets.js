@@ -14,10 +14,10 @@ export default function TableBets(
     positions,
   },
 ) {
-  const potSize = potSizes.reduce((acc, size) => acc + size, 0);
-
   const tablePotX = centerX;
-  const tablePotY = centerY - 42;
+  const tablePotY = centerY - 64;
+
+  const potSize = potSizes.reduce((acc, size) => acc + size, 0);
 
   const chipStacks = betSizes.reduce((acc, betSize, index) => {
     if (!betSize) return acc;
@@ -27,14 +27,6 @@ export default function TableBets(
     return acc;
   }, [])
 
-  const [isPotSizeHidden, setIsPotSizeHidden] = useState(true)
-
-  useEffect(() => {
-    if (potSize === 0) {
-      setIsPotSizeHidden(true)
-    }
-  }, [potSize, setIsPotSizeHidden])
-
   const transitions = useTransition(chipStacks, {
     leave: { x: tablePotX, y: tablePotY, opacity: 0 },
     from: (chipStack) => {
@@ -43,15 +35,12 @@ export default function TableBets(
     },
     keys: chipStack => chipStack.index,
     config: config.slow,
-    onRest: () => {
-      setIsPotSizeHidden(false)
-    }
   });
 
   return (
     <>
       {
-        !isPotSizeHidden && (
+        potSize > 0 && (
           <ChipStack
             x={tablePotX}
             y={tablePotY}

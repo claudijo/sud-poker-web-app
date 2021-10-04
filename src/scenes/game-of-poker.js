@@ -230,8 +230,8 @@ export default function GameOfPoker({ tableId }) {
             />
           )}
           <TableBets
-            centerX={tableX + tableWidth / 2}
-            centerY={tableY + tableHeight / 2}
+            centerX={tableX}
+            centerY={tableY}
             positions={positions}
             potSizes={pots.map(pot => pot.size) ?? []}
             betSizes={seats.map(seat => seat?.betSize ?? null) ?? []}
