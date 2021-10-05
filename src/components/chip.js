@@ -1,11 +1,6 @@
 import { Circle } from 'react-2d-canvas';
-import { useState } from 'react';
-import { useSpring } from '@react-spring/web';
-
-
 
 export default function Chip({ x, y, color, opacity, spin = 0 }) {
-
   return (
     <>
       <Circle
