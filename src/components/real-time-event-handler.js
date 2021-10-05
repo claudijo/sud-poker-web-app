@@ -121,6 +121,7 @@ export default function RealTimeEventHandler({ tableId }) {
       return;
     }
 
+    console.log('Winners', payload)
     console.log('Winners', payload.table.winners)
     payload.table.winners.forEach(potWinners => {
       commandQueue.enqueue(() => {
