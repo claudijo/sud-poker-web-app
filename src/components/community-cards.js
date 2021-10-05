@@ -17,8 +17,8 @@ export default function CommunityCards(
   },
 ) {
   const transitions = useTransition(cards, {
-    enter: { y: y + 4, opacity: 1 },
-    from: immediate ? null : { y: y - 66, opacity: 0 },
+    enter: { y: y + 28, opacity: 1 },
+    from: immediate ? null : { y: y - 42, opacity: 0 },
     trail: 800,
     keys: card => card.rank + card.suit,
     onStart: () => {

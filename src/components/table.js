@@ -34,7 +34,7 @@ export default function Table({ x, y, width, height, borderWidth }) {
       />
       <Label
         x={x}
-        y={y - 54}
+        y={y - 30}
         color={TABLE_TEXT_COLOR}
         fontSize={30}
         fontFamily="Krungthep"
@@ -48,7 +48,7 @@ export default function Table({ x, y, width, height, borderWidth }) {
           <Rectangle
             key={index}
             x={x - (index - 2) * 64}
-            y={y}
+            y={y + 24}
             width={56}
             height={76}
             borderColor={TABLE_TEXT_COLOR}

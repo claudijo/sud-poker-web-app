@@ -43,7 +43,7 @@ export default function ChipStack(
     <>
       {!hideLabel && (
         <TextLabel
-          x={x}
+          x={x + 24}
           y={y}
           backgroundColor={CHIP_STACK_LABEL_BACKGROUND_COLOR}
           color={CHIP_STACK_LABEL_TEXT_COLOR}
@@ -58,7 +58,7 @@ export default function ChipStack(
         </TextLabel>
       )}
       {!hideChips && (
-        <AnimatedChip {...flipProps} x={x - 24} y={y} color={CHIP_COLOR} opacity={opacity}/>
+        <AnimatedChip {...flipProps} x={x} y={y} color={CHIP_COLOR} opacity={opacity}/>
       )}
     </>
   );

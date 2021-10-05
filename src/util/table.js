@@ -20,13 +20,13 @@ export const chipPositionOffset = (seatIndex, position) => {
 
   const yTop = 108;
   const yTopMiddle = 78;
-  const yBottomMiddle = -32;
+  const yBottomMiddle = -22;
   const yBottom = -110;
 
   const xMiddleLeft = 20;
   const xMiddle = 40;
   const xMiddleRight = 144;
-  const xRight = 120;
+  const xRight = 130;
 
   switch (seatIndex) {
     case 0:
@@ -42,10 +42,10 @@ export const chipPositionOffset = (seatIndex, position) => {
     case 5:
       return { x: x + xMiddle, y: y + yBottom };
     case 6: {
-      return { x: x + xRight, y: y + yBottomMiddle };
+      return { x: x + xRight - 36, y: y + yBottomMiddle };
     }
     case 7:
-      return { x: x + xMiddleRight, y: y + yTopMiddle };
+      return { x: x + xMiddleRight - 44, y: y + yTopMiddle };
     case 8:
       return { x: x + xMiddleLeft, y: y + yTop };
     default:
@@ -56,16 +56,27 @@ export const chipPositionOffset = (seatIndex, position) => {
 export const buttonPositionOffset = (seatIndex, position) => {
   const { x, y } = chipPositionOffset(seatIndex, position);
 
-  const yOffset = 0;
-  const xOffset = 48;
-
   switch (seatIndex) {
-    case 6:
-    case 7:
+    case 0:
+    case 3:
+    case 4:
+
+
+
     case 8:
-      return { x: x - xOffset, y: y - yOffset };
+      return { x: x - 40, y };
+    case 1:
+      return { x: x + 24, y: y - 40 };
+    case 2:
+      return { x: x + 46, y: y - 40 };
+    case 5:
+      return { x: x - 40, y: y - 16 };
+    case 6:
+      return { x: x - 6, y: y - 40 };
+    case 7:
+      return { x: x + 24, y: y - 40 };
     default:
-      return { x: x + xOffset, y: y - yOffset };
+      return { x: x + 40, y };
   }
 };
 

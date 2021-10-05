@@ -15,7 +15,7 @@ export default function TableBets(
   },
 ) {
   const tablePotX = centerX;
-  const tablePotY = centerY - 64;
+  const tablePotY = centerY - 42;
 
   const potSize = potSizes.reduce((acc, size) => acc + size, 0);
 

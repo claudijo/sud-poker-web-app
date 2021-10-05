@@ -1,4 +1,4 @@
-import { animated, useSpring } from '@react-spring/web';
+import { animated, useSpring, config } from '@react-spring/web';
 import { Circle, Label } from 'react-2d-canvas';
 
 const AnimatedCircle = animated(Circle);
@@ -7,6 +7,7 @@ export default function DealerButton({ x, y }) {
 
   const [animatedProps] = useSpring({
     to: { x, y },
+    config: config.stiff,
   }, [x, y])
 
   return (
