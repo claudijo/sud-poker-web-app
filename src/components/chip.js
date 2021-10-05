@@ -19,7 +19,6 @@ export default function Chip({ x, y, color, opacity, spin = 0 }) {
         scaleX={Math.sin(spin + Math.PI * 0.5) * 0.3 + 0.7}
         rotation={spin * 0.2}
       >
-
         <Circle
           radius={18}
           BorderWidth={6}
