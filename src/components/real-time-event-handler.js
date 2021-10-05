@@ -58,6 +58,8 @@ export default function RealTimeEventHandler({ tableId }) {
 
     commandQueue.enqueue(() => {
       dispatch(setSeats(payload.table.seats));
+    }, {
+      delayStart: 1200,
     });
 
     commandQueue.enqueue(() => {
