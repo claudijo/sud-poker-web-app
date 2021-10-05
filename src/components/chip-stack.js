@@ -58,7 +58,7 @@ export default function ChipStack(
         </TextLabel>
       )}
       {!hideChips && (
-        <AnimatedChip {...flipProps} x={x - 26} y={y} color={CHIP_COLOR} opacity={opacity}/>
+        <AnimatedChip {...flipProps} x={x - 24} y={y} color={CHIP_COLOR} opacity={opacity}/>
       )}
     </>
   );
