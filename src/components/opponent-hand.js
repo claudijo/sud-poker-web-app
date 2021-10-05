@@ -8,7 +8,7 @@ export default function OpponentHand({ x, y, rtl = true, winner }) {
   return (
     <>
       <PlayingCard
-        x={x + 73 + offset + (winner ? (rtl ? 0 : 18) : 0)}
+        x={x + 73 + offset + (winner ? (rtl ? 0 : 28) : 0)}
         y={y}
         rotation={winner ? 0 : 10 * Math.PI / 180}
         faceUp={!!winner}
@@ -16,7 +16,7 @@ export default function OpponentHand({ x, y, rtl = true, winner }) {
         card={winner?.holeCards[0]}
       />
       <PlayingCard
-        x={x + offset + (winner ? (rtl ? 24 : 43) : 43)}
+        x={x + offset + (winner ? (rtl ? 16 : 43) : 43)}
         y={y}
         faceUp={!!winner}
         elevated={winner && isWinningCard([winner], winner?.holeCards[1])}

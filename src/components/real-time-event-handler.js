@@ -80,7 +80,6 @@ export default function RealTimeEventHandler({ tableId }) {
   }, [dispatch, tableId]);
 
   const onActionTaken = useCallback(payload => {
-    console.log('Action taken', payload)
     if (payload.table.id !== tableId) {
       return;
     }
@@ -122,6 +121,7 @@ export default function RealTimeEventHandler({ tableId }) {
       return;
     }
 
+    console.log('Winners', payload.table.winners)
     payload.table.winners.forEach(potWinners => {
       commandQueue.enqueue(() => {
         dispatch(setWinners(potWinners))
