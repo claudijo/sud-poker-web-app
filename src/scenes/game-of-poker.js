@@ -60,7 +60,7 @@ export default function GameOfPoker({ tableId }) {
   const reservations = useSelector(state => state.reservations.value);
   const winners = useSelector(state => state.winners.value);
   const handPlayers = useSelector(state => state.handPlayers.value);
-  const action = useSelector(state => state.action.value)
+  const action = useSelector(state => state.action.value);
 
   useEffect(() => {
     setBetSize(legalActions.chipRange.min);
@@ -218,7 +218,6 @@ export default function GameOfPoker({ tableId }) {
               />
             )
           }
-
           {positions[seatIndex] && holeCards.length && (
             <PlayerHand
               x={positions[seatIndex].x}
