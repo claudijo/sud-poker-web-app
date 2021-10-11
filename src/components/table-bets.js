@@ -1,7 +1,6 @@
 import { chipPositionOffset } from '../util/table';
 import ChipStack from './chip-stack';
 import { animated, useTransition, config } from '@react-spring/web';
-import { useEffect, useState } from 'react';
 
 const AnimatedChipStack = animated(ChipStack);
 
