@@ -18,6 +18,7 @@ export default function TextLabel(
     minWidth = 0,
     maxWidth = Number.POSITIVE_INFINITY,
     align = 'center',
+    textOpacity = 1,
   },
 ) {
   const [measuredChildWidth, setMeasuredChildWidth] = useState(0);
@@ -67,6 +68,7 @@ export default function TextLabel(
         baseline="middle"
         align="center"
         borderWidth={0}
+        opacity={textOpacity}
       >{children}</Label>
     </RoundedRectangle>
   );

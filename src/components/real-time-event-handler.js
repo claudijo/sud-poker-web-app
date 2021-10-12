@@ -16,6 +16,8 @@ import { setAction } from '../slices/action';
 
 const commandQueue = new CommandQueue();
 
+const actionTakenTimeouts = []
+
 export default function RealTimeEventHandler({ tableId }) {
   const dispatch = useDispatch();
 
@@ -85,6 +87,11 @@ export default function RealTimeEventHandler({ tableId }) {
     }
 
     dispatch(setAction({action: payload.action, seatIndex: payload.index }))
+    clearTimeout(actionTakenTimeouts[payload.index])
+    actionTakenTimeouts[payload.index] = setTimeout(() => {
+      dispatch(setAction({action: '', seatIndex: payload.index }))
+    }, 2000)
+
 
     commandQueue.enqueue(() => {
       dispatch(setHandPlayers(payload.table.handPlayers))
