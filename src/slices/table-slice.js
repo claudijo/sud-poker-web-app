@@ -56,6 +56,13 @@ export const actionTaken = createAsyncThunk('table/actionTaken', async ({ tableI
   });
 });
 
+export const setAutomaticAction = createAsyncThunk('table/automaticActionTaken', async({ tableId, action}) => {
+  return await clientSocketEmitter.request('setAutomaticAction', {
+    id: tableId,
+    action,
+  })
+})
+
 const tableSlice = createSlice({
   name: 'table',
   initialState,
@@ -84,7 +91,6 @@ const tableSlice = createSlice({
     },
     [reserveSeat.fulfilled]: (state, action) => {
       state.isFetching = false;
-      // state.value = action.payload.table;
     },
     [reserveSeat.rejected]: (state, action) => {
       state.isFetching = false;
@@ -97,7 +103,6 @@ const tableSlice = createSlice({
     },
     [cancelReservation.fulfilled]: (state, action) => {
       state.isFetching = false;
-      // state.value = action.payload.table;
     },
     [cancelReservation.rejected]: (state, action) => {
       state.isFetching = false;
@@ -110,7 +115,6 @@ const tableSlice = createSlice({
     },
     [sitDown.fulfilled]: (state, action) => {
       state.isFetching = false;
-      // state.value = action.payload.table;
     },
     [sitDown.rejected]: (state, action) => {
       state.isFetching = false;
@@ -123,9 +127,19 @@ const tableSlice = createSlice({
     },
     [actionTaken.fulfilled]: (state, action) => {
       state.isFetching = false;
-      // state.value = action.payload.table;
     },
     [actionTaken.rejected]: (state, action) => {
+      state.isFetching = false;
+      state.error = action.error;
+    },
+    [setAutomaticAction.pedning]: state => {
+      state.isFetching = true;
+      state.error = null;
+    },
+    [setAutomaticAction.fulfilled]: (state, action) => {
+      state.isFetching = false;
+    },
+    [setAutomaticAction.rejected]: (state, action) => {
       state.isFetching = false;
       state.error = action.error;
     },

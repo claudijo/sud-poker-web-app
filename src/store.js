@@ -13,6 +13,7 @@ import reservations from './slices/reservations';
 import winners from './slices/winners';
 import handPlayers from './slices/hand-players';
 import action from './slices/action';
+import automaticActions from './slices/automatic-actions'
 
 export default configureStore({
   reducer: {
@@ -30,5 +31,6 @@ export default configureStore({
     winners,
     handPlayers,
     action,
+    automaticActions,
   },
 });

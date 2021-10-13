@@ -1,6 +1,4 @@
 import React from 'react';
-// import Stage, { ScaleMode } from '../components/stage';
-// import Canvas from '../components/canvas';
 import Table from '../components/table';
 import { useEffect, useState } from 'react';
 import JoinButton from '../components/join-button';
@@ -11,7 +9,15 @@ import FullscreenButton from '../components/fullscreen-button';
 import Popup from '../components/popup';
 import { buttonPositionOffset, centerForPositions, showCardsRtl } from '../util/table';
 import { useSelector, useDispatch } from 'react-redux';
-import { actionTaken, cancelReservation, fetchTable, reserveSeat, setTable, sitDown } from '../slices/table-slice';
+import {
+  actionTaken,
+  cancelReservation,
+  fetchTable,
+  reserveSeat,
+  setAutomaticAction,
+  setTable,
+  sitDown,
+} from '../slices/table-slice';
 import { fetchMe } from '../slices/me-slice';
 import PlayerMarker from '../components/player-marker';
 import PlayerHand from '../components/player-hand';
@@ -23,6 +29,7 @@ import OpponentHand from '../components/opponent-hand';
 import DealerButton from '../components/dealer-button';
 import { STAGE_BACKGROUND_COLOR } from '../util/colors';
 import { Stage, Layer, ScaleMode } from 'react-2d-canvas';
+import AutomaticActionForm from '../components/automatic-action-form';
 
 const stageWidth = 1280;
 const stageHeight = 720;
@@ -41,6 +48,7 @@ export default function GameOfPoker({ tableId }) {
   const [joinFormDisabled, setJoinFormDisabled] = useState(false);
   const [actionFormDisabled, setActionFormDisabled] = useState(false);
   const [actionFormHidden, setActionFormHidden] = useState(true);
+  const [automaticActionFormHidden, setAutomaticActionFormHidden] = useState(true)
   const [joinButtonsDisabled, setJoinButtonsDisabled] = useState(false);
 
   const [avatar, onAvatarChange] = useEventState('IDENTICON');
@@ -61,6 +69,7 @@ export default function GameOfPoker({ tableId }) {
   const winners = useSelector(state => state.winners.value);
   const handPlayers = useSelector(state => state.handPlayers.value);
   const action = useSelector(state => state.action.value);
+  const automaticActions = useSelector(state => state.automaticActions.value);
 
   useEffect(() => {
     setBetSize(legalActions.chipRange.min);
@@ -86,11 +95,15 @@ export default function GameOfPoker({ tableId }) {
       setJoinButtonsDisabled(true);
       setJoinFormHidden(false);
     }
-  }, [seats, seatIndex, setJoinButtonsDisabled, setJoinFormHidden])
+  }, [seats, seatIndex, setJoinButtonsDisabled, setJoinFormHidden]);
 
   useEffect(() => {
-    setActionFormHidden(!legalActions.actions.length || playerToAct === -1 || playerToAct !== seatIndex);
-  }, [playerToAct, seatIndex, legalActions]);
+    setActionFormHidden(playerToAct === -1 || playerToAct !== seatIndex);
+  }, [playerToAct, seatIndex]);
+
+  useEffect(() => {
+    setAutomaticActionFormHidden(playerToAct === -1 || playerToAct === seatIndex || !automaticActions.canSetAutomaticActions)
+  }, [playerToAct, seatIndex, automaticActions.canSetAutomaticActions])
 
   const {
     fullScreen: isFullscreen,
@@ -188,6 +201,22 @@ export default function GameOfPoker({ tableId }) {
       setActionFormHidden(true);
     }
   };
+
+  const onAutomaticActionChange = async event => {
+    await dispatch(setAutomaticAction({
+      tableId,
+      action: event.target.value,
+    }))
+  }
+
+  const onAutomaticActionClick = async event => {
+    if (event.target.value === automaticActions.automaticAction) {
+      await dispatch(setAutomaticAction({
+        tableId,
+        action: null,
+      }))
+    }
+  }
 
   return (
     <Stage
@@ -305,7 +334,7 @@ export default function GameOfPoker({ tableId }) {
         )}
       </Layer>
       {/*/!*Html overlays*!/*/}
-      {!actionFormHidden && (
+      {!actionFormHidden && legalActions.actions.length && (
         <ActionBar>
           <ActionForm
             disabled={actionFormDisabled}
@@ -316,6 +345,17 @@ export default function GameOfPoker({ tableId }) {
             min={legalActions.chipRange.min}
             max={legalActions.chipRange.max}
             onActionButtonClick={onActionButtonClick}
+          />
+        </ActionBar>
+      )}
+
+      {!automaticActionFormHidden && automaticActions.legalAutomaticActions.length && (
+        <ActionBar>
+          <AutomaticActionForm
+            onChange={onAutomaticActionChange}
+            onClick={onAutomaticActionClick}
+            automaticActions={automaticActions.legalAutomaticActions}
+            automaticAction={automaticActions.automaticAction}
           />
         </ActionBar>
       )}

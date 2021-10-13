@@ -1,0 +1,56 @@
+.radioButton {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    font: inherit;
+    color: inherit;
+    line-height: 1;
+    border: none;
+    padding: 12px;
+    box-shadow: 8px 8px rgba(0, 0, 0, 0.4);
+    background-color: #d9d9d9;
+    cursor: pointer;
+    font-size: 0.7em;
+}
+
+.radioButton.disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+
+.radioButton.enabled:hover {
+    background-color: #c4c4c4;
+}
+
+.radioButton.enabled:active {
+    transform: translate(4px, 4px);
+    box-shadow: 4px 4px rgba(0, 0, 0, 0.4);
+}
+
+.radioButton input[type="radio"] {
+    /* Hide the browser's default radio button. Must keep width and height for
+   validity message to display */
+    position: absolute;
+    opacity: 0;
+}
+
+.checkBackground {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.radioButton input:checked ~ .checkBackground {
+    background-color: #fefdc8;
+}
+
+.label {
+    display: inline-block;
+    z-index: 1;
+    user-select: none;
+}
