@@ -15,8 +15,10 @@ export default function RadioButton(
 
   return (
     <label
-      className={classNames(styles.radioButton, { [styles.enabled]: !disabled, [styles.disabled]: disabled })}
-
+      className={classNames(styles.radioButton, {
+        [styles.enabled]: !disabled,
+        [styles.disabled]: disabled
+      })}
     >
       <input
         type="radio"
