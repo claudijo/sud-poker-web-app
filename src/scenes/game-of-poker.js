@@ -67,7 +67,7 @@ export default function GameOfPoker({ tableId }) {
   const reservations = useSelector(state => state.reservations.value);
   const winners = useSelector(state => state.winners.value);
   const handPlayers = useSelector(state => state.handPlayers.value);
-  const action = useSelector(state => state.action.value);
+  const unfoldingActions = useSelector(state => state.unfoldingActions.value);
   const automaticActions = useSelector(state => state.automaticActions.value);
 
   useEffect(() => {
@@ -281,7 +281,7 @@ export default function GameOfPoker({ tableId }) {
               {seats[index] && (
                 <>
                   <PlayerMarker
-                    action={action.seatIndex === index ? action.action : ''}
+                    action={unfoldingActions[index]}
                     key={index}
                     x={positions[index].x}
                     y={positions[index].y}

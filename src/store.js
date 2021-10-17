@@ -12,7 +12,7 @@ import button from './slices/button';
 import reservations from './slices/reservations';
 import winners from './slices/winners';
 import handPlayers from './slices/hand-players';
-import action from './slices/action';
+import unfoldingActions from './slices/unfolding-actions';
 import automaticActions from './slices/automatic-actions'
 
 export default configureStore({
@@ -30,7 +30,7 @@ export default configureStore({
     reservations,
     winners,
     handPlayers,
-    action,
+    unfoldingActions,
     automaticActions,
   },
 });

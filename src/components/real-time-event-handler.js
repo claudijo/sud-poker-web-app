@@ -12,12 +12,12 @@ import CommandQueue from '../util/command-queue';
 import { setReservations } from '../slices/reservations';
 import { setWinners } from '../slices/winners';
 import { setHandPlayers } from '../slices/hand-players';
-import { setAction } from '../slices/action';
 import { setAutomaticActions } from '../slices/automatic-actions';
+import { setUnfoldingAction } from '../slices/unfolding-actions';
 
 const commandQueue = new CommandQueue();
 
-const actionTakenTimeouts = []
+const actionTakenTimeouts = [];
 
 export default function RealTimeEventHandler({ tableId }) {
   const dispatch = useDispatch();
@@ -30,7 +30,7 @@ export default function RealTimeEventHandler({ tableId }) {
     commandQueue.enqueue(() => {
       dispatch(setCommunityCards([]));
       dispatch(setHoleCards([]));
-      dispatch(setHandPlayers([]))
+      dispatch(setHandPlayers([]));
       dispatch(setPots([]));
       dispatch(setButton(payload.table.button));
       dispatch(setWinners([]));
@@ -42,12 +42,12 @@ export default function RealTimeEventHandler({ tableId }) {
 
     commandQueue.enqueue(() => {
       dispatch(setHoleCards(payload.holeCards));
-      dispatch(setHandPlayers(payload.table.handPlayers))
+      dispatch(setHandPlayers(payload.table.handPlayers));
     }, { delayEnd: 1200 });
 
     commandQueue.enqueue(() => {
       dispatch(setPlayerToAct(payload.table.playerToAct));
-      dispatch(setAutomaticActions(payload.automaticActions))
+      dispatch(setAutomaticActions(payload.automaticActions));
       dispatch(setLegalActions(payload.table.legalActions));
     });
   }, [dispatch, tableId]);
@@ -75,7 +75,7 @@ export default function RealTimeEventHandler({ tableId }) {
 
     commandQueue.enqueue(() => {
       dispatch(setPlayerToAct(payload.table.playerToAct));
-      dispatch(setAutomaticActions(payload.automaticActions))
+      dispatch(setAutomaticActions(payload.automaticActions));
       dispatch(setLegalActions(payload.table.legalActions));
     });
 
@@ -86,20 +86,27 @@ export default function RealTimeEventHandler({ tableId }) {
       return;
     }
 
-    dispatch(setAction({action: payload.action, seatIndex: payload.seatIndex }))
-    clearTimeout(actionTakenTimeouts[payload.seatIndex])
-    actionTakenTimeouts[payload.seatIndex] = setTimeout(() => {
-      dispatch(setAction({action: '', seatIndex: payload.seatIndex }))
-    }, 2000)
+    const unfoldingActions = [...payload.unfoldingAutomaticActions];
+    unfoldingActions[payload.actor] = payload.action;
 
-    dispatch(setAutomaticActions(payload.automaticActions))
+    // Flash unfolding actions
+    unfoldingActions.forEach((action, seatIndex) => {
+      if (action) {
+        dispatch(setUnfoldingAction({ action, seatIndex }));
+        clearTimeout(actionTakenTimeouts[seatIndex]);
+        actionTakenTimeouts[seatIndex] = setTimeout(() => {
+          dispatch(setUnfoldingAction({ action: '', seatIndex }));
+        }, 2000);
+      }
+    })
 
     commandQueue.enqueue(() => {
-      dispatch(setHandPlayers(payload.table.handPlayers))
+      dispatch(setHandPlayers(payload.table.handPlayers));
       dispatch(setSeats(payload.table.seats));
     }, { delayEnd: 400 });
 
     commandQueue.enqueue(() => {
+      dispatch(setAutomaticActions(payload.automaticActions));
       dispatch(setLegalActions(payload.table.legalActions));
       dispatch(setPlayerToAct(payload.table.playerToAct));
     });
@@ -129,9 +136,9 @@ export default function RealTimeEventHandler({ tableId }) {
 
     payload.table.winners.forEach(potWinners => {
       commandQueue.enqueue(() => {
-        dispatch(setWinners(potWinners))
-      }, { delayEnd: 3500})
-    })
+        dispatch(setWinners(potWinners));
+      }, { delayEnd: 3500 });
+    });
   }, [dispatch, tableId]);
 
   // Set up table change listeners
