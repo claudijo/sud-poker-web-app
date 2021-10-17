@@ -41,7 +41,6 @@ export const sitDown = createAsyncThunk('table/sitDown', async (
 ) => {
   return await clientSocketEmitter.request('sitDown', {
     id: tableId,
-    index: seatIndex,
     name: nickname,
     buyIn,
     avatarStyle,

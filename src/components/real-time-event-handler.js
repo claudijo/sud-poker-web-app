@@ -13,6 +13,7 @@ import { setReservations } from '../slices/reservations';
 import { setWinners } from '../slices/winners';
 import { setHandPlayers } from '../slices/hand-players';
 import { setAction } from '../slices/action';
+import { setAutomaticActions } from '../slices/automatic-actions';
 
 const commandQueue = new CommandQueue();
 
@@ -36,10 +37,6 @@ export default function RealTimeEventHandler({ tableId }) {
     }, { delayEnd: 800 });
 
     commandQueue.enqueue(() => {
-      dispatch(setPlayerToAct(payload.table.playerToAct));
-    }, { delayEnd: 800 });
-
-    commandQueue.enqueue(() => {
       dispatch(setSeats(payload.table.seats));
     });
 
@@ -49,6 +46,8 @@ export default function RealTimeEventHandler({ tableId }) {
     }, { delayEnd: 1200 });
 
     commandQueue.enqueue(() => {
+      dispatch(setPlayerToAct(payload.table.playerToAct));
+      dispatch(setAutomaticActions(payload.automaticActions))
       dispatch(setLegalActions(payload.table.legalActions));
     });
   }, [dispatch, tableId]);
@@ -75,8 +74,9 @@ export default function RealTimeEventHandler({ tableId }) {
     });
 
     commandQueue.enqueue(() => {
-      dispatch(setLegalActions(payload.table.legalActions));
       dispatch(setPlayerToAct(payload.table.playerToAct));
+      dispatch(setAutomaticActions(payload.automaticActions))
+      dispatch(setLegalActions(payload.table.legalActions));
     });
 
   }, [dispatch, tableId]);
@@ -86,12 +86,13 @@ export default function RealTimeEventHandler({ tableId }) {
       return;
     }
 
-    dispatch(setAction({action: payload.action, seatIndex: payload.index }))
-    clearTimeout(actionTakenTimeouts[payload.index])
-    actionTakenTimeouts[payload.index] = setTimeout(() => {
-      dispatch(setAction({action: '', seatIndex: payload.index }))
+    dispatch(setAction({action: payload.action, seatIndex: payload.seatIndex }))
+    clearTimeout(actionTakenTimeouts[payload.seatIndex])
+    actionTakenTimeouts[payload.seatIndex] = setTimeout(() => {
+      dispatch(setAction({action: '', seatIndex: payload.seatIndex }))
     }, 2000)
 
+    dispatch(setAutomaticActions(payload.automaticActions))
 
     commandQueue.enqueue(() => {
       dispatch(setHandPlayers(payload.table.handPlayers))
@@ -102,8 +103,6 @@ export default function RealTimeEventHandler({ tableId }) {
       dispatch(setLegalActions(payload.table.legalActions));
       dispatch(setPlayerToAct(payload.table.playerToAct));
     });
-
-
   }, [dispatch, tableId]);
 
   const onReservationChange = useCallback(payload => {
@@ -128,8 +127,6 @@ export default function RealTimeEventHandler({ tableId }) {
       return;
     }
 
-    console.log('Winners', payload)
-    console.log('Winners', payload.table.winners)
     payload.table.winners.forEach(potWinners => {
       commandQueue.enqueue(() => {
         dispatch(setWinners(potWinners))

@@ -15,7 +15,6 @@ import {
   fetchTable,
   reserveSeat,
   setAutomaticAction,
-  setTable,
   sitDown,
 } from '../slices/table-slice';
 import { fetchMe } from '../slices/me-slice';
@@ -137,7 +136,6 @@ export default function GameOfPoker({ tableId }) {
 
     const { error } = await dispatch(sitDown({
       tableId,
-      seatIndex,
       nickname,
       buyIn,
       avatarStyle: avatar,
@@ -157,7 +155,6 @@ export default function GameOfPoker({ tableId }) {
 
     const { error } = await dispatch(cancelReservation({
       tableId,
-      seatIndex,
     }));
 
     if (error) {
@@ -334,7 +331,7 @@ export default function GameOfPoker({ tableId }) {
         )}
       </Layer>
       {/*/!*Html overlays*!/*/}
-      {!actionFormHidden && legalActions.actions.length && (
+      {!actionFormHidden && legalActions.actions.length > 0 && (
         <ActionBar>
           <ActionForm
             disabled={actionFormDisabled}
@@ -349,7 +346,7 @@ export default function GameOfPoker({ tableId }) {
         </ActionBar>
       )}
 
-      {!automaticActionFormHidden && automaticActions.legalAutomaticActions.length && (
+      {!automaticActionFormHidden && automaticActions.legalAutomaticActions.length > 0 && (
         <ActionBar>
           <AutomaticActionForm
             onChange={onAutomaticActionChange}

@@ -11,10 +11,10 @@ const seatIndexSlice = createSlice({
   reducers: {},
   extraReducers: {
     [fetchTable.fulfilled]: (state, action) => {
-      state.value = action.payload.index;
+      state.value = action.payload.seatIndex;
     },
     [reserveSeat.fulfilled]: (state, action) => {
-      state.value = action.payload.index;
+      state.value = action.payload.seatIndex;
     },
     [cancelReservation.fulfilled]: (state, action) => {
       state.value = -1;

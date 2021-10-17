@@ -12,21 +12,25 @@ const initialState = {
 const automaticActionsSlice = createSlice({
   name: 'automaticActions',
   initialState,
-  reducers: {},
+  reducers: {
+    setAutomaticActions: (state, action) => {
+      state.value = action.payload ?? initialState.value;
+    }
+  },
   extraReducers: {
     [fetchTable.fulfilled]: (state, action) => {
-      state.value = action.payload.seat ?? initialState
+      state.value = action.payload.automaticActions ?? initialState.value
     },
     [setAutomaticAction.pending]: (state, action) => {
       state.value.automaticAction = action.meta.arg.action;
     },
     [setAutomaticAction.rejected]: (state, action) => {
-      console.log('Rejected', action )
-      state.value.automaticAction = null;
+      state.value = initialState.value;
     },
-
+    [setAutomaticAction.fulfilled]: (state, action) => {
+      state.value = action.payload.automaticActions;
+    }
   },
-
 })
 
 export const { setAutomaticActions } = automaticActionsSlice.actions;

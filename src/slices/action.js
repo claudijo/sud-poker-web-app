@@ -14,7 +14,7 @@ const actionTakenSlice = createSlice({
     setAction: (state, action) => {
       state.value = action.payload ?? initialState;
     }
-  }
+  },
 })
 
 export const { setAction } = actionTakenSlice.actions;
