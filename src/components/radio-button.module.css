@@ -25,9 +25,15 @@
     background-color: #c4c4c4;
 }
 
-.radioButton.enabled:active {
+.radioButton.enabled:active,
+.radioButton.enabled.checked:active{
     transform: translate(4px, 4px);
     box-shadow: 4px 4px rgba(0, 0, 0, 0.4);
+}
+
+.radioButton.enabled.checked {
+    transform: translate(3px, 3px);
+    box-shadow: 5px 5px rgba(0, 0, 0, 0.4);
 }
 
 .radioButton input[type="radio"] {
