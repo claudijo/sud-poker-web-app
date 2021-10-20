@@ -2,7 +2,7 @@ import { animated, useTransition } from '@react-spring/web';
 import Backdrop from './backdrop';
 import ConditionalWrapper from './conditional-wrapper';
 
-export default function Popup({ children, styles, show }) {
+export default function Popup({ children, styles, show, blurredBackdrop }) {
 
   const transitions = useTransition(show, {
     from: { top: '200%' },
@@ -21,7 +21,7 @@ export default function Popup({ children, styles, show }) {
       <ConditionalWrapper
         condition={show}
         wrapper={children => (
-          <Backdrop>
+          <Backdrop blurred={blurredBackdrop}>
             {children}
           </Backdrop>
         )}

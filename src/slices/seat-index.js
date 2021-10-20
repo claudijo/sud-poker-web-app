@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { cancelReservation, fetchTable, reserveSeat } from './table-slice';
+import { cancelReservation, fetchTable, reserveSeat, standUp } from './table-slice';
 
 const initialState = {
   value: -1,
@@ -16,9 +16,12 @@ const seatIndexSlice = createSlice({
     [reserveSeat.fulfilled]: (state, action) => {
       state.value = action.payload.seatIndex;
     },
-    [cancelReservation.fulfilled]: (state, action) => {
-      state.value = -1;
+    [cancelReservation.fulfilled]: state => {
+      state.value = initialState.value;
     },
+    [standUp.fulfilled]: state => {
+      state.value = initialState.value;
+    }
   },
 });
 

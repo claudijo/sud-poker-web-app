@@ -5,7 +5,6 @@ import JoinButton from '../components/join-button';
 import JoinForm from '../components/join-form';
 import useEventState, { numberOrEmptyStringFromEvent } from '../hooks/use-event-state';
 import useFullscreen from '../hooks/use-fullscreen';
-import FullscreenButton from '../components/fullscreen-button';
 import Popup from '../components/popup';
 import { buttonPositionOffset, centerForPositions, showCardsRtl } from '../util/table';
 import { useSelector, useDispatch } from 'react-redux';
@@ -15,7 +14,7 @@ import {
   fetchTable,
   reserveSeat,
   setAutomaticAction,
-  sitDown,
+  sitDown, standUp,
 } from '../slices/table-slice';
 import { fetchMe } from '../slices/me-slice';
 import PlayerMarker from '../components/player-marker';
@@ -29,6 +28,11 @@ import DealerButton from '../components/dealer-button';
 import { STAGE_BACKGROUND_COLOR } from '../util/colors';
 import { Stage, Layer, ScaleMode } from 'react-2d-canvas';
 import AutomaticActionForm from '../components/automatic-action-form';
+import ToolBar from '../components/tool-bar';
+import Button from '../components/button';
+import { ReactComponent as LeaveIcon } from '../icons/leave.svg';
+import { ReactComponent as FullScreenIcon } from '../icons/fullscreen.svg';
+import { ReactComponent as ExitFullScreenIcon } from '../icons/exit-fullscreen.svg';
 
 const stageWidth = 1280;
 const stageHeight = 720;
@@ -47,7 +51,7 @@ export default function GameOfPoker({ tableId }) {
   const [joinFormDisabled, setJoinFormDisabled] = useState(false);
   const [actionFormDisabled, setActionFormDisabled] = useState(false);
   const [actionFormHidden, setActionFormHidden] = useState(true);
-  const [automaticActionFormHidden, setAutomaticActionFormHidden] = useState(true)
+  const [automaticActionFormHidden, setAutomaticActionFormHidden] = useState(true);
   const [joinButtonsDisabled, setJoinButtonsDisabled] = useState(false);
 
   const [avatar, onAvatarChange] = useEventState('IDENTICON');
@@ -69,6 +73,8 @@ export default function GameOfPoker({ tableId }) {
   const handPlayers = useSelector(state => state.handPlayers.value);
   const unfoldingActions = useSelector(state => state.unfoldingActions.value);
   const automaticActions = useSelector(state => state.automaticActions.value);
+
+  console.log({handPlayers, seats})
 
   useEffect(() => {
     setBetSize(legalActions.chipRange.min);
@@ -101,17 +107,14 @@ export default function GameOfPoker({ tableId }) {
   }, [playerToAct, seatIndex]);
 
   useEffect(() => {
-    setAutomaticActionFormHidden(playerToAct === -1 || playerToAct === seatIndex || !automaticActions.canSetAutomaticActions)
-  }, [playerToAct, seatIndex, automaticActions.canSetAutomaticActions])
+    setAutomaticActionFormHidden(playerToAct === -1 || playerToAct === seatIndex || !automaticActions.canSetAutomaticActions);
+  }, [playerToAct, seatIndex, automaticActions.canSetAutomaticActions]);
 
   const {
     fullScreen: isFullscreen,
-    open: requestFullScreen,
+    open: openFullScreen,
+    close: closeFullScreen,
   } = useFullscreen();
-
-  const onFullscreenButtonClick = event => {
-    requestFullScreen();
-  };
 
   const onJoinButtonClick = index => async event => {
     setJoinButtonsDisabled(true);
@@ -141,8 +144,9 @@ export default function GameOfPoker({ tableId }) {
       avatarStyle: avatar,
     }));
 
+    setJoinFormDisabled(false);
+
     if (error) {
-      setJoinFormDisabled(false);
       return;
     }
 
@@ -203,17 +207,29 @@ export default function GameOfPoker({ tableId }) {
     await dispatch(setAutomaticAction({
       tableId,
       action: event.target.value,
-    }))
-  }
+    }));
+  };
 
   const onAutomaticActionClick = async event => {
     if (event.target.value === automaticActions.automaticAction) {
       await dispatch(setAutomaticAction({
         tableId,
         action: null,
-      }))
+      }));
     }
-  }
+  };
+
+  const onLeaveClick = async event => {
+    await dispatch(standUp({ tableId }))
+  };
+
+  const onFullscreenClick = event => {
+    if (isFullscreen) {
+      closeFullScreen()
+    } else {
+      openFullScreen();
+    }
+  };
 
   return (
     <Stage
@@ -321,16 +337,23 @@ export default function GameOfPoker({ tableId }) {
             </React.Fragment>
           ))
         }
-
-        {!isFullscreen && (
-          <FullscreenButton
-            x={stageWidth - 56}
-            y={stageHeight - 56}
-            onClick={onFullscreenButtonClick}
-          />
-        )}
       </Layer>
       {/*/!*Html overlays*!/*/}
+      <ToolBar>
+        {
+          seatIndex !== -1 && seats[seatIndex] && (
+            <Button onClick={onLeaveClick} theme="toolbar" title="Leave table">
+              <LeaveIcon/>
+            </Button>
+          )
+        }
+        <Button onClick={onFullscreenClick} theme="toolbar" title="Toggle fullscreen">
+          {isFullscreen
+            ? <ExitFullScreenIcon/>
+            : <FullScreenIcon/>
+          }
+        </Button>
+      </ToolBar>
       {!actionFormHidden && legalActions.actions.length > 0 && (
         <ActionBar>
           <ActionForm
@@ -357,7 +380,7 @@ export default function GameOfPoker({ tableId }) {
         </ActionBar>
       )}
 
-      <Popup show={!joinFormHidden}>
+      <Popup show={!joinFormHidden} blurredBackdrop={true}>
         <JoinForm
           disabled={joinFormDisabled}
           onSubmit={onJoinFormSubmit}

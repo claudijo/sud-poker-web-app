@@ -47,6 +47,12 @@ export const sitDown = createAsyncThunk('table/sitDown', async (
   });
 });
 
+export const standUp = createAsyncThunk('table/standUp', async({ tableId }) => {
+  return await clientSocketEmitter.request('standUp', {
+    id: tableId
+  })
+})
+
 export const actionTaken = createAsyncThunk('table/actionTaken', async ({ tableId, action, betSize }) => {
   return await clientSocketEmitter.request('actionTaken', {
     id: tableId,
@@ -116,6 +122,18 @@ const tableSlice = createSlice({
       state.isFetching = false;
     },
     [sitDown.rejected]: (state, action) => {
+      state.isFetching = false;
+      state.error = action.error;
+    },
+
+    [standUp.pending]: state => {
+      state.isFetching = true;
+      state.error = null;
+    },
+    [standUp.fulfilled]: (state, action) => {
+      state.isFetching = false;
+    },
+    [standUp.rejected]: (state, action) => {
       state.isFetching = false;
       state.error = action.error;
     },

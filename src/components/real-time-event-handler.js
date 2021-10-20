@@ -125,8 +125,19 @@ export default function RealTimeEventHandler({ tableId }) {
       return;
     }
 
+    // Order matters
     dispatch(setReservations(payload.table.reservations));
     dispatch(setSeats(payload.table.seats));
+  }, [dispatch, tableId]);
+
+  const onStandUp = useCallback(payload => {
+    if (payload.table.id !== tableId) {
+      return;
+    }
+
+    // Order matters
+    dispatch(setSeats(payload.table.seats));
+    dispatch(setReservations(payload.table.reservations));
   }, [dispatch, tableId]);
 
   const onShowdown = useCallback(payload => {
@@ -146,6 +157,7 @@ export default function RealTimeEventHandler({ tableId }) {
     clientSocketEmitter.on('reserveSeat', onReservationChange);
     clientSocketEmitter.on('cancelReservation', onReservationChange);
     clientSocketEmitter.on('sitDown', onSitDown);
+    clientSocketEmitter.on('standUp', onStandUp);
     clientSocketEmitter.on('startHand', onStartHand);
     clientSocketEmitter.on('actionTaken', onActionTaken);
     clientSocketEmitter.on('bettingRoundEnd', onBettingRoundEnd);
@@ -155,6 +167,7 @@ export default function RealTimeEventHandler({ tableId }) {
       clientSocketEmitter.off('reserveSeat', onReservationChange);
       clientSocketEmitter.off('cancelReservation', onReservationChange);
       clientSocketEmitter.off('sitDown', onSitDown);
+      clientSocketEmitter.on('standUp', onStandUp);
       clientSocketEmitter.off('startHand', onStartHand);
       clientSocketEmitter.off('actionTaken', onActionTaken);
       clientSocketEmitter.off('bettingRoundEnd', onBettingRoundEnd);

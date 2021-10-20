@@ -1,0 +1,17 @@
+.toolBar {
+    position: absolute;
+    top: 16px;
+    left: 32px;
+    right: 32px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.toolBar > * {
+    margin-right: 24px;
+}
+
+.toolBar > *:last-child {
+    margin-right: 0;
+}
