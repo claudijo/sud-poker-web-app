@@ -28,10 +28,6 @@ export default function RealTimeEventHandler({ tableId }) {
     }
 
     commandQueue.enqueue(() => {
-      dispatch(setCommunityCards([]));
-      dispatch(setHoleCards([]));
-      dispatch(setHandPlayers([]));
-      dispatch(setPots([]));
       dispatch(setButton(payload.table.button));
       dispatch(setWinners([]));
     }, { delayEnd: 800 });
@@ -125,9 +121,11 @@ export default function RealTimeEventHandler({ tableId }) {
       return;
     }
 
-    // Order matters
-    dispatch(setReservations(payload.table.reservations));
-    dispatch(setSeats(payload.table.seats));
+    commandQueue.enqueue(() => {
+      // Order matters
+      dispatch(setReservations(payload.table.reservations));
+      dispatch(setSeats(payload.table.seats));
+    })
   }, [dispatch, tableId]);
 
   const onStandUp = useCallback(payload => {
@@ -135,9 +133,12 @@ export default function RealTimeEventHandler({ tableId }) {
       return;
     }
 
-    // Order matters
-    dispatch(setSeats(payload.table.seats));
-    dispatch(setReservations(payload.table.reservations));
+    commandQueue.enqueue(() => {
+      // Order matters
+      dispatch(setSeats(payload.table.seats));
+      dispatch(setReservations(payload.table.reservations));
+    })
+
   }, [dispatch, tableId]);
 
   const onShowdown = useCallback(payload => {
@@ -145,11 +146,22 @@ export default function RealTimeEventHandler({ tableId }) {
       return;
     }
 
+    commandQueue.enqueue(() => {
+      dispatch(setPots(payload.table.pots));
+      dispatch(setSeats(payload.table.seats));
+    })
+
     payload.table.winners.forEach(potWinners => {
       commandQueue.enqueue(() => {
         dispatch(setWinners(potWinners));
       }, { delayEnd: 3500 });
     });
+
+    commandQueue.enqueue(() => {
+      dispatch(setHoleCards([]));
+      dispatch(setCommunityCards([]));
+      dispatch(setHandPlayers([]));
+    })
   }, [dispatch, tableId]);
 
   // Set up table change listeners

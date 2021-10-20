@@ -74,8 +74,6 @@ export default function GameOfPoker({ tableId }) {
   const unfoldingActions = useSelector(state => state.unfoldingActions.value);
   const automaticActions = useSelector(state => state.automaticActions.value);
 
-  console.log({handPlayers, seats})
-
   useEffect(() => {
     setBetSize(legalActions.chipRange.min);
   }, [setBetSize, legalActions.chipRange.min]);
@@ -107,8 +105,8 @@ export default function GameOfPoker({ tableId }) {
   }, [playerToAct, seatIndex]);
 
   useEffect(() => {
-    setAutomaticActionFormHidden(playerToAct === -1 || playerToAct === seatIndex || !automaticActions.canSetAutomaticActions);
-  }, [playerToAct, seatIndex, automaticActions.canSetAutomaticActions]);
+    setAutomaticActionFormHidden(!seats[seatIndex] || playerToAct === -1 || playerToAct === seatIndex || !automaticActions.canSetAutomaticActions);
+  }, [playerToAct, seatIndex, automaticActions.canSetAutomaticActions, seats[seatIndex]]);
 
   const {
     fullScreen: isFullscreen,
@@ -220,12 +218,12 @@ export default function GameOfPoker({ tableId }) {
   };
 
   const onLeaveClick = async event => {
-    await dispatch(standUp({ tableId }))
+    await dispatch(standUp({ tableId }));
   };
 
   const onFullscreenClick = event => {
     if (isFullscreen) {
-      closeFullScreen()
+      closeFullScreen();
     } else {
       openFullScreen();
     }
@@ -293,12 +291,13 @@ export default function GameOfPoker({ tableId }) {
       <Layer>
         {
           seats.map((seat, index) => (
-            <React.Fragment key={index}>
+            // Need a compound `key` so that the child <OpponentHand/> is
+            // re-rendered properly
+            <React.Fragment key={`${index}${!!handPlayers[index]}`}>
               {seats[index] && (
                 <>
                   <PlayerMarker
                     action={unfoldingActions[index]}
-                    key={index}
                     x={positions[index].x}
                     y={positions[index].y}
                     totalChips={seats[index].totalChips}
