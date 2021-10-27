@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { clientSocketEmitter } from '../socket/client-socket-emitter';
 
 const initialState = {
   value: null,
@@ -11,6 +12,10 @@ export const fetchMe = createAsyncThunk('me/fetchMe', async() => {
   if (!response.ok) {
     throw new Error(response.status)
   }
+  // Need to re-connect after we have fetched me so the session cookie is
+  // attached properly the first time we visit the site
+  clientSocketEmitter.connect();
+
   const me = await response.json()
   return me;
 })
