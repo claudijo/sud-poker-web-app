@@ -29,8 +29,18 @@ export function isFullScreenElement(el) {
   );
 }
 
+export function isFullscreenEnabled() {
+  return Boolean(
+    document.fullscreenEnabled ||
+    document.webkitFullscreenEnabled ||
+    document.mozFullScreenEnabled ||
+    document.msFullscreenEnabled
+  )
+}
+
 function useFullScreen(element) {
   const initialState = !isClient ? false : isFullScreenElement(element);
+  const enabled = !isClient ? false : isFullscreenEnabled()
   const [fullScreen, setFullScreen] = useState(initialState);
 
   // access various open fullscreen methods
@@ -72,6 +82,7 @@ function useFullScreen(element) {
   }, [element]);
 
   return {
+    enabled,
     fullScreen,
     open: openFullScreen,
     close: closeFullScreen,

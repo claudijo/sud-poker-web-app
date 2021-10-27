@@ -109,6 +109,7 @@ export default function GameOfPoker({ tableId }) {
   }, [playerToAct, seatIndex, automaticActions.canSetAutomaticActions, seats[seatIndex]]);
 
   const {
+    enabled: isFullscreenEnabled,
     fullScreen: isFullscreen,
     open: openFullScreen,
     close: closeFullScreen,
@@ -346,12 +347,16 @@ export default function GameOfPoker({ tableId }) {
             </Button>
           )
         }
-        <Button onClick={onFullscreenClick} theme="toolbar" title="Toggle fullscreen">
-          {isFullscreen
-            ? <ExitFullScreenIcon/>
-            : <FullScreenIcon/>
-          }
-        </Button>
+        {
+          isFullscreenEnabled && (
+            <Button onClick={onFullscreenClick} theme="toolbar" title="Toggle fullscreen">
+              {isFullscreen
+                ? <ExitFullScreenIcon/>
+                : <FullScreenIcon/>
+              }
+            </Button>
+          )
+        }
       </ToolBar>
       {!actionFormHidden && legalActions.actions.length > 0 && (
         <ActionBar>
