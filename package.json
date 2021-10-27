@@ -1,6 +1,6 @@
 {
   "name": "sud-poker-web-app",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "private": true,
   "dependencies": {
     "@dicebear/avatars": "^4.7.2",
