@@ -342,14 +342,14 @@ export default function GameOfPoker({ tableId }) {
       <ToolBar>
         {
           seatIndex !== -1 && seats[seatIndex] && (
-            <Button onClick={onLeaveClick} theme="toolbar" title="Leave table">
+            <Button onClick={onLeaveClick} theme="toolbar danger" title="Leave table">
               <LeaveIcon/>
             </Button>
           )
         }
         {
           isFullscreenEnabled && (
-            <Button onClick={onFullscreenClick} theme="toolbar" title="Toggle fullscreen">
+            <Button onClick={onFullscreenClick} theme="toolbar primary" title="Toggle fullscreen">
               {isFullscreen
                 ? <ExitFullScreenIcon/>
                 : <FullScreenIcon/>
