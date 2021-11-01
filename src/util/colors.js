@@ -12,11 +12,11 @@ export const RED_SUITS_COLOR = '#ef5350';
 export const NAME_LABEL_BACKGROUND_COLOR = '#43a047';
 export const STACK_LABEL_BACKGROUND_COLOR = '#ef5350';
 
-export const CHIP_STACK_LABEL_BACKGROUND_COLOR = '#ffffff';
+export const CHIP_STACK_LABEL_BACKGROUND_COLOR = '#fff';
 export const CHIP_STACK_LABEL_TEXT_COLOR = '#37474f';
 export const CHIP_COLOR = '#ef5350';
 
-export const BUTTON_BACKGROUND_COLOR = '#b2dfdb';
-export const BUTTON_HOVER_BACKGROUND_COLOR = '#80cbc4';
-export const BUTTON_ACTIVE_BACKGROUND_COLOR = '#4db6ac';
-export const BUTTON_BORDER_COLOR = '#009688';
+export const BUTTON_BACKGROUND_COLOR = '#fff';
+export const BUTTON_HOVER_BACKGROUND_COLOR = '#dbf3dc';
+export const BUTTON_ACTIVE_BACKGROUND_COLOR = '#b9e5bb';
+export const BUTTON_BORDER_COLOR = '#43a047';

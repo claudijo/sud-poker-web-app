@@ -1,8 +1,8 @@
 import TextLabel from './text-label';
-import { NAME_LABEL_BACKGROUND_COLOR } from '../util/colors';
-import { animated, useTransition } from '@react-spring/web';
+import { FACE_UP_CARD_BACKGROUND_COLOR, NAME_LABEL_BACKGROUND_COLOR } from '../util/colors';
+import { animated, config, useSpring, useSpringRef, useTransition } from '@react-spring/web';
 
-const AnimatedTextLabel = animated(TextLabel)
+const AnimatedTextLabel = animated(TextLabel);
 
 export default function NameLabel(
   {
@@ -10,55 +10,80 @@ export default function NameLabel(
     flash = '',
     x,
     y,
-    backgroundColor = NAME_LABEL_BACKGROUND_COLOR,
   },
 ) {
 
-  const transitions = useTransition(!!flash, {
-    from: { textOpacity: 0},
-    enter: { textOpacity: 1},
-    leave: { textOpacity: 0},
-  })
+  const animatedProps = useSpring({
+    progress: flash ? 1 : 0,
+    backgroundColor: flash ? '#fff' : NAME_LABEL_BACKGROUND_COLOR,
+    borderColor: flash ? NAME_LABEL_BACKGROUND_COLOR : '#fff',
+    color: flash ? NAME_LABEL_BACKGROUND_COLOR : '#fff',
+    config: config.slow,
+  });
 
-  return transitions((animatedProps, item) =>
-    item ? (
-      <AnimatedTextLabel
-        {...animatedProps}
-        x={x}
-        y={y}
-        backgroundColor={backgroundColor}
-        color="#fff"
-        fontSize={20}
-        fontFamily="Krungthep"
-        paddingTopBottom={4}
-        paddingLeftRight={12}
-        radius={16}
-        borderColor="#fff"
-        borderWidth={4}
-        minWidth={70}
-        maxWidth={70}
-      >
-        {flash}
-      </AnimatedTextLabel>
-    ) : (
+  return (
     <AnimatedTextLabel
-      {...animatedProps}
+      scale={animatedProps.progress.to({
+        range: [0, 0.5, 1],
+        output: [1, flash ? 1.5 : 1, 1],
+      })}
+      backgroundColor={animatedProps.backgroundColor}
+      color={animatedProps.color}
+      borderColor={animatedProps.borderColor}
       x={x}
       y={y}
-      backgroundColor={backgroundColor}
-      color="#fff"
       fontSize={20}
       fontFamily="Krungthep"
       paddingTopBottom={4}
       paddingLeftRight={12}
       radius={16}
-      borderColor="#fff"
       borderWidth={4}
       minWidth={70}
       maxWidth={70}
     >
-      {children}
+      {flash || children}
     </AnimatedTextLabel>
-    )
-  )
+  );
+
+  // return transitions((animatedProps, item) =>
+  //   item ? (
+  //     <AnimatedTextLabel
+  //       {...animatedProps}
+  //       x={x}
+  //       y={y}
+  //       // backgroundColor={backgroundColor}
+  //       color="#fff"
+  //       fontSize={20}
+  //       fontFamily="Krungthep"
+  //       paddingTopBottom={4}
+  //       paddingLeftRight={12}
+  //       radius={16}
+  //       borderColor="#fff"
+  //       borderWidth={4}
+  //       minWidth={70}
+  //       maxWidth={70}
+  //     >
+  //       {flash}
+  //     </AnimatedTextLabel>
+  //   ) : (
+  //   <AnimatedTextLabel
+  //     textOpacity={animatedProps.textOpacity}
+  //     x={x}
+  //     y={y}
+  //     backgroundColor={backgroundColor}
+  //     color="#fff"
+  //     fontSize={20}
+  //     fontFamily="Krungthep"
+  //     paddingTopBottom={4}
+  //     paddingLeftRight={12}
+  //     radius={16}
+  //     borderColor="#fff"
+  //     borderWidth={4}
+  //     minWidth={70}
+  //     maxWidth={70}
+  //   >
+  //     {children}
+  //   </AnimatedTextLabel>
+  //   )
+  // )
 }

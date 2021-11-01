@@ -19,6 +19,8 @@ export default function TextLabel(
     maxWidth = Number.POSITIVE_INFINITY,
     align = 'center',
     textOpacity = 1,
+    opacity = 1,
+    scale = 1,
   },
 ) {
   const [measuredChildWidth, setMeasuredChildWidth] = useState(0);
@@ -49,13 +51,14 @@ export default function TextLabel(
     <RoundedRectangle
       x={x}
       y={y}
-      width={labelWidth}
-      height={fontSize + paddingTopBottom * 2 + borderWidth * 2}
+      width={scale * labelWidth}
+      height={scale * (fontSize + paddingTopBottom * 2 + borderWidth * 2)}
       backgroundColor={backgroundColor}
-      radius={radius}
+      radius={scale * radius}
       borderColor={borderColor}
       borderWidth={borderWidth}
       originX={originX(align)}
+      opacity={opacity}
     >
       <Label
         ref={labelElementRef}
@@ -69,6 +72,8 @@ export default function TextLabel(
         align="center"
         borderWidth={0}
         opacity={textOpacity}
+        scaleX={scale}
+        scaleY={scale}
       >{children}</Label>
     </RoundedRectangle>
   );
