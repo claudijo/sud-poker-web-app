@@ -14,7 +14,7 @@ export default function StackLabel({ children, x, y}) {
       paddingLeftRight={12}
       radius={16}
       borderColor="#fff"
-      borderWidth={4}
+      borderWidth={6}
     >
       {children}
     </TextLabel>

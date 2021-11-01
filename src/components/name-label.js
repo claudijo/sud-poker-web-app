@@ -37,7 +37,7 @@ export default function NameLabel(
       paddingTopBottom={4}
       paddingLeftRight={12}
       radius={16}
-      borderWidth={4}
+      borderWidth={6}
       minWidth={70}
       maxWidth={70}
     >
