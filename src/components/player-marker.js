@@ -2,6 +2,7 @@ import PlayerButton from './player-button';
 import StackLabel from './stack-label';
 import NameLabel from './name-label';
 import { capitalizeFirstLetter } from '../lib/text';
+import { rankingDescriptions } from '../util/card';
 
 export default function PlayerMarker(
   {
@@ -12,8 +13,16 @@ export default function PlayerMarker(
     stack,
     isActing,
     action = '',
+    winner,
   },
 ) {
+
+  const flash = action
+    ? capitalizeFirstLetter(action)
+    : winner ?
+      capitalizeFirstLetter(rankingDescriptions[winner.ranking])
+      : '';
+
   return (
     <>
       <PlayerButton
@@ -29,7 +38,7 @@ export default function PlayerMarker(
       <NameLabel
         x={x}
         y={y + 54}
-        flash={capitalizeFirstLetter(action)}
+        flash={flash}
       >
         {nickname}
       </NameLabel>

@@ -299,6 +299,7 @@ export default function GameOfPoker({ tableId }) {
                 <>
                   <PlayerMarker
                     action={unfoldingActions[index]}
+                    winner={winners.find(winner => winner.seatIndex === index)}
                     x={positions[index].x}
                     y={positions[index].y}
                     totalChips={seats[index].totalChips}

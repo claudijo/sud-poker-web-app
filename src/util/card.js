@@ -31,16 +31,16 @@ export const suitColor = suit => {
 };
 
 export const rankingDescriptions = [
-  'High card',
-  'Pair',
-  'Two pair',
-  'Three of a kind',
-  'Straight',
-  'Flush',
-  'Full house',
-  'Four of a kind',
-  'Straight flush',
-  'Royal flush',
+  'high card',
+  'pair',
+  'two pair',
+  'three of a kind',
+  'straight',
+  'flush',
+  'full house',
+  'four of a kind',
+  'straight flush',
+  'royal flush',
 ];
 
 const relevantCardsCount = ranking => {

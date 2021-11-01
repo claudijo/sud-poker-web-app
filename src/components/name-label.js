@@ -1,6 +1,6 @@
 import TextLabel from './text-label';
-import { FACE_UP_CARD_BACKGROUND_COLOR, NAME_LABEL_BACKGROUND_COLOR } from '../util/colors';
-import { animated, config, useSpring, useSpringRef, useTransition } from '@react-spring/web';
+import { NAME_LABEL_BACKGROUND_COLOR } from '../util/colors';
+import { animated, config, useSpring} from '@react-spring/web';
 
 const AnimatedTextLabel = animated(TextLabel);
 
@@ -38,52 +38,10 @@ export default function NameLabel(
       paddingLeftRight={12}
       radius={16}
       borderWidth={6}
-      minWidth={70}
-      maxWidth={70}
+      minWidth={80}
+      maxWidth={80}
     >
       {flash || children}
     </AnimatedTextLabel>
   );
-
-  // return transitions((animatedProps, item) =>
-  //   item ? (
-  //     <AnimatedTextLabel
-  //       {...animatedProps}
-  //       x={x}
-  //       y={y}
-  //       // backgroundColor={backgroundColor}
-  //       color="#fff"
-  //       fontSize={20}
-  //       fontFamily="Krungthep"
-  //       paddingTopBottom={4}
-  //       paddingLeftRight={12}
-  //       radius={16}
-  //       borderColor="#fff"
-  //       borderWidth={4}
-  //       minWidth={70}
-  //       maxWidth={70}
-  //     >
-  //       {flash}
-  //     </AnimatedTextLabel>
-  //   ) : (
-  //   <AnimatedTextLabel
-  //     textOpacity={animatedProps.textOpacity}
-  //     x={x}
-  //     y={y}
-  //     backgroundColor={backgroundColor}
-  //     color="#fff"
-  //     fontSize={20}
-  //     fontFamily="Krungthep"
-  //     paddingTopBottom={4}
-  //     paddingLeftRight={12}
-  //     radius={16}
-  //     borderColor="#fff"
-  //     borderWidth={4}
-  //     minWidth={70}
-  //     maxWidth={70}
-  //   >
-  //     {children}
-  //   </AnimatedTextLabel>
-  //   )
-  // )
 }
