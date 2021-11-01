@@ -56,7 +56,7 @@ export default function TextLabel(
       backgroundColor={backgroundColor}
       radius={scale * radius}
       borderColor={borderColor}
-      borderWidth={borderWidth}
+      borderWidth={scale * borderWidth}
       originX={originX(align)}
       opacity={opacity}
     >
