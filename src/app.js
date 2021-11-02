@@ -20,6 +20,14 @@ const appFonts = [
       style: 'normal',
     },
   },
+  {
+    family: 'Commando',
+    source: 'url("./fonts/commando.woff2") format("woff2"), url("./fonts/commando.woff") format("woff"), url("./fonts/commando.ttf") format("truetype")',
+    descriptor: {
+      weight: 'normal',
+      style: 'normal',
+    },
+  },
 ];
 
 export default function App() {

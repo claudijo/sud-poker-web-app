@@ -33,6 +33,9 @@ import Button from '../components/button';
 import { ReactComponent as LeaveIcon } from '../icons/leave.svg';
 import { ReactComponent as FullScreenIcon } from '../icons/fullscreen.svg';
 import { ReactComponent as ExitFullScreenIcon } from '../icons/exit-fullscreen.svg';
+import { capitalizeFirstLetter } from '../lib/text';
+import SeatToasts from '../components/seat-toast';
+import { rankingDescriptions } from '../util/card';
 
 const stageWidth = 1280;
 const stageHeight = 720;
@@ -250,51 +253,50 @@ export default function GameOfPoker({ tableId }) {
 
       {/*Game action layer*/}
       <Layer>
-        <>
-          {
-            button !== -1 && (
-              <DealerButton
-                x={buttonPositionOffset(button, positions[button]).x}
-                y={buttonPositionOffset(button, positions[button]).y}
-              />
-            )
-          }
-          {positions[seatIndex] && holeCards.length && (
-            <PlayerHand
-              x={positions[seatIndex].x}
-              y={positions[seatIndex].y}
-              holeCards={holeCards}
-              rtl={showCardsRtl(seatIndex)}
-              isHandPlayer={handPlayers[seatIndex]}
+        {
+          button !== -1 && (
+            <DealerButton
+              x={buttonPositionOffset(button, positions[button]).x}
+              y={buttonPositionOffset(button, positions[button]).y}
+            />
+          )
+        }
+        {positions[seatIndex] && holeCards.length && (
+          <PlayerHand
+            x={positions[seatIndex].x}
+            y={positions[seatIndex].y}
+            holeCards={holeCards}
+            rtl={showCardsRtl(seatIndex)}
+            isHandPlayer={handPlayers[seatIndex]}
+            winners={winners}
+          />
+        )}
+        <TableBets
+          centerX={tableX}
+          centerY={tableY}
+          positions={positions}
+          potSizes={pots.map(pot => pot.size) ?? []}
+          betSizes={seats.map(seat => seat?.betSize ?? null) ?? []}
+        />
+        {
+          communityCards.length && (
+            <CommunityCards
+              x={tableX}
+              y={tableY}
+              cards={communityCards}
               winners={winners}
             />
-          )}
-          <TableBets
-            centerX={tableX}
-            centerY={tableY}
-            positions={positions}
-            potSizes={pots.map(pot => pot.size) ?? []}
-            betSizes={seats.map(seat => seat?.betSize ?? null) ?? []}
-          />
-          {
-            communityCards.length && (
-              <CommunityCards
-                x={tableX}
-                y={tableY}
-                cards={communityCards}
-                winners={winners}
-              />
-            )
-          }
-        </>
+          )
+        }
       </Layer>
       {/*/!*Ui layer*!/*/}
       <Layer>
         {
           seats.map((seat, index) => (
+            // Obsolete? key={`${index}${!!handPlayers[index]}`}
             // Need a compound `key` so that the child <OpponentHand/> is
             // re-rendered properly
-            <React.Fragment key={`${index}${!!handPlayers[index]}`}>
+            <React.Fragment key={index}>
               {seats[index] && (
                 <>
                   <PlayerMarker
@@ -338,6 +340,13 @@ export default function GameOfPoker({ tableId }) {
             </React.Fragment>
           ))
         }
+        <SeatToasts
+          positions={positions}
+          messages={winners.reduce((acc, winner) => {
+            acc[winner.seatIndex] = capitalizeFirstLetter(rankingDescriptions[winner.ranking])
+            return acc;
+          }, [])}
+        />
       </Layer>
       {/*/!*Html overlays*!/*/}
       <ToolBar>
